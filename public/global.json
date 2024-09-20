@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v1.0.3/src/parser/GlobalConfigSchema.json",
   "configsList": [
+    "demo-mqp-study",
     "basic-questionnaire-study",
     "demo-html",
     "demo-cleveland",
@@ -19,6 +20,9 @@
     "test-parser-errors"
   ],
   "configs": {
+    "demo-mqp-study": {
+      "path": "demo-mqp-study/config.json"
+    },
     "demo-html": {
       "path": "demo-html/config.json"
     },
@@ -68,7 +72,7 @@
       "test": true
     },
     "basic-questionnaire-study": {
-	    "path": "basic-questionnaire-study/config.json"
+      "path": "basic-questionnaire-study/config.json"
     }
   }
 }

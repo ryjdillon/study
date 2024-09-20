@@ -1,0 +1,164 @@
+{
+  "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v1.0.3/src/parser/StudyConfigSchema.json",
+  "studyMetadata": {
+    "title": "Bar Charts with Student Loans",
+    "version": "pilot",
+    "authors": [
+      "The reVISit Team"
+    ],
+    "date": "2024-09-20",
+    "description": "A study comparing visulizations related to student loans.",
+    "organizations": [
+      "WPI"
+    ]
+  },
+  "uiConfig": {
+    "contactEmail": "@wpi.edu",
+    "helpTextPath": "demo-mqp-study/assets/tutorial.md",
+    "logoPath": "revisitAssets/revisitLogoSquare.svg",
+    "withProgressBar": true,
+    "autoDownloadStudy": false,
+    "sidebar": true,
+    "studyEndMsg": "**Thank you for completing the study. You may click this link and return to Prolific**: [https://app.prolific.com/submissions/complete?cc=C1MXB7XQ](https://app.prolific.com/submissions/complete?cc=C1MXB7XQ)",
+    "urlParticipantIdParam": "PROLIFIC_PID"
+  },
+  "baseComponents": {
+    "barChart": {
+      "instruction": "Review the bar chart and answer the question.",
+      "instructionLocation": "sidebar",
+      "description": "A bar chart.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/Bar.tsx",
+      "parameters": {
+        "dataset": "debt-by-school-type",
+        "x": "Amount",
+        "y": "School_Type",
+        "ids": "id"
+      },
+      "nextButtonLocation": "belowStimulus",
+      "response": [
+        {
+          "id": "response",
+          "prompt": "Answer:",
+          "required": true,
+          "location": "sidebar",
+          "type": "longText",
+          "placeholder": "Enter your answer here."
+        }
+      ]
+    },
+    "lineChart": {
+      "instruction": "Review the line chart and answer the question.",
+      "instructionLocation": "sidebar",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/DataExplorer.tsx",
+      "parameters": {
+        "dataset": "debt-by-school-type",
+        "start_date": "2017-04-01",
+        "end_date": "2022-10-01",
+        "allow_time_slider": true,
+        "x_var": "Date",
+        "y_var": "Amount",
+        "cat_var": "School_Type",
+        "group_var": "School_Type",
+        "initial_selection": [
+          "Public",
+          "Private",
+          "Proprietary",
+          "Foreign",
+          "Other"
+        ]
+      },
+      "nextButtonLocation": "belowStimulus",
+      "response": [
+        {
+          "id": "response",
+          "prompt": "Answer:",
+          "required": true,
+          "location": "sidebar",
+          "type": "longText",
+          "placeholder": "Enter your answer here."
+        }
+      ]
+    }
+  },
+  "components": {
+    "introduction": {
+      "type": "markdown",
+      "path": "demo-mqp-study/assets/introduction.md",
+      "response": [
+        {
+          "id": "name",
+          "prompt": "Please enter your name",
+          "required": true,
+          "location": "belowStimulus",
+          "type": "shortText",
+          "placeholder": "name",
+          "paramCapture": "name"
+        }
+      ]
+    },
+    "consent": {
+      "type": "markdown",
+      "path": "demo-mqp-study/assets/consent.md",
+      "nextButtonText": "Agree",
+      "response": [
+        {
+          "id": "accept",
+          "prompt": "Do you consent to the study and wish to continue?",
+          "required": true,
+          "requiredValue": "Accept",
+          "location": "belowStimulus",
+          "type": "radio",
+          "options": [
+            "Decline",
+            "Accept"
+          ]
+        }
+      ]
+    },
+    "lineChart_q1": {
+      "baseComponent": "lineChart",
+      "instruction": "Which school type has the highest total debt?",
+      "parameters": {
+        "guardrail": "none"
+      },
+      "correctAnswer": [
+        {
+          "id": "response",
+          "answer": "Public"
+        }
+      ]
+    },
+    "barChart_q1": {
+      "baseComponent": "barChart",
+      "instruction": "Which school type has the highest total debt?",
+      "parameters": {
+        "dataset": "debt-by-school-type",
+        "x": "Amount",
+        "y": "School_Type",
+        "ids": "id"
+      },
+      "correctAnswer": [
+        {
+          "id": "response",
+          "answer": "Public"
+        }
+      ]
+    }
+  },
+  "sequence": {
+    "order": "fixed",
+    "components": [
+      "introduction",
+      "consent",
+      {
+        "order": "latinSquare",
+        "components": [
+          "barChart_q1",
+          "lineChart_q1"
+        ]
+      }
+    ]
+  }
+}
