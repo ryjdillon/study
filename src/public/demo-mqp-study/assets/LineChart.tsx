@@ -46,14 +46,14 @@ export function LineChart({
 
   const calculatedAvgData = useMemo(() => {
     const selectedGroups = items.map((val) => val.group);
-    const controlsData = data.filter((val) => selectedGroups.includes(val[parameters.group_var]));
+    const controlsData = data.filter((val) => selectedGroups.includes(String(val[parameters.group_var])));
 
     const avgData = d3.rollup(
       controlsData,
       (v) => ({
-        mean: d3.mean(v, (d) => d[parameters.y_var]),
-        upperq: d3.quantile(v, 0.75, (d) => d[parameters.y_var]),
-        lowerq: d3.quantile(v, 0.25, (d) => d[parameters.y_var]),
+        mean: d3.mean(v, (d) => +d[parameters.y_var]),
+        upperq: d3.quantile(v, 0.75, (d) => +d[parameters.y_var]),
+        lowerq: d3.quantile(v, 0.25, (d) => +d[parameters.y_var]),
       }),
       (d) => d[parameters.x_var],
     );
@@ -81,7 +81,7 @@ export function LineChart({
     }
 
     const yData = data
-      .filter((val) => relevantSelection.includes(val[parameters.cat_var]))
+      .filter((val) => relevantSelection.includes(String(val[parameters.cat_var])))
       .map((d) => +d[parameters.y_var])
       .filter((val) => val !== null);
 
@@ -112,7 +112,7 @@ export function LineChart({
     .nice(), [height, yMax, yMin]);
 
   const colorScale = useMemo(() => {
-    const categories = Array.from(new Set(data.map((d) => d[parameters.cat_var])));
+    const categories = Array.from(new Set(data.map((d) => String(d[parameters.cat_var]))));
     return d3.scaleOrdinal(OwidDistinctLinesPalette).domain(categories);
   }, [data, parameters]);
 
@@ -122,8 +122,8 @@ export function LineChart({
     }
 
     const lineGenerator = d3.line<DataPoint>()
-      .x((d) => xScale(d3.timeParse('%Y-%m-%d')(d[parameters.x_var])!))
-      .y((d) => yScale(d[parameters.y_var]))
+      .x((d) => xScale(d3.timeParse('%Y-%m-%d')(String(d[parameters.x_var]))!))
+      .y((d) => yScale(+d[parameters.y_var]))
       .curve(d3.curveBasis);
 
     return selection?.map((schoolType) => ({
@@ -173,7 +173,7 @@ export function LineChart({
         <g transform={`translate(${width + margin.left + 20}, ${margin.top})`}>
           {Array.from(new Set(data.map((d) => d[parameters.cat_var]))).map((category, index) => (
             <g key={category} transform={`translate(0, ${index * 20})`}>
-              <rect width={15} height={15} fill={colorScale(category)} />
+              <rect width={15} height={15} fill={colorScale(String(category))} />
               <text x={20} y={15} style={{ fontSize: '12px', fill: 'black' }}>
                 {category}
               </text>

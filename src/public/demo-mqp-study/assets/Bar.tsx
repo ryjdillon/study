@@ -101,7 +101,7 @@ export function Bar({ parameters }: { parameters: ChartParams }) {
   return (
     <Stack>
       <Paper shadow="md" radius="md" p="md" withBorder>
-        <Title order={3} align="center">Debt by School Type</Title>
+        <Title order={3}>Debt by School Type</Title>
         <svg ref={setSvgRef} width={800} height={400} />
       </Paper>
       {data === null && <Loader />}

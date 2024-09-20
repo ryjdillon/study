@@ -33,7 +33,7 @@ interface Item {
   group: string;
 }
 
-export function DataExplorer({ parameters, _setAnswer }: StimulusParams<ChartParams>) {
+export function DataExplorer({ parameters }: StimulusParams<ChartParams>) {
   const [chartData, setChartData] = useState<DataRow[] | null>(null);
   const [dataname] = useState<string>(parameters.dataset);
   const [currentSelection] = useState<string[] | null>(parameters.initial_selection);
