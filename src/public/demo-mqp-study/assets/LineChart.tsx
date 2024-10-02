@@ -126,9 +126,9 @@ export function LineChart({
       .y((d) => yScale(+d[parameters.y_var]))
       .curve(d3.curveBasis);
 
-    return selection?.map((schoolType) => ({
-      schoolType,
-      path: lineGenerator(data.filter((val) => val[parameters.cat_var] === schoolType))!,
+    return selection?.map((GroupOne) => ({
+      GroupOne,
+      path: lineGenerator(data.filter((val) => val[parameters.cat_var] === GroupOne))!,
     }));
   }, [data, xScale, yScale, selection, parameters]);
 
@@ -153,18 +153,18 @@ export function LineChart({
             ticks={xTicks}
           />
           <YAxis
-            label="Debt In Billion USD"
+            label="loan balance"
             yScale={yScale}
             horizontalPosition={margin.left}
             xRange={xScale.range()}
           />
         </g>
         {linePaths?.map((x) => (
-          <g key={`${x.schoolType}_g`}>
+          <g key={`${x.GroupOne}_g`}>
             <path
-              id={`${x.schoolType}`}
+              id={`${x.GroupOne}`}
               fill="none"
-              stroke={colorScale(x.schoolType)}
+              stroke={colorScale(x.GroupOne)}
               strokeWidth={2}
               d={x.path}
             />

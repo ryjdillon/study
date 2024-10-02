@@ -101,7 +101,7 @@ export function DataExplorer({ parameters }: StimulusParams<ChartParams>) {
       <div>
         <div>
           <h3>
-            Debt by School Type
+            Loan Balance over Time
           </h3>
         </div>
         <div>
