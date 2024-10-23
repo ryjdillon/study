@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>basic html</title>
+    <!-- Load revisit-communicate to be able to send data to reVISit -->
+    <script src="../../revisitUtilities/revisit-communicate.js"></script>
+  </head>
+
+  <body>
+    <h1> You have $<text id="currBalance"></text> remaining in your loan of $30000. </h1>
+    <p> If you pay $<text id="option1"></text> each month this year, you will have $<text id="estBalance1"></text> remaining at the end of the year</p>
+    <p> If you pay $<text id="option2"></text> each month this year, you will have $<text id="estBalance2"></text> remaining at the end of the year</p>
+    
+    <!-- <button id="selectOption1">$</button>
+    <button id="selectOption2">$</button> -->
+  </body>
+
+  <script>
+    // Get data from the config file
+    Revisit.onDataReceive((data) => {
+      const currBalance = data['currBalance']
+      const options = data['payOptions']
+      const taskID = 'text-answer';
+      const loc = 'belowStimulus';
+
+      const balance = document.getElementById('currBalance')
+      balance.innerHTML = currBalance;
+
+      const option1 = document.getElementById('option1');
+      option1.innerHTML = options[0];
+
+      const option2 = document.getElementById('option2');
+      option2.innerHTML = options[1];
+
+      const estBalance1 = currBalance - options[0]*12//(currBalance*(1+0.065)**12) - (options[0]/0.065)*(((1+0.065)**12) -1)
+      balance1 = document.getElementById('estBalance1');
+      balance1.innerHTML = Math.round(estBalance1);
+
+      const estBalance2 = currBalance - options[1]*12//currBalance*(1+0.065)**12-(options[1]/0.065)*((1+0.065)**12 -1);
+      balance2 = document.getElementById('estBalance2');
+      balance2.innerHTML = Math.round(estBalance2);
+
+    //   const button1 = document.getElementById('selectOption1');
+    //   button1.innerHTML = "$" + options[0];
+
+    //   const button2 = document.getElementById('selectOption2');
+    //   button2.innerHTML = "$" + options[1];
+
+    //   button1.addEventListener("click", function() {
+    //     Revisit.postAnswers({
+    //         [taskID]: options[0]
+    //     })
+    //   });
+
+    //   button2.addEventListener("click", function() {
+    //     Revisit.postAnswers({
+    //         [taskID]: options[1]
+    //     })
+    //   });
+
+    });
+  </script>
+</html>
