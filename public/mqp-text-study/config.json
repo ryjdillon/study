@@ -21,26 +21,15 @@
         "sidebar": true
     },
     "baseComponents": {
-        "text": {
+        "simulation": {
             "type": "website",
             "response": [
                 {
-                    "id": "text-answer",
-                    "prompt": "What would you like to pay each month for this year?",
+                    "id": "answer-array",
+                    "prompt": "Here is the list of the choices you made during this simulation:",
                     "required": true,
                     "location": "belowStimulus",
-                    "type": "dropdown",
-                    "placeholder": "Please choose an amount",
-                    "options": [
-                        {
-                            "label": "$341",
-                            "value": "$341"
-                        },
-                        {
-                            "label": "$441",
-                            "value": "$441"
-                        }
-                    ]
+                    "type": "iframe"
                 }
             ],
             "path": "mqp-text-study/assets/text.html",
@@ -54,94 +43,13 @@
             "path": "mqp-text-study/assets/introduction.md",
             "response": []
         },
-        "year-1":{
-            "baseComponent": "text",
-            "description": "Year 1 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
+        "text-simulation":{
+            "baseComponent": "simulation",
+            "description": "Student Loan Repayment Simulation",
+            "instruction": "For each year, select which payment you would like to make each month within that year.",
             "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-2":{
-            "baseComponent": "text",
-            "description": "Year 2 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-3":{
-            "baseComponent": "text",
-            "description": "Year 3 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-4":{
-            "baseComponent": "text",
-            "description": "Year 4 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-5":{
-            "baseComponent": "text",
-            "description": "Year 5 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-6":{
-            "baseComponent": "text",
-            "description": "Year 6 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-7":{
-            "baseComponent": "text",
-            "description": "Year 7 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-8":{
-            "baseComponent": "text",
-            "description": "Year 8 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-9":{
-            "baseComponent": "text",
-            "description": "Year 9 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
-            }
-        },
-        "year-10":{
-            "baseComponent": "text",
-            "description": "Year 10 of Student Loan Simulation",
-            "instruction": "Select which payment you would like to make each month this year.",
-            "parameters": {
-                "currBalance": 30000,
-                "payOptions": [341, 441]
+                "startingBalance": 30000,
+                "paymentOptions": [341, 441]
             }
         }
     },
@@ -149,16 +57,7 @@
         "order": "fixed",
         "components": [
             "introduction",
-            "year-1",
-            "year-2",
-            "year-3",
-            "year-4",
-            "year-5",
-            "year-6",
-            "year-7",
-            "year-8",
-            "year-9",
-            "year-10"
+            "text-simulation"
         ]
     }
 }

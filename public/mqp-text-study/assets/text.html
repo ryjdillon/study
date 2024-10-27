@@ -8,38 +8,82 @@
   </head>
 
   <body>
-    <h1> You have $<text id="currBalance"></text> remaining in your loan of $30000. </h1>
+    <h1> Year <text id="currYear"></text>: You have $<text id="currBalance"></text> remaining in your loan of $30000. </h1>
+
+    <!-- // make this dynamic based on what radio button is selected -->
     <p> If you pay $<text id="option1"></text> each month this year, you will have $<text id="estBalance1"></text> remaining at the end of the year</p>
     <p> If you pay $<text id="option2"></text> each month this year, you will have $<text id="estBalance2"></text> remaining at the end of the year</p>
     
-    <!-- <button id="selectOption1">$</button>
-    <button id="selectOption2">$</button> -->
+    <form id="form">
+      <input type="radio" id="option1" name="payment" value="341">
+      <label for="option1">Pay $341 a month</label><br>
+      <input type="radio" id="option2" name="payment" value="441">
+      <label for="option2">Pay $441 a month</label><br>
+      <br>
+      
+      <div><button type="submit">Submit & Progress to Next Year</button></div>
+    </form>
+
+    <br>
+
+    <button>End Simulation</button>
   </body>
 
   <script>
     // Get data from the config file
     Revisit.onDataReceive((data) => {
-      const currBalance = data['currBalance']
-      const options = data['payOptions']
-      const taskID = 'text-answer';
+      var currBalance = data['startingBalance']
+      const options = data['paymentOptions']
+      const taskID = 'answer-array';
       const loc = 'belowStimulus';
 
-      const balance = document.getElementById('currBalance')
-      balance.innerHTML = currBalance;
+      var estBalance1 = 0;
+      var estBalance2 = 0;
+      var answerArray = [];
+      var currYear = 1;
 
-      const option1 = document.getElementById('option1');
-      option1.innerHTML = options[0];
+      const balance = document.getElementById('currBalance');
+      const paymentOption1 = document.getElementById('option1');
+      const paymentOption2 = document.getElementById('option2');
+      const balance1 = document.getElementById('estBalance1');
+      const balance2 = document.getElementById('estBalance2');
+      const year = document.getElementById('currYear');
 
-      const option2 = document.getElementById('option2');
-      option2.innerHTML = options[1];
+      function setUp() {
+        balance.innerHTML = currBalance;
+        year.innerHTML = currYear;
+        paymentOption1.innerHTML = options[0];
+        paymentOption2.innerHTML = options[1];
+        recalculateEstBalances(currBalance);
+      }
 
-      const estBalance1 = currBalance - options[0]*12//(currBalance*(1+0.065)**12) - (options[0]/0.065)*(((1+0.065)**12) -1)
-      balance1 = document.getElementById('estBalance1');
-      balance1.innerHTML = Math.round(estBalance1);
+      setUp();
 
-      const estBalance2 = currBalance - options[1]*12//currBalance*(1+0.065)**12-(options[1]/0.065)*((1+0.065)**12 -1);
-      balance2 = document.getElementById('estBalance2');
-      balance2.innerHTML = Math.round(estBalance2);
+      function recalculateEstBalances(currBalance) {
+        estBalance1 = Math.round(currBalance - options[0]*12 + 0.065*currBalance) //(currBalance*(1+0.065)**12) - (options[0]/0.065)*(((1+0.065)**12) -1)
+        balance1.innerHTML = estBalance1;
+
+        estBalance2 = Math.round(currBalance - options[1]*12 + 0.065*currBalance) //currBalance*(1+0.065)**12-(options[1]/0.065)*((1+0.065)**12 -1);
+        balance2.innerHTML = estBalance2;
+      }
+
+      var form = document.getElementById('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        paymentChoice = e.target.value;
+        if(paymentChoice == toString(options[0])) {
+          currBalance = estBalance1;
+        } else {
+          currBalance = estBalance2;
+        }
+        answerArray.push(paymentChoice)
+        balance.innerHTML = currBalance;
+        currYear++;
+        year.innerHTML = currYear;
+        recalculateEstBalances(currBalance);
+      });
+
+
 
     //   const button1 = document.getElementById('selectOption1');
     //   button1.innerHTML = "$" + options[0];
