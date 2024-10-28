@@ -16,6 +16,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    position: 'relative',
   },
   chartWrapper: {
     display: 'flex',
@@ -52,7 +53,7 @@ const styles = {
     marginTop: '15px',
     padding: '8px 20px',
     cursor: 'pointer',
-    backgroundColor: '#4e79a7',
+    backgroundColor: '#0077A9',
     color: 'white',
     border: 'none',
     borderRadius: '8px',
@@ -71,18 +72,17 @@ const styles = {
   },
   legend: {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    maxWidth: '400px',
-    marginBottom: '20px',
-
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    position: 'absolute',
+    top: '200px',
+    right: '200px',
+    gap: '6px',
   },
   legendItem: {
     display: 'flex',
     alignItems: 'center',
     fontSize: '14px',
-    flex: '1',
   },
   legendColorBox: {
     width: '15px',
@@ -95,15 +95,16 @@ const styles = {
 function Legend() {
   return (
     <div style={styles.legend}>
-      <div style={{ ...styles.legendItem, color: '#006400' }}>
-        <span style={{ ...styles.legendColorBox, backgroundColor: '#006400' }} />
-        {' '}
-        Amount Paid Off
-      </div>
-      <div style={{ ...styles.legendItem, color: '#4e79a7' }}>
-        <span style={{ ...styles.legendColorBox, backgroundColor: '#4e79a7' }} />
+
+      <div style={{ ...styles.legendItem, color: '#0077A9' }}>
+        <span style={{ ...styles.legendColorBox, backgroundColor: '#0077A9' }} />
         {' '}
         Remaining Loan Balance
+      </div>
+      <div style={{ ...styles.legendItem, color: '#06945D' }}>
+        <span style={{ ...styles.legendColorBox, backgroundColor: '#06945D' }} />
+        {' '}
+        Amount Paid Off
       </div>
     </div>
   );
@@ -165,7 +166,7 @@ function TotalBalancePaymentsChart(): React.FC {
       let remainingBalance = totalLoanAmount;
       totalPaidRef.current = 0;
 
-      for (let year = 0; year < maxYearsToSimulate; year += 1) {
+      for (let year = 2025; year < maxYearsToSimulate + 2025; year += 1) {
         if (remainingBalance <= 0) break;
 
         const yearlyInterest = remainingBalance * annualInterestRate;
@@ -198,7 +199,7 @@ function TotalBalancePaymentsChart(): React.FC {
       <h2>Loan Balance and Payments Over Time</h2>
       <h3>
         Year:
-        {currentYearIndex + 1}
+        {currentYearIndex + 2025}
       </h3>
       <Legend />
       <div ref={ref} style={styles.chartWrapper}>
@@ -209,7 +210,7 @@ function TotalBalancePaymentsChart(): React.FC {
                 data={[chartData[currentYearIndex]]}
                 barWidth={Math.max(200, Math.min(dms.width, dms.height) / maxYearsToSimulate - 5)}
                 totalHeight={dms.height - dms.marginTop - dms.marginBottom}
-                colors={['#006400', '#4e79a7']}
+                colors={['#06945D', '#0077A9']}
               />
             ) : (
               <text>No data available for this year.</text>

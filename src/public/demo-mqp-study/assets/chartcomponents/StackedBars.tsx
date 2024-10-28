@@ -2,14 +2,14 @@ import React from 'react';
 
 interface StackedBarsProps {
   data: { totalPaid: number; remainingBalance: number }[]; // Each data item includes total paid and remaining balance
-  barWidth: number; // Width of the bar
-  totalHeight: number; // Total height for the stacked bars
-  colors: string[]; // Colors for each layer
+  barWidth: number;
+  totalHeight: number;
+  colors: string[];
 }
 
 function StackedBars({
   data, barWidth, totalHeight, colors,
-}: StackedBarsProps): React.FC {
+}: StackedBarsProps): React.FC | null {
   if (data.length === 0) return null;
 
   const { totalPaid, remainingBalance } = data[0];
@@ -17,6 +17,9 @@ function StackedBars({
 
   const paidHeight = (totalPaid / totalAmount) * totalHeight;
   const remainingHeight = (remainingBalance / totalAmount) * totalHeight;
+
+  // Format as dollar amounts
+  const formatCurrency = (amount: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
   return (
     <g>
@@ -36,7 +39,7 @@ function StackedBars({
         fontSize="14"
         fontWeight="bold"
       >
-        {totalPaid.toFixed(2)}
+        {formatCurrency(totalPaid)}
       </text>
 
       {/* Remaining Balance Bar */}
@@ -55,7 +58,7 @@ function StackedBars({
         fontSize="14"
         fontWeight="bold"
       >
-        {remainingBalance.toFixed(2)}
+        {formatCurrency(remainingBalance)}
       </text>
     </g>
   );
