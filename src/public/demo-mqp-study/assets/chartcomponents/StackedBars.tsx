@@ -33,7 +33,8 @@ function StackedBars({
         y={totalHeight - paidHeight / 2}
         textAnchor="middle"
         fill="#ffffff"
-        fontSize="10"
+        fontSize="14"
+        fontWeight="bold"
       >
         {totalPaid.toFixed(2)}
       </text>
@@ -44,14 +45,15 @@ function StackedBars({
         y={totalHeight - paidHeight - remainingHeight}
         width={barWidth}
         height={remainingHeight}
-        fill={colors[1]} // Color for the remaining balance
+        fill={colors[1]}
       />
       <text
         x={barWidth / 2}
         y={totalHeight - paidHeight - remainingHeight / 2}
         textAnchor="middle"
         fill="#ffffff"
-        fontSize="10"
+        fontSize="14"
+        fontWeight="bold"
       >
         {remainingBalance.toFixed(2)}
       </text>

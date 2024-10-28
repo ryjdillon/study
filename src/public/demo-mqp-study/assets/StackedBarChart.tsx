@@ -10,14 +10,141 @@ interface DataRow {
   total_payment: number;
 }
 
+const styles = {
+  chartContainer: {
+    height: '400px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  chartWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    paddingBottom: '-10px',
+  },
+  extraPaymentOptions: {
+    marginTop: '10px',
+    textAlign: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: '20px',
+  },
+  radioLabel: {
+    fontSize: '16px',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    padding: '8px 8px',
+    borderRadius: '8px',
+    border: '1px solid #4e79a7',
+    backgroundColor: '#f9f9f9',
+    transition: 'background-color 0.3s ease',
+  },
+  radioButton: {
+    width: '18px',
+    height: '18px',
+    cursor: 'pointer',
+  },
+  nextYearButton: {
+    marginTop: '15px',
+    padding: '8px 20px',
+    cursor: 'pointer',
+    backgroundColor: '#4e79a7',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+    fontSize: '16px',
+    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    transition: 'background-color 0.3s ease, transform 0.2s ease',
+  },
+  disabledButton: {
+    marginTop: '15px',
+    padding: '8px 20px',
+    cursor: 'not-allowed',
+    backgroundColor: '#cccccc',
+    color: 'white',
+    border: 'none',
+    borderRadius: '8px',
+  },
+  legend: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    maxWidth: '400px',
+    marginBottom: '20px',
+
+  },
+  legendItem: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '14px',
+    flex: '1',
+  },
+  legendColorBox: {
+    width: '15px',
+    height: '15px',
+    backgroundColor: 'currentColor',
+    marginRight: '5px',
+  },
+};
+
+function Legend() {
+  return (
+    <div style={styles.legend}>
+      <div style={{ ...styles.legendItem, color: '#006400' }}>
+        <span style={{ ...styles.legendColorBox, backgroundColor: '#006400' }} />
+        {' '}
+        Amount Paid Off
+      </div>
+      <div style={{ ...styles.legendItem, color: '#4e79a7' }}>
+        <span style={{ ...styles.legendColorBox, backgroundColor: '#4e79a7' }} />
+        {' '}
+        Remaining Loan Balance
+      </div>
+    </div>
+  );
+}
+
+function ExtraPaymentOptions({ extraPayment, setExtraPayment }: { extraPayment: number, setExtraPayment: React.Dispatch<React.SetStateAction<number>> }) {
+  return (
+    <div style={styles.extraPaymentOptions}>
+      <label style={styles.radioLabel}>
+        <input
+          type="radio"
+          name="extraPayment"
+          value="0"
+          checked={extraPayment === 0}
+          onChange={() => setExtraPayment(0)}
+          style={styles.radioButton}
+        />
+        Pay $374.86  per month
+      </label>
+      <label style={styles.radioLabel}>
+        <input
+          type="radio"
+          name="extraPayment"
+          value="1200"
+          checked={extraPayment === 1200}
+          onChange={() => setExtraPayment(1200)}
+          style={styles.radioButton}
+        />
+        Pay $474.86  per month
+      </label>
+    </div>
+  );
+}
+
 function TotalBalancePaymentsChart(): React.FC {
   const totalLoanAmount = 30000;
   const yearlyPayment = 4173.14;
-  const initialExtraPayment = 0; // Default to no extra payment
-  const annualInterestRate = 0.065; // 6.5% annual interest
-  const maxYearsToSimulate = 10; // Simulate for 10 years
+  const initialExtraPayment = 0;
+  const annualInterestRate = 0.065;
+  const maxYearsToSimulate = 10;
 
-  // UseRef to preserve totalPaid over renders
   const totalPaidRef = useRef(0);
 
   const [chartData, setChartData] = useState<DataRow[]>([]);
@@ -32,114 +159,77 @@ function TotalBalancePaymentsChart(): React.FC {
     width: 0,
   });
 
-  // Calculate initial data
   useEffect(() => {
-    const initialData: DataRow[] = [];
-    let remainingBalance = totalLoanAmount;
-    totalPaidRef.current = 0; // Reset totalPaid at start of calculation
+    const generateChartData = () => {
+      const data: DataRow[] = [];
+      let remainingBalance = totalLoanAmount;
+      totalPaidRef.current = 0;
 
-    for (let year = 0; year < maxYearsToSimulate; year += 1) {
-      let interest = 0;
+      for (let year = 0; year < maxYearsToSimulate; year += 1) {
+        if (remainingBalance <= 0) break;
 
-      // If remaining balance is zero, break out of the loop
-      if (remainingBalance <= 0) break;
+        const yearlyInterest = remainingBalance * annualInterestRate;
+        const payment = yearlyPayment + extraPayment;
+        const totalPayment = Math.min(remainingBalance + yearlyInterest, payment);
+        remainingBalance = Math.max(0, remainingBalance + yearlyInterest - totalPayment);
+        totalPaidRef.current += totalPayment;
 
-      const yearlyInterest = remainingBalance * annualInterestRate;
-      const payment = yearlyPayment + extraPayment;
-      const totalPayment = Math.min(remainingBalance + yearlyInterest, payment);
-      remainingBalance = Math.max(0, remainingBalance + yearlyInterest - totalPayment);
-      totalPaidRef.current += totalPayment; // Update the totalPaid in the ref
-      interest += yearlyInterest;
+        data.push({
+          year: year + 1,
+          totalPaid: totalPaidRef.current,
+          remainingBalance,
+          interest: yearlyInterest,
+          total_payment: totalPaidRef.current,
+        });
+      }
 
-      initialData.push({
-        year: year + 1, // Start years from 1
-        totalPaid: totalPaidRef.current,
-        remainingBalance,
-        interest,
-        total_payment: totalPaidRef.current,
-      });
-    }
-    setChartData(initialData);
-  }, [extraPayment]); // Recalculate data when extraPayment changes
+      return data;
+    };
 
-  // Update series and index on year change
+    setChartData(generateChartData());
+  }, [extraPayment]);
+
   const handleNextYear = () => {
-    setCurrentYearIndex((prev) => Math.min(prev + 1, maxYearsToSimulate - 1));
+    setCurrentYearIndex((prev) => Math.min(prev + 1, chartData.length - 1));
   };
 
   return (
-    <div style={{
-      height: '400px', display: 'flex', flexDirection: 'column', alignItems: 'center',
-    }}
-    >
+    <div style={styles.chartContainer}>
       <h2>Loan Balance and Payments Over Time</h2>
       <h3>
         Year:
-        {' '}
         {currentYearIndex + 1}
       </h3>
-      <div ref={ref} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Legend />
+      <div ref={ref} style={styles.chartWrapper}>
         <svg width={dms.width} height={dms.height}>
-          <g transform={`translate(${[100, 0].join(',')})`}>
-            <g>
-              {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                <StackedBars
-                  data={[chartData[currentYearIndex]]}
-                  barWidth={Math.max(200, Math.min(dms.width, dms.height) / maxYearsToSimulate - 5)}
-                  totalHeight={dms.height - dms.marginTop - dms.marginBottom}
-                  colors={['#4e79a7', '#A0CBE8']}
-                />
-              ) : (
-                <div>No data available for this year.</div>
-              )}
-            </g>
+          <g transform={`translate(${dms.width / 2 - 100}, 0)`}>
+            {chartData.length > 0 && currentYearIndex < chartData.length ? (
+              <StackedBars
+                data={[chartData[currentYearIndex]]}
+                barWidth={Math.max(200, Math.min(dms.width, dms.height) / maxYearsToSimulate - 5)}
+                totalHeight={dms.height - dms.marginTop - dms.marginBottom}
+                colors={['#006400', '#4e79a7']}
+              />
+            ) : (
+              <text>No data available for this year.</text>
+            )}
           </g>
         </svg>
 
-        <div style={{ marginTop: '10px', textAlign: 'center' }}>
-          <h4>
-            Current Loan Balance: $
-            {chartData[currentYearIndex]?.remainingBalance.toFixed(2)}
-          </h4>
-          <h4>
-            Interest Paid: $
-            {chartData[currentYearIndex]?.interest.toFixed(2)}
-          </h4>
-          <h4>
-            Total Payment: $
-            {chartData[currentYearIndex]?.totalPaid.toFixed(2)}
-          </h4>
+        <ExtraPaymentOptions
+          extraPayment={extraPayment}
+          setExtraPayment={setExtraPayment}
+        />
 
-        </div>
-
-        <div style={{ marginTop: '10px', textAlign: 'center' }}>
-          <label>
-            <input
-              type="radio"
-              name="extraPayment"
-              value="0"
-              checked={extraPayment === 0}
-              onChange={() => setExtraPayment(0)}
-            />
-            No Extra Payment
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="extraPayment"
-              value="1200"
-              checked={extraPayment === 1200}
-              onChange={() => setExtraPayment(1200)}
-            />
-            Extra Payment of $100 per Month
-          </label>
-        </div>
-
-        <div style={{ marginTop: '10px' }}>
-          <button type="button" onClick={handleNextYear} disabled={currentYearIndex === (chartData.length - 1)}>
-            Next Year &gt;
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleNextYear}
+          disabled={currentYearIndex === (chartData.length - 1)}
+          style={currentYearIndex === (chartData.length - 1) ? styles.disabledButton : styles.nextYearButton}
+        >
+          Next Year &gt;
+        </button>
       </div>
     </div>
   );

@@ -42,8 +42,13 @@
           "prompt": "Answer:",
           "required": true,
           "location": "sidebar",
-          "type": "longText",
-          "placeholder": "Enter your answer here."
+          "type": "dropdown",
+          "options": [
+            {
+              "label": "Completed",
+              "value": "Completed"
+            }
+          ]
         }
       ]
     }
@@ -191,16 +196,9 @@
     },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
-      "instruction": "Which school type has the highest total debt?",
-      "parameters": {
-        "dataset": "min-payment"
-      },
-      "correctAnswer": [
-        {
-          "id": "response",
-          "answer": "Public"
-        }
-      ]
+      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year.",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "."
     }
   },
   "sequence": {
