@@ -47,6 +47,7 @@
             "baseComponent": "simulation",
             "description": "Student Loan Repayment Simulation",
             "instruction": "For each year, select which payment you would like to make each month within that year.",
+            "instructionLocation": "sidebar",
             "parameters": {
                 "startingBalance": 30000,
                 "paymentOptions": [341, 441]
