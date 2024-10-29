@@ -29,7 +29,8 @@
                     "prompt": "Here is the list of the choices you made during this simulation:",
                     "required": true,
                     "location": "belowStimulus",
-                    "type": "iframe"
+                    "type": "iframe",
+                    "hidden": true
                 }
             ],
             "path": "mqp-text-study/assets/text.html",
