@@ -29,7 +29,7 @@ function StackedBars({
         y={totalHeight - paidHeight}
         width={barWidth}
         height={paidHeight}
-        fill={colors[0]} // Color for the total paid
+        fill={colors[0]}
       />
       <text
         x={barWidth / 2}
