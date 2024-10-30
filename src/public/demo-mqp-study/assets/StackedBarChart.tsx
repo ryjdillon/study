@@ -23,6 +23,8 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     paddingBottom: '-10px',
+    width: '100%',
+    marginRight: '40px',
   },
   extraPaymentOptions: {
     marginTop: '10px',
@@ -75,7 +77,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-start',
     position: 'absolute',
-    top: '200px',
+    top: '100px',
     right: '200px',
     gap: '6px',
   },
@@ -199,6 +201,7 @@ function TotalBalancePaymentsChart(): React.FC {
       <h2>Loan Balance and Payments Over Time</h2>
       <h3>
         Year:
+        {' '}
         {currentYearIndex + 2025}
       </h3>
       <Legend />
