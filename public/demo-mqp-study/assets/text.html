@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>basic html</title>
+    <!-- Load revisit-communicate to be able to send data to reVISit -->
+    <script src="../../revisitUtilities/revisit-communicate.js"></script>
+    <style>
+      .hidden {
+        display: none
+      }
+
+      body {
+        font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
+      }
+
+      /* #06945D #0077A9 */
+      .number-green {
+        color: #06945D;
+        font-weight: bold;
+        font-size: large;
+      }
+
+      .number-blue {
+        color: #0077A9;
+        font-weight: bold;
+        font-size: large;
+      }
+
+      .buttons {
+        display: flex;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-align: center;
+        flex-direction: row;
+        /* justify-content: center; */
+        gap: 20px;
+      }
+
+      .button {
+        border-radius: 8px;
+        border: 1px solid #4e79a7;
+        background-color: #f9f9f9;
+        font-size: 16px;
+        padding: 8px 8px;
+        align-items: center;
+        gap: 6px;
+        display: flex;
+        cursor: pointer;
+      }
+
+      /* extraPaymentOptions: {
+        marginTop: '10px',
+        textAlign: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: '20px',
+      }, */
+
+      /* .radioLabel {
+        font-size: '16px';
+        cursor: 'pointer';
+        display: 'flex';
+        align-items: 'center';
+        gap: '6px';
+        padding: '8px 8px';
+        border-radius: '8px';
+        border: '1px solid #4e79a7';
+        background-color: #f9f9f9;
+        transition: background-color 0.3s ease;
+      }
+
+      .radioButton {
+        width: '18px';
+        height: '18px';
+        cursor: 'pointer;
+      } */
+
+      .next-year {
+        padding: 8px 20px;
+        background-color: #0077A9;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+      }
+      /* nextYearButton: {
+        marginTop: '15px',
+        padding: '8px 20px',
+        cursor: 'pointer',
+        backgroundColor: '#0077A9',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        fontSize: '16px',
+        boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+        transition: 'background-color 0.3s ease, transform 0.2s ease',
+      }, */
+    </style>
+  </head>
+
+  <body>
+    <h1> Year: <text id="currYear"></text></h1>
+
+    <div id="full">
+    <p>You have $<text class="number-blue" id="currBalance"></text> remaining in your loan of <text>$30,000</text>.</p>
+    <!-- // make this dynamic based on what radio button is selected -->
+    <div id="option-1">
+    <p> If you pay $<text class="number-green" id="option1"></text> each month this year, you will have $<text class="number-green" id="estBalance1"></text> remaining at the end of the year</p>
+    </div>
+    <div id="option-2" class="hidden">
+    <p> If you pay $<text class="number-green" id="option2"></text> each month this year, you will have $<text class="number-green" id="estBalance2"></text> remaining at the end of the year</p>
+    </div>
+    
+    <form id="form">
+      <div class="buttons">
+      <label class='button' for="option1"><input class='button' type="radio" id="341" name="payment" value="option-1" checked>Pay $341 a month</label><br>
+      <label class='button' for="option2"><input class='button' type="radio" id="441" name="payment" value="option-2">Pay $441 a month</label><br>
+      </div>
+      <br>
+      
+      <div><button class="next-year" type="submit">Next Year</button></div>
+    </form>
+
+    <br>
+
+    <!-- <button>End Simulation</button> -->
+  </div>
+  </body>
+
+  <script>
+    // add commas to numbers (change number format)
+    //Year: 2025
+    // underline for numbers? or different color
+    // make a chart version
+    // edit buttons
+
+    // Get data from the config file
+    Revisit.onDataReceive((data) => {
+      var currBalance = data['startingBalance']
+      const options = data['paymentOptions']
+      const taskID = 'answer-array';
+      const loc = 'belowStimulus';
+
+      var estBalance1 = 0;
+      var estBalance2 = 0;
+      var answerArray = [];
+      var currYear = 2025;
+
+      const balance = document.getElementById('currBalance');
+      const paymentOption1 = document.getElementById('option1');
+      const paymentOption2 = document.getElementById('option2');
+      const balance1 = document.getElementById('estBalance1');
+      const balance2 = document.getElementById('estBalance2');
+      const year = document.getElementById('currYear');
+
+      function setUp() {
+        console.log("Starting Balance:" + currBalance);
+        balance.innerHTML = currBalance.toLocaleString('en-US');
+        year.innerHTML = currYear;
+        paymentOption1.innerHTML = options[0];
+        paymentOption2.innerHTML = options[1];
+        recalculateEstBalances(currBalance);
+      }
+
+      setUp();
+
+      const radioButtons = document.querySelectorAll('input[type=radio][name=payment]');
+      const divs = document.querySelectorAll('#option-1, #option-2');
+
+      radioButtons.forEach(radioButton => {
+        radioButton.addEventListener('change', () => {
+          divs.forEach(div => {
+            div.classList.toggle('hidden', div.id !== radioButton.value);
+          });
+        });
+      });
+
+      function recalculateEstBalances(currBalance) {
+        estBalance1 = Math.round(currBalance - options[0]*12 + 0.065*currBalance) //(currBalance*(1+0.065)**12) - (options[0]/0.065)*(((1+0.065)**12) -1)
+        console.log("Est Balance 1:" + estBalance1);
+        balance1.innerHTML = estBalance1.toLocaleString('en-US');
+
+        estBalance2 = Math.round(currBalance - options[1]*12 + 0.065*currBalance) //currBalance*(1+0.065)**12-(options[1]/0.065)*((1+0.065)**12 -1);
+        console.log("Est Balance 2:" + estBalance2);
+        balance2.innerHTML = estBalance2.toLocaleString('en-US');
+        
+      }
+
+      var form = document.getElementById('form');
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var bool = false;
+        var selected = document.querySelector('input[type=radio][name=payment]:checked');
+        console.log("Selected:" +selected);
+        var paymentChoice = selected.id;
+        console.log(paymentChoice);
+        console.log(options[0].toString());
+        if(paymentChoice === (options[0].toString())) {
+          console.log("Minimum Payment; Balance is now " + estBalance1);
+          currBalance = estBalance1;
+        } else {
+          console.log("More than Minimum Payment; Balance is now " + estBalance2);
+          currBalance = estBalance2;
+          bool = true;
+        }
+        answerArray.push(bool)
+        console.log("Answer Array:" + answerArray);
+        if (currBalance > 0) {
+          balance.innerHTML = currBalance.toLocaleString('en-US');
+          console.log("Next Year's Curr Balance" + currBalance);
+          currYear++;
+          year.innerHTML = currYear;
+          recalculateEstBalances(currBalance);
+        } else {
+          const full = document.getElementById('full');
+          full.innerHTML = "Congratulations! Your loan has been paid off.";
+          Revisit.postAnswers({
+            [taskID]: answerArray
+          })
+        }
+      });
+
+    });
+  </script>
+</html>

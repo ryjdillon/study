@@ -46,7 +46,24 @@
           "hidden": true
         }
       ]
-    }
+    },
+    "text": {
+            "type": "website",
+            "response": [
+                {
+                    "id": "answer-array",
+                    "prompt": "Here is the list of the choices you made during this simulation:",
+                    "required": true,
+                    "location": "belowStimulus",
+                    "type": "iframe",
+                    "hidden": true
+                }
+            ],
+            "path": "demo-mqp-study/assets/text.html",
+            "instructionLocation": "sidebar",
+            "nextButtonLocation": "belowStimulus"
+        
+        }
   },
   "components": {
     "introduction": {
@@ -194,7 +211,18 @@
       "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year.",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
-    }
+    },
+    "text-simulation":{
+      "baseComponent": "text",
+      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year.",
+      "instructionLocation": "sidebar",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "Submit",
+      "parameters": {
+          "startingBalance": 30000,
+          "paymentOptions": [374.86, 474.86]
+      }
+  }
   },
   "sequence": {
     "order": "fixed",
@@ -206,7 +234,8 @@
       {
         "order": "latinSquare",
         "components": [
-          "barChart_q1"
+          "barChart_q1",
+          "text-simulation"
         ]
       }
     ]
