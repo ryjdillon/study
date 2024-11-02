@@ -236,7 +236,9 @@
         "components": [
           "barChart_q1",
           "text-simulation"
-        ]
+        ],
+        "numSamples": 1
+
       }
     ]
   }
