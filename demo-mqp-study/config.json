@@ -1,98 +1,76 @@
 {
   "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v1.0.3/src/parser/StudyConfigSchema.json",
   "studyMetadata": {
-    "title": "Bar Charts with Student Loans",
+    "title": "Student Loan Repayment Study",
     "version": "pilot",
     "authors": [
-      "The reVISit Team"
+      "Behavioral Economics and Visualization MQP Team"
     ],
-    "date": "2024-09-20",
-    "description": "A study comparing visulizations related to student loans.",
+    "date": "2024-11-1",
+    "description": "A study related to repaying student loans.",
     "organizations": [
       "WPI"
     ]
   },
   "uiConfig": {
-    "contactEmail": "@wpi.edu",
+    "contactEmail": "bedvis@wpi.edu",
     "helpTextPath": "demo-mqp-study/assets/tutorial.md",
     "logoPath": "revisitAssets/revisitLogoSquare.svg",
     "withProgressBar": true,
     "autoDownloadStudy": false,
     "sidebar": true,
-    "studyEndMsg": "**Thank you for completing the study. You may click this link and return to Prolific**: [https://app.prolific.com/submissions/complete?cc=C1MXB7XQ](https://app.prolific.com/submissions/complete?cc=C1MXB7XQ)",
+    "studyEndMsg": "**Thank you for completing the study",
     "urlParticipantIdParam": "PROLIFIC_PID"
   },
   "baseComponents": {
-    "barChart": {
+    "stackedBarChart": {
       "instruction": "Review the bar chart and answer the question.",
       "instructionLocation": "sidebar",
       "description": "A bar chart.",
       "type": "react-component",
-      "path": "demo-mqp-study/assets/Bar.tsx",
+      "path": "demo-mqp-study/assets/StackedBarChart.tsx",
       "parameters": {
-        "dataset": "balance-monthly",
-        "x": "Date",
-        "y": "Balance",
-        "ids": "id"
+        "dataset": "min-payment",
+        "x": "year",
+        "y": "min-payment",
+        "ids": "year"
       },
       "nextButtonLocation": "belowStimulus",
       "response": [
         {
-          "id": "response",
-          "prompt": "Answer:",
+          "id": "answer-array",
+          "prompt": "Here is the list of the choices you made during this simulation:",
           "required": true,
-          "location": "sidebar",
-          "type": "longText",
-          "placeholder": "Enter your answer here."
+          "location": "belowStimulus",
+          "type": "iframe",
+          "hidden": true
         }
       ]
     },
-    "lineChart": {
-      "instruction": "Review the line chart and answer the question.",
-      "instructionLocation": "sidebar",
-      "type": "react-component",
-      "path": "demo-mqp-study/assets/DataExplorer.tsx",
-      "parameters": {
-        "dataset": "balance-monthly",
-        "start_date": "2017-01-01",
-        "end_date": "2017-12-01",
-        "allow_time_slider": true,
-        "x_var": "Date",
-        "y_var": "Balance",
-        "cat_var": "GroupOne",
-        "group_var": "GroupOne",
-        "initial_selection": [
-          "1"
-        ]
-      },
-      "nextButtonLocation": "belowStimulus",
-      "response": [
-        {
-          "id": "response",
-          "prompt": "Answer:",
-          "required": true,
-          "location": "sidebar",
-          "type": "longText",
-          "placeholder": "Enter your answer here."
+    "text": {
+            "type": "website",
+            "response": [
+                {
+                    "id": "answer-array",
+                    "prompt": "Here is the list of the choices you made during this simulation:",
+                    "required": true,
+                    "location": "belowStimulus",
+                    "type": "iframe",
+                    "hidden": true
+                }
+            ],
+            "path": "demo-mqp-study/assets/text.html",
+            "instructionLocation": "sidebar",
+            "nextButtonLocation": "belowStimulus"
+        
         }
-      ]
-    }
   },
   "components": {
     "introduction": {
       "type": "markdown",
       "path": "demo-mqp-study/assets/introduction.md",
-      "response": [
-        {
-          "id": "name",
-          "prompt": "Please enter your name",
-          "required": true,
-          "location": "belowStimulus",
-          "type": "shortText",
-          "placeholder": "name",
-          "paramCapture": "name"
-        }
-      ]
+      "nextButtonText": "Continue",
+      "response": []
     },
     "consent": {
       "type": "markdown",
@@ -113,47 +91,154 @@
         }
       ]
     },
-    "lineChart_q1": {
-      "baseComponent": "lineChart",
-      "instruction": "Which school type has the highest total debt?",
-      "parameters": {
-        "guardrail": "none"
-      },
-      "correctAnswer": [
+    "general-prelim-questions": {
+      "type": "questionnaire",
+      "response": [
         {
-          "id": "response",
-          "answer": "Public"
+          "id": "age",
+          "prompt": "How old are you?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Under 18",
+            "18-24",
+            "25-34",
+            "35-44",
+            "45-54",
+            "55-64",
+            "65 or older"
+          ]
+        },
+        {
+          "id": "gender",
+          "prompt": "What is your gender?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Female",
+            "Male",
+            "Non-binary",
+            "Prefer not to say"
+          ]
+        },
+        {
+          "id": "major",
+          "prompt": "What is your major?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "longText",
+          "placeholder": "Please enter your major"
+        },
+        {
+          "id": "year-in-school",
+          "prompt": "What is your year in school?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Freshman",
+            "Sophomore",
+            "Junior",
+            "Senior",
+            "Graduate",
+            "Post-graduate"
+          ]
+        }
+      ]
+    },
+    "specific-prelim-questions": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "have-student-loans",
+          "prompt": "Do you currently have student loans?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No",
+            "Unsure"
+          ]
+        },
+        {
+          "id": "total-student-loan-debt",
+          "prompt": "By the end of your education, how much student loan debt do you expect to have?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Less than $10,000",
+            "$10,000 - $25,000",
+            "$25,000 - $50,000",
+            "$50,000 - $75,000",
+            "$75,000 - $100,000",
+            "More than $100,000",
+            "Unsure"
+          ]
+        },
+        {
+          "id": "parental-involvement",
+          "prompt": "Do your parents manage your student loans?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No",
+            "Unsure"
+          ]
+        },
+        {
+          "id": "loan-payback",
+          "prompt": "Do you expect to payback your student loans individually or with help?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Individually",
+            "With help",
+            "Not at all",
+            "Unsure"
+          ]
         }
       ]
     },
     "barChart_q1": {
-      "baseComponent": "barChart",
-      "instruction": "Which school type has the highest total debt?",
+      "baseComponent": "stackedBarChart",
+      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "Submit"
+    },
+    "text-simulation":{
+      "baseComponent": "text",
+      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "instructionLocation": "sidebar",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "Submit",
       "parameters": {
-        "dataset": "balance-monthly",
-        "x": "Date",
-        "y": "Balance",
-        "ids": "id"
-      },
-      "correctAnswer": [
-        {
-          "id": "response",
-          "answer": "Public"
-        }
-      ]
-    }
+          "startingBalance": 30000,
+          "paymentOptions": [374.86, 474.86]
+      }
+  }
   },
   "sequence": {
     "order": "fixed",
     "components": [
       "introduction",
       "consent",
+      "general-prelim-questions",
+      "specific-prelim-questions",
       {
         "order": "latinSquare",
         "components": [
           "barChart_q1",
-          "lineChart_q1"
-        ]
+          "text-simulation"
+        ],
+        "numSamples": 1
+
       }
     ]
   }
