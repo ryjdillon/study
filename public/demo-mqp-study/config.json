@@ -225,13 +225,13 @@
     },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
-      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
     "text-simulation": {
       "baseComponent": "text",
-      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit",
