@@ -261,7 +261,8 @@ function TotalBalancePaymentsChart({
               extraPayment={extraPayments[currentYearIndex]}
               setExtraPayment={(value) => {
                 const updatedPayments = [...extraPayments];
-                updatedPayments[currentYearIndex] = value;
+                const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
+                updatedPayments[currentYearIndex] = updatedValue;
                 setExtraPayments(updatedPayments);
               }}
             />
