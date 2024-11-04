@@ -1,23 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v1.0.3/src/parser/GlobalConfigSchema.json",
   "configsList": [
-    "demo-mqp-study",
-    "basic-questionnaire-study",
-    "demo-html",
-    "demo-cleveland",
-    "demo-brush-interactions",
-    "demo-html-input",
-    "demo-mvnv",
-    "demo-survey",
-    "demo-VLAT-full-randomized",
-    "demo-VLAT-mini-randomized",
-    "demo-html-trrack",
-    "demo-fairness-jnd",
-    "demo-click-accuracy-test",
-    "demo-image",
-    "test-randomization",
-    "test-skip-logic",
-    "test-parser-errors"
+    "demo-mqp-study"
   ],
   "configs": {
     "demo-mqp-study": {
