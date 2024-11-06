@@ -206,15 +206,50 @@
         }
       ]
     },
+    "post-survey-questions": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "study-rating",
+          "prompt": "What would you rate this study?",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"
+          ]
+        },
+        {
+          "id": "alternate-choice",
+          "prompt": "Is there anything you would do differently if you could repeat the study?",
+          "required": false,
+          "location": "aboveStimulus",
+          "type": "shortText",
+          "placeholder": "Enter comments here"
+        },
+        {
+          "id": "misc-claim",
+          "prompt": "Please use this box to share any further comments or feedback related to the study ",
+          "required": false,
+          "location": "aboveStimulus",
+          "type": "shortText",
+          "placeholder": "Enter comments here"
+        }
+      ]
+    },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
-      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
     "text-simulation":{
       "baseComponent": "text",
-      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit",
@@ -238,8 +273,8 @@
           "text-simulation"
         ],
         "numSamples": 1
-
-      }
+      },
+      "post-survey-questions"
     ]
   }
 }
