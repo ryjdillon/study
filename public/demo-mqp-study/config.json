@@ -222,7 +222,7 @@
           ]
         },
         {
-          "id": "misc-loan-details",
+          "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
           "required": true,
           "location": "aboveStimulus",
