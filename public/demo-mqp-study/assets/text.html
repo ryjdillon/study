@@ -118,8 +118,8 @@
     
     <form id="form">
       <div class="buttons">
-      <label class='button' for="option1"><input class='button' type="radio" id="341" name="payment" value="option-1" checked>Pay $341 a month</label><br>
-      <label class='button' for="option2"><input class='button' type="radio" id="441" name="payment" value="option-2">Pay $441 a month</label><br>
+      <label class='button' for="341"><input class='button' type="radio" id="341" name="payment" value="option-1" checked>Pay $341 a month</label><br>
+      <label class='button' for="441"><input class='button' type="radio" id="441" name="payment" value="option-2">Pay $441 a month</label><br>
       </div>
       <br>
       
@@ -157,6 +157,9 @@
       const balance1 = document.getElementById('estBalance1');
       const balance2 = document.getElementById('estBalance2');
       const year = document.getElementById('currYear');
+
+      const radio1 = document.getElementById('341');
+      const radio2 = document.getElementById('441');
 
       function setUp() {
         console.log("Starting Balance:" + currBalance);
@@ -215,6 +218,8 @@
           console.log("Next Year's Curr Balance" + currBalance);
           currYear++;
           year.innerHTML = currYear;
+          radio1.checked = true;
+          radio2.checked = false;
           recalculateEstBalances(currBalance);
         } else {
           const full = document.getElementById('full');
