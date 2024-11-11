@@ -6,6 +6,7 @@ import { useStoredAnswer } from '../../store/hooks/useStoredAnswer';
 import ResponseBlock from '../response/ResponseBlock';
 import { useCurrentComponent } from '../../routes/utils';
 import { studyComponentToIndividualComponent } from '../../utils/handleComponentInheritance';
+import SideBarPie from '../../public/demo-mqp-study/assets/chartcomponents/SideBarPie';
 
 export default function AppNavBar() {
   const trialHasSideBar = useStudyConfig()?.uiConfig.sidebar;
@@ -43,8 +44,15 @@ export default function AppNavBar() {
             </Text>
             <ReactMarkdownWrapper text={instruction} />
           </Text>
+          <SideBarPie size={300} />
         </AppShell.Section>
+
       )}
+
+      <AppShell.Section
+        bg="gray.3"
+        p="md"
+      />
 
       {trialHasSideBarResponses && (
         <AppShell.Section p="md">

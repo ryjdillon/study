@@ -207,7 +207,7 @@
         {
           "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
-          "required": true,
+          "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
@@ -219,8 +219,8 @@
       "response": [
         {
           "id": "study-rating",
-          "prompt": "What would you rate this study?",
-          "required": true,
+          "prompt": "Please rate your satifaction with the study",
+          "required": false,
           "location": "aboveStimulus",
           "type": "radio",
           "options": [
