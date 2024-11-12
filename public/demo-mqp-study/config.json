@@ -207,7 +207,7 @@
         {
           "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
-          "required": true,
+          "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
@@ -219,7 +219,7 @@
       "response": [
         {
           "id": "study-rating",
-          "prompt": "What would you rate this study?",
+          "prompt": "How confident do you feel in your ability to repay your student loans after completing this survey?",
           "required": true,
           "location": "aboveStimulus",
           "type": "radio",
@@ -242,6 +242,60 @@
         {
           "id": "misc-feedback",
           "prompt": "Please use this box to share any further comments or feedback related to the study ",
+          "required": false,
+          "location": "aboveStimulus",
+          "type": "shortText",
+          "placeholder": "Enter comments here"
+        }
+      ]
+    },
+    "financial-literacy-questions": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "loan-types",
+          "prompt": "I can explain the difference between subsidized and unsubsidized loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "True",
+            "False"
+          ]
+        },
+        {
+          "id": "loans-accrued",
+          "prompt": "I know how much student loan debt I have accrued in college so far.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "True",
+            "False"
+          ]
+        },
+        {
+          "id": "monthly-payments",
+          "prompt": "I have a clear idea of how much my monthly student loan payments will be after I graduate.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "True",
+            "False"
+          ]
+        },
+        {
+          "id": "education-decisions",
+          "prompt": "What decisions have you made about your education because of your student loans?",
+          "required": false,
+          "location": "aboveStimulus",
+          "type": "shortText",
+          "placeholder": "Enter comments here"
+        },
+        {
+          "id": "lifestyle-impact",
+          "prompt": "How do you think your student loan debt will affect your lifestyle after graduation?",
           "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
@@ -282,7 +336,8 @@
         ],
         "numSamples": 1
       },
-      "post-survey-questions"
+      "post-survey-questions",
+      "financial-literacy-questions"
     ]
   }
 }
