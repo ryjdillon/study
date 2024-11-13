@@ -47,23 +47,40 @@
         }
       ]
     },
-    "text": {
-            "type": "website",
-            "response": [
-                {
-                    "id": "answer-array",
-                    "prompt": "Here is the list of the choices you made during this simulation:",
-                    "required": true,
-                    "location": "belowStimulus",
-                    "type": "iframe",
-                    "hidden": true
-                }
-            ],
-            "path": "demo-mqp-study/assets/text.html",
-            "instructionLocation": "sidebar",
-            "nextButtonLocation": "belowStimulus"
-        
+    "pieChart": {
+      "instruction": "Review the bar chart and answer the question.",
+      "instructionLocation": "sidebar",
+      "description": "A pie chart.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/PieChartLoanSimulation.tsx",
+      "nextButtonLocation": "belowStimulus",
+      "response": [
+        {
+          "id": "answer-array",
+          "prompt": "Here is the list of the choices you made during this simulation:",
+          "required": true,
+          "location": "belowStimulus",
+          "type": "iframe",
+          "hidden": true
         }
+      ]
+    },
+    "text": {
+      "type": "website",
+      "response": [
+        {
+          "id": "answer-array",
+          "prompt": "Here is the list of the choices you made during this simulation:",
+          "required": true,
+          "location": "belowStimulus",
+          "type": "iframe",
+          "hidden": true
+        }
+      ],
+      "path": "demo-mqp-study/assets/text.html",
+      "instructionLocation": "sidebar",
+      "nextButtonLocation": "belowStimulus"
+    }
   },
   "components": {
     "introduction": {
@@ -212,17 +229,26 @@
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
-    "text-simulation":{
+    "text-simulation": {
       "baseComponent": "text",
       "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit",
       "parameters": {
-          "startingBalance": 30000,
-          "paymentOptions": [374.86, 474.86]
+        "startingBalance": 30000,
+        "paymentOptions": [
+          374.86,
+          474.86
+        ]
       }
-  }
+    },
+    "pie-charts": {
+      "baseComponent": "pieChart",
+      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "Submit"
+    }
   },
   "sequence": {
     "order": "fixed",
@@ -232,13 +258,13 @@
       "general-prelim-questions",
       "specific-prelim-questions",
       {
-        "order": "latinSquare",
+        "order": "random",
         "components": [
+          "pie-charts",
           "barChart_q1",
           "text-simulation"
         ],
-        "numSamples": 1
-
+        "numSamples": 3
       }
     ]
   }
