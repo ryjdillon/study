@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/revisit-studies/study/v1.0.3/src/parser/StudyConfigSchema.json",
   "studyMetadata": {
-    "title": "Bar Charts with Student Loans",
+    "title": "Money Stacks with Student Loans",
     "version": "pilot",
     "authors": [
       "The reVISit Team"
@@ -29,6 +29,35 @@
       "description": "A bar chart.",
       "type": "react-component",
       "path": "demo-mqp-study/assets/StackedBarChart.tsx",
+      "parameters": {
+        "dataset": "min-payment",
+        "x": "year",
+        "y": "min-payment",
+        "ids": "year"
+      },
+      "nextButtonLocation": "belowStimulus",
+      "response": [
+        {
+          "id": "response",
+          "prompt": "Answer:",
+          "required": true,
+          "location": "sidebar",
+          "type": "dropdown",
+          "options": [
+            {
+              "label": "Completed",
+              "value": "Completed"
+            }
+          ]
+        }
+      ]
+    },
+    "moneyStackBar": {
+      "instruction": "Review the bar chart and answer the question.",
+      "instructionLocation": "sidebar",
+      "description": "A bar chart.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/StackedMoneyChart.tsx",
       "parameters": {
         "dataset": "min-payment",
         "x": "year",
@@ -195,11 +224,12 @@
       ]
     },
     "barChart_q1": {
-      "baseComponent": "stackedBarChart",
+      "baseComponent": "moneyStackBar",
       "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year.",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "."
     }
+    
   },
   "sequence": {
     "order": "fixed",
