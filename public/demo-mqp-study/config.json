@@ -224,7 +224,7 @@
         {
           "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
-          "required": true,
+          "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
@@ -236,7 +236,7 @@
       "response": [
         {
           "id": "study-rating",
-          "prompt": "What would you rate this study?",
+          "prompt": "How confident do you feel in your ability to repay your student loans after completing this survey?",
           "required": true,
           "location": "aboveStimulus",
           "type": "radio",
@@ -263,6 +263,123 @@
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
+        }
+      ]
+    },
+    "financial-literacy-questions": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "loan-types",
+          "prompt": "I can explain the difference between subsidized and unsubsidized loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "interest-allowed",
+          "prompt": "I know what interest rates are allowed on student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "explain-loans",
+          "prompt": "I could explain the student loan process to other students.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-payments",
+          "prompt": "I have a clear idea of how much my monthly student loan payments will be after graduation.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-consolidation",
+          "prompt": "I understand student loan consolidation options.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-default",
+          "prompt": "I can explain the penalties for defaulting on my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-interest",
+          "prompt": "I understand the interest payments on my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-length",
+          "prompt": "I do not have any idea how long it will take to pay off my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
         }
       ]
     },
@@ -309,7 +426,8 @@
         ],
         "numSamples": 1
       },
-      "post-survey-questions"
+      "post-survey-questions",
+      "financial-literacy-questions"
     ]
   }
 }
