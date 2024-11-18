@@ -259,47 +259,110 @@
           "location": "aboveStimulus",
           "type": "radio",
           "options": [
-            "True",
-            "False"
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
           ]
         },
         {
-          "id": "loans-accrued",
-          "prompt": "I know how much student loan debt I have accrued in college so far.",
+          "id": "interest-allowed",
+          "prompt": "I know what interest rates are allowed on student loans.",
           "required": true,
           "location": "aboveStimulus",
           "type": "radio",
           "options": [
-            "True",
-            "False"
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
           ]
         },
         {
-          "id": "monthly-payments",
-          "prompt": "I have a clear idea of how much my monthly student loan payments will be after I graduate.",
+          "id": "explain-loans",
+          "prompt": "I could explain the student loan process to other students.",
           "required": true,
           "location": "aboveStimulus",
           "type": "radio",
           "options": [
-            "True",
-            "False"
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
           ]
         },
         {
-          "id": "education-decisions",
-          "prompt": "What decisions have you made about your education because of your student loans?",
-          "required": false,
+          "id": "loan-payments",
+          "prompt": "I have a clear idea of how much my monthly student loan payments will be after graduation.",
+          "required": true,
           "location": "aboveStimulus",
-          "type": "shortText",
-          "placeholder": "Enter comments here"
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
         },
         {
-          "id": "lifestyle-impact",
-          "prompt": "How do you think your student loan debt will affect your lifestyle after graduation?",
-          "required": false,
+          "id": "loan-consolidation",
+          "prompt": "I understand student loan consolidation options.",
+          "required": true,
           "location": "aboveStimulus",
-          "type": "shortText",
-          "placeholder": "Enter comments here"
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-default",
+          "prompt": "I can explain the penalties for defaulting on my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-interest",
+          "prompt": "I understand the interest payments on my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-length",
+          "prompt": "I do not have any idea how long it will take to pay off my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
         }
       ]
     },
