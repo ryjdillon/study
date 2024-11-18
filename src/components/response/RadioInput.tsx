@@ -51,6 +51,7 @@ export default function RadioInput({
         {leftLabel ? <Text style={{ textAlign: 'center' }}>{leftLabel}</Text> : null}
         {optionsAsStringOptions.map((radio) => (
           <Radio
+            size="xl"
             disabled={disabled}
             value={radio.value}
             label={radio.label}

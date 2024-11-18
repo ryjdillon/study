@@ -12,7 +12,7 @@ export default function ReactMarkdownWrapper({ text, required }: { text: string;
     img({
       node, width, height, ...props
     }) { return <Image {...props} h={height} w={width} ref={undefined} />; },
-    p({ node, ...props }) { return <Text {...props} pb={8} fw="inherit" ref={undefined} />; },
+    p({ node, ...props }) { return <Text {...props} size="xl" pb={8} fw="inherit" ref={undefined} />; },
     h1({ node, ...props }) { return <Title {...props} order={1} {...props} pb={12} />; },
     h2({ node, ...props }) { return <Title {...props} order={2} {...props} pb={12} />; },
     h3({ node, ...props }) { return <Title {...props} order={3} {...props} pb={12} />; },
