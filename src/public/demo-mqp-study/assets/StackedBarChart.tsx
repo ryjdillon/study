@@ -14,20 +14,17 @@ interface DataRow {
 
 const styles = {
   chartContainer: {
-    height: '50px',
-    width: '1500px',
+    height: '400px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
     position: 'relative' as const,
   },
   chartWrapper: {
-    marginTop: '50px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    paddingBottom: '10px',
-    marginBottom: '50px',
+    paddingBottom: '-10px',
   },
   extraPaymentOptions: {
     marginTop: '10px',
@@ -75,6 +72,26 @@ const styles = {
     border: 'none',
     borderRadius: '8px',
   },
+  legend: {
+    display: 'flex',
+    flexDirection: 'column' as const,
+    alignItems: 'flex-start',
+    position: 'absolute' as const,
+    top: '200px',
+    right: '200px',
+    gap: '6px',
+  },
+  legendItem: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '14px',
+  },
+  legendColorBox: {
+    width: '15px',
+    height: '15px',
+    backgroundColor: 'currentColor',
+    marginRight: '5px',
+  },
   paidOffMessage: {
     fontSize: '20px',
     fontWeight: 'bold',
@@ -94,7 +111,22 @@ const styles = {
   },
 };
 
-const choices: number[] = [];
+const choices: boolean[] = [];
+
+function Legend() {
+  return (
+    <div style={styles.legend}>
+      <div style={{ ...styles.legendItem, color: '#0077A9' }}>
+        <span style={{ ...styles.legendColorBox, backgroundColor: '#0077A9' }} />
+        Remaining Loan Balance
+      </div>
+      <div style={{ ...styles.legendItem, color: '#06945D' }}>
+        <span style={{ ...styles.legendColorBox, backgroundColor: '#06945D' }} />
+        Amount Paid Off
+      </div>
+    </div>
+  );
+}
 
 function ExtraPaymentOptions({
   extraPayment,
@@ -105,8 +137,28 @@ function ExtraPaymentOptions({
 }) {
   return (
     <div style={styles.extraPaymentOptions}>
-      <h3> How much extra do you want to pay each month? </h3>
-      <input type="number" value={extraPayment} onChange={(e) => setExtraPayment(parseFloat(e.target.value))} />
+      <label style={styles.radioLabel}>
+        <input
+          type="radio"
+          name="extraPayment"
+          value="0"
+          checked={extraPayment === 0}
+          onChange={() => setExtraPayment(0)}
+          style={styles.radioButton}
+        />
+        Pay $374.86 per month
+      </label>
+      <label style={styles.radioLabel}>
+        <input
+          type="radio"
+          name="extraPayment"
+          value="1200"
+          checked={extraPayment === 1200}
+          onChange={() => setExtraPayment(1200)}
+          style={styles.radioButton}
+        />
+        Pay $474.86 per month
+      </label>
     </div>
   );
 }
@@ -128,8 +180,8 @@ function TotalBalancePaymentsChart({
     marginLeft: 0,
     marginTop: 0,
     marginRight: 0,
-    height: 100,
-    width: 800,
+    height: 400,
+    width: 0,
   });
 
   useEffect(() => {
@@ -143,7 +195,7 @@ function TotalBalancePaymentsChart({
 
         const yearlyInterest = remainingBalance * annualInterestRate;
         const extraPayment = extraPayments[year - 2025];
-        const payment = yearlyPayment + (extraPayment * 12);
+        const payment = yearlyPayment + extraPayment;
         const totalPayment = Math.min(remainingBalance + yearlyInterest, payment);
         remainingBalance = Math.max(0, remainingBalance + yearlyInterest - totalPayment);
         totalPaid += totalPayment;
@@ -164,9 +216,10 @@ function TotalBalancePaymentsChart({
   }, [extraPayments]);
 
   function handleNextYear() {
-    choices[currentYearIndex] = extraPayments[currentYearIndex];
+    choices[currentYearIndex] = extraPayments[currentYearIndex] > 0;
+
     const nextIndex = currentYearIndex + 1;
-    const isEndOfStudy = nextIndex >= maxYearsToSimulate || chartData[currentYearIndex]?.remainingBalance <= 4173.14;
+    const isEndOfStudy = nextIndex >= maxYearsToSimulate || chartData[nextIndex]?.remainingBalance <= 4173.14;
     if (isEndOfStudy) {
       setAnswer({
         status: true,
@@ -178,12 +231,6 @@ function TotalBalancePaymentsChart({
 
   const isLoanPaidOff = currentYearIndex >= chartData.length || chartData[currentYearIndex]?.remainingBalance <= 4173.14;
 
-  useEffect(() => {
-    if (isLoanPaidOff && currentYearIndex !== 0) {
-      handleNextYear();
-    }
-  }, [isLoanPaidOff]);
-
   return (
     <div style={styles.chartContainer}>
       <h2>Loan Balance and Payments Over Time</h2>
@@ -191,27 +238,17 @@ function TotalBalancePaymentsChart({
         Year:
         {currentYearIndex + 2025}
       </h3>
-      {!isLoanPaidOff}
+      {!isLoanPaidOff && <Legend />}
       <div ref={ref} style={styles.chartWrapper}>
         {!isLoanPaidOff ? (
           <>
-            <svg width={dms.width + 100} height={dms.height + 100} style={styles.chartWrapper}>
-
-              {/* Legend */}
-              <g transform="translate(200, 200})">
-                <rect x={620} y={0} width={15} height={15} fill="#06945D" />
-                <text x={640} y={12} fontSize="12" fill="black">Total Paid</text>
-
-                <rect x={700} y={0} width={15} height={15} fill="#0077A9" />
-                <text x={720} y={12} fontSize="12" fill="black">Remaining Balance</text>
-              </g>
-
-              <g>
+            <svg width={dms.width} height={dms.height}>
+              <g transform={`translate(${dms.width / 2 - 100}, 0)`}>
                 {chartData.length > 0 && currentYearIndex < chartData.length ? (
                   <StackedBars
                     data={[chartData[currentYearIndex]]}
-                    barWidth={dms.width}
-                    barHeight={dms.height}
+                    barWidth={Math.max(200, Math.min(dms.width, dms.height) / maxYearsToSimulate - 5)}
+                    totalHeight={dms.height - dms.marginTop - dms.marginBottom}
                     colors={['#06945D', '#0077A9']}
                   />
                 ) : (
@@ -219,6 +256,7 @@ function TotalBalancePaymentsChart({
                 )}
               </g>
             </svg>
+
             <ExtraPaymentOptions
               extraPayment={extraPayments[currentYearIndex]}
               setExtraPayment={(value) => {
@@ -241,7 +279,6 @@ function TotalBalancePaymentsChart({
           <div style={styles.paidOffMessage}>
             Congratulations! Your loan has been paid off.
           </div>
-
         )}
       </div>
     </div>
