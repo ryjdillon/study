@@ -80,6 +80,23 @@
       "path": "demo-mqp-study/assets/text.html",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "belowStimulus"
+        },
+        "hourglass":{
+          "type": "react-component",
+            "response": [
+                {
+                    "id": "answer-array",
+                    "prompt": "Here is the list of the choices you made during this simulation:",
+                    "required": true,
+                    "location": "belowStimulus",
+                    "type": "iframe",
+                    "hidden": true
+                }
+            ],
+            "path": "demo-mqp-study/assets/hourglass.tsx",
+            "instructionLocation": "sidebar",
+            "nextButtonLocation": "belowStimulus"
+        
     }
   },
   "components": {
@@ -225,6 +242,7 @@
           "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
           "required": false,
+          "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
@@ -238,6 +256,8 @@
           "id": "study-rating",
           "prompt": "How confident do you feel in your ability to repay your student loans after completing this survey?",
           "required": true,
+          "prompt": "Please rate your satifaction with the study",
+          "required": false,
           "location": "aboveStimulus",
           "type": "radio",
           "options": [
@@ -408,6 +428,22 @@
       "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
+    },
+  "hourglass-simulation":{
+      "baseComponent": "hourglass",
+      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
+      "instructionLocation": "sidebar",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "Submit",
+      "parameters": {
+          "startingBalance": 30000,
+          "paymentOptions": [374.86, 474.86]
+      }
+  },
+  "debrief": {
+      "type": "markdown",
+      "path": "demo-mqp-study/assets/debrief.md",
+      "response": []
     }
   },
   "sequence": {
@@ -427,7 +463,8 @@
         "numSamples": 1
       },
       "post-survey-questions",
-      "financial-literacy-questions"
+      "financial-literacy-questions",
+      "debrief"
     ]
   }
 }
