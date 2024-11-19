@@ -14,7 +14,7 @@ interface DataRow {
 const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
     height: '400px',
-    width: '1500px',
+    width: '1000px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
@@ -106,8 +106,8 @@ const styles: { [key: string]: CSSProperties } = {
     justifyContent: 'flex-end',
     alignItems: 'center',
     position: 'absolute',
-    top: '140px',
-    right: '450px',
+    top: '120px',
+    right: '200px',
   },
   visWrapper: {
     backgroundColor: '#f0f0f0',
@@ -133,11 +133,20 @@ function ExtraPaymentOptions({
   extraPayment: number;
   setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const maxExtraPayment = 200; // Set the maximum limit
+
   return (
     <div style={styles.extraPaymentOptions}>
-      <h3> How much extra do you want to pay each month? </h3>
-      <input type="number" value={extraPayment} onChange={(e) => setExtraPayment(parseFloat(e.target.value))} />
-
+      <h3>How much extra do you want to pay each month?</h3>
+      <input
+        type="number"
+        value={extraPayment}
+        max={maxExtraPayment}
+        onChange={(e) => {
+          const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
+          setExtraPayment(value);
+        }}
+      />
     </div>
   );
 }
@@ -197,7 +206,7 @@ function TotalBalancePaymentsChart({
   function handleNextYear() {
     choices[currentYearIndex] = extraPayments[currentYearIndex];
     const nextIndex = currentYearIndex + 1;
-    const isEndOfStudy = nextIndex >= maxYearsToSimulate || chartData[currentYearIndex]?.remainingBalance <= 4173.14;
+    const isEndOfStudy = nextIndex >= maxYearsToSimulate || chartData[currentYearIndex]?.remainingBalance <= 0;
     if (isEndOfStudy) {
       setAnswer({
         status: true,
@@ -208,10 +217,10 @@ function TotalBalancePaymentsChart({
     setCurrentYearIndex(nextIndex);
   }
 
-  const isLoanPaidOff = currentYearIndex >= chartData.length || chartData[currentYearIndex]?.remainingBalance <= 4173.14;
+  const isLoanPaidOff = currentYearIndex >= chartData.length || chartData[currentYearIndex]?.remainingBalance <= 0;
 
   useEffect(() => {
-    if (isLoanPaidOff && currentYearIndex !== 0) {
+    if (isLoanPaidOff && currentYearIndex !== 0 && !completedStudy) {
       handleNextYear();
     }
   }, [isLoanPaidOff]);

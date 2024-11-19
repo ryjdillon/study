@@ -15,7 +15,7 @@ interface DataRow {
 const styles = {
   chartContainer: {
     height: '50px',
-    width: '1500px',
+    width: '1200px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
@@ -103,10 +103,22 @@ function ExtraPaymentOptions({
   extraPayment: number;
   setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
+  const maxExtraPayment = 200; // Set the maximum limit
+
   return (
     <div style={styles.extraPaymentOptions}>
-      <h3> How much extra do you want to pay each month? </h3>
-      <input type="number" value={extraPayment} onChange={(e) => setExtraPayment(parseFloat(e.target.value))} />
+      <h3>How much extra do you want to pay each month?</h3>
+      <input
+        type="number"
+        value={extraPayment}
+        min={0} // Optional: Set a minimum value
+        max={maxExtraPayment}
+        onChange={(e) => {
+          // Clamp the value to be within [0, maxExtraPayment]
+          const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
+          setExtraPayment(value);
+        }}
+      />
     </div>
   );
 }
