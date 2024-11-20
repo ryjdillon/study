@@ -47,22 +47,39 @@
         }
       ]
     },
+    "pieChart": {
+      "instruction": "Review the bar chart and answer the question.",
+      "instructionLocation": "sidebar",
+      "description": "A pie chart.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/PieChartLoanSimulation.tsx",
+      "nextButtonLocation": "belowStimulus",
+      "response": [
+        {
+          "id": "answer-array",
+          "prompt": "Here is the list of the choices you made during this simulation:",
+          "required": true,
+          "location": "belowStimulus",
+          "type": "iframe",
+          "hidden": true
+        }
+      ]
+    },
     "text": {
-            "type": "website",
-            "response": [
-                {
-                    "id": "answer-array",
-                    "prompt": "Here is the list of the choices you made during this simulation:",
-                    "required": true,
-                    "location": "belowStimulus",
-                    "type": "iframe",
-                    "hidden": true
-                }
-            ],
-            "path": "demo-mqp-study/assets/text.html",
-            "instructionLocation": "sidebar",
-            "nextButtonLocation": "belowStimulus"
-        
+      "type": "website",
+      "response": [
+        {
+          "id": "answer-array",
+          "prompt": "Here is the list of the choices you made during this simulation:",
+          "required": true,
+          "location": "belowStimulus",
+          "type": "iframe",
+          "hidden": true
+        }
+      ],
+      "path": "demo-mqp-study/assets/text.html",
+      "instructionLocation": "sidebar",
+      "nextButtonLocation": "belowStimulus"
         }
   },
   "components": {
@@ -208,6 +225,7 @@
           "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
           "required": false,
+          "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
@@ -219,6 +237,9 @@
       "response": [
         {
           "id": "study-rating",
+          "prompt": "How confident do you feel in your ability to repay your student loans after completing this survey?",
+          "prompt": "Please rate your satisfaction with the study",
+          "required": true,
           "prompt": "Please rate your satifaction with the study",
           "required": false,
           "location": "aboveStimulus",
@@ -249,23 +270,152 @@
         }
       ]
     },
+    "financial-literacy-questions": {
+      "type": "questionnaire",
+      "response": [
+        {
+          "id": "loan-types",
+          "prompt": "I can explain the difference between subsidized and unsubsidized loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "interest-allowed",
+          "prompt": "I know what interest rates are allowed on student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "explain-loans",
+          "prompt": "I could explain the student loan process to other students.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-payments",
+          "prompt": "I have a clear idea of how much my monthly student loan payments will be after graduation.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-consolidation",
+          "prompt": "I understand student loan consolidation options.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-default",
+          "prompt": "I can explain the penalties for defaulting on my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-interest",
+          "prompt": "I understand the interest payments on my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        },
+        {
+          "id": "loan-length",
+          "prompt": "I do not have any idea how long it will take to pay off my student loans.",
+          "required": true,
+          "location": "aboveStimulus",
+          "type": "radio",
+          "options": [
+            "Strongly Agree",
+            "Somewhat Agree",
+            "Uncertain",
+            "Somewhat Disagree",
+            "Strongly Disagree"
+          ]
+        }
+      ]
+    },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
       "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
+      "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers.\n\n Salary: $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
-    "text-simulation":{
+    "text-simulation": {
       "baseComponent": "text",
       "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
+      "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers. \n\n Salary: $80,000/year",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit",
       "parameters": {
-          "startingBalance": 30000,
-          "paymentOptions": [374.86, 474.86]
+        "startingBalance": 30000,
+        "paymentOptions": [
+          374.86,
+          474.86
+        ]
       }
-  },
+    },
+    "pie-charts": {
+      "baseComponent": "pieChart",
+      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
+      "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers. \n\n Salary $80,000/year",
+      "nextButtonLocation": "sidebar",
+      "nextButtonText": "Submit"
+    },
   "debrief": {
       "type": "markdown",
       "path": "demo-mqp-study/assets/debrief.md",
@@ -282,12 +432,14 @@
       {
         "order": "latinSquare",
         "components": [
+          "pie-charts",
           "barChart_q1",
           "text-simulation"
         ],
         "numSamples": 1
       },
       "post-survey-questions",
+      "financial-literacy-questions",
       "debrief"
     ]
   }
