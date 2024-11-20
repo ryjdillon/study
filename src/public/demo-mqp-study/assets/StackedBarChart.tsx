@@ -94,6 +94,7 @@ const styles = {
   },
 };
 
+let completedStudy = false;
 const choices: number[] = [];
 
 function ExtraPaymentOptions({
@@ -178,20 +179,36 @@ function TotalBalancePaymentsChart({
   function handleNextYear() {
     choices[currentYearIndex] = extraPayments[currentYearIndex];
     const nextIndex = currentYearIndex + 1;
-    const isEndOfStudy = nextIndex >= maxYearsToSimulate || chartData[currentYearIndex]?.remainingBalance <= 4173.14;
+
+    const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
+    const remainingBalance = currentYearData.remainingBalance ?? 0;
+    const extraPayment = (extraPayments[currentYearIndex] ?? 0) * 12;
+
+    const isEndOfStudy = nextIndex >= maxYearsToSimulate
+      || (typeof remainingBalance === 'number'
+        && typeof extraPayment === 'number'
+        && remainingBalance + extraPayment <= 4100);
+
     if (isEndOfStudy) {
       setAnswer({
         status: true,
         answers: { [taskID]: choices },
       });
+      completedStudy = true;
     }
     setCurrentYearIndex(nextIndex);
   }
+  const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
+  const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
 
-  const isLoanPaidOff = currentYearIndex >= chartData.length || chartData[currentYearIndex]?.remainingBalance <= 4173.14;
+  const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
+
+  const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
+    || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
+      && remainingBalance + extraPayment * 12 <= 0);
 
   useEffect(() => {
-    if (isLoanPaidOff && currentYearIndex !== 0) {
+    if (isLoanPaidOff && currentYearIndex !== 0 && !completedStudy) {
       handleNextYear();
     }
   }, [isLoanPaidOff]);
@@ -203,9 +220,9 @@ function TotalBalancePaymentsChart({
         Year:
         {currentYearIndex + 2025}
       </h3>
-      {!isLoanPaidOff}
+      {!completedStudy}
       <div ref={ref} style={styles.chartWrapper}>
-        {!isLoanPaidOff ? (
+        {!completedStudy ? (
           <>
             <svg width={dms.width + 100} height={dms.height + 100} style={styles.chartWrapper}>
 
@@ -244,7 +261,7 @@ function TotalBalancePaymentsChart({
               type="button"
               style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
               onClick={handleNextYear}
-              disabled={isLoanPaidOff}
+              disabled={completedStudy}
             >
               Next Year
             </button>

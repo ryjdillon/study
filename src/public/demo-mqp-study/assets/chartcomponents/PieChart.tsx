@@ -15,15 +15,25 @@ function PieChart({ data, radius, colors }: PieChartProps): React.ReactElement |
   // Calculate percentages
   const paidPercentage = totalAmount ? (totalPaid / totalAmount) : 0;
 
-  // Check for invalid percentage
-  if (paidPercentage > 1) {
+  // Handle invalid percentages > 1 by showing a full chart
+  if (paidPercentage >= 1) {
     return (
-      <div style={{
-        textAlign: 'center', color: 'red', fontSize: '18px', marginTop: '20px',
-      }}
-      >
-        Please enter a valid number
-      </div>
+      <svg width={radius * 2 + 100} height={radius * 2 + 100} style={{ border: '1px solid #ddd' }}>
+        <g transform={`translate(${radius + 50}, ${radius + 50})`}>
+
+          <circle cx={0} cy={0} r={radius} fill={colors[0]} />
+          <text
+            x={0}
+            y={0}
+            fill="white"
+            fontSize="16"
+            textAnchor="middle"
+            alignmentBaseline="middle"
+          >
+            100%
+          </text>
+        </g>
+      </svg>
     );
   }
 
