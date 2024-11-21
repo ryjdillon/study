@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 import { useChartDimensions } from './hooks/useChartDimensions';
-import StackedBars from './chartcomponents/StackedBars';
+import PieChart from './chartcomponents/PieChart';
 import { StimulusParams } from '../../../store/types';
 
 const taskID = 'answer-array';
@@ -11,26 +11,23 @@ interface DataRow {
   interest: number;
   total_payment: number;
 }
-
-const styles = {
+const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
-    height: '50px',
-    width: '1200px',
+    height: '400px',
+    width: '1000px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
     position: 'relative' as const,
   },
   chartWrapper: {
-    marginTop: '50px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    paddingBottom: '10px',
-    marginBottom: '50px',
+    paddingBottom: '20px',
   },
   extraPaymentOptions: {
-    marginTop: '10px',
+    marginTop: '50px',
     textAlign: 'center' as const,
     display: 'flex',
     flexDirection: 'row' as const,
@@ -75,6 +72,17 @@ const styles = {
     border: 'none',
     borderRadius: '8px',
   },
+  legendItem: {
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: '14px',
+  },
+  legendColorBox: {
+    width: '15px',
+    height: '15px',
+    backgroundColor: 'currentColor',
+    marginRight: '5px',
+  },
   paidOffMessage: {
     fontSize: '20px',
     fontWeight: 'bold',
@@ -91,6 +99,27 @@ const styles = {
     fontSize: '16px',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     transition: 'background-color 0.3s ease, transform 0.2s ease',
+  },
+  alignRight: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    position: 'absolute',
+    top: '120px',
+    right: '200px',
+  },
+  visWrapper: {
+    backgroundColor: '#f0f0f0',
+    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+    margin: 0,
+    padding: 0,
+  },
+  sideBar: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    padding: 0,
+    margin: 0,
   },
 };
 
@@ -112,10 +141,8 @@ function ExtraPaymentOptions({
       <input
         type="number"
         value={extraPayment}
-        min={0} // Optional: Set a minimum value
         max={maxExtraPayment}
         onChange={(e) => {
-          // Clamp the value to be within [0, maxExtraPayment]
           const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
           setExtraPayment(value);
         }}
@@ -141,7 +168,7 @@ function TotalBalancePaymentsChart({
     marginLeft: 0,
     marginTop: 0,
     marginRight: 0,
-    height: 100,
+    height: 450,
     width: 800,
   });
 
@@ -179,7 +206,6 @@ function TotalBalancePaymentsChart({
   function handleNextYear() {
     choices[currentYearIndex] = extraPayments[currentYearIndex];
     const nextIndex = currentYearIndex + 1;
-
     const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
     const remainingBalance = currentYearData.remainingBalance ?? 0;
     const extraPayment = (extraPayments[currentYearIndex] ?? 0) * 12;
@@ -215,7 +241,6 @@ function TotalBalancePaymentsChart({
 
   return (
     <div style={styles.chartContainer}>
-      <h2>Loan Balance and Payments Over Time</h2>
       <h3>
         Year:
         {currentYearIndex + 2025}
@@ -224,23 +249,12 @@ function TotalBalancePaymentsChart({
       <div ref={ref} style={styles.chartWrapper}>
         {!completedStudy ? (
           <>
-            <svg width={dms.width + 100} height={dms.height + 100} style={styles.chartWrapper}>
-
-              {/* Legend */}
-              <g transform="translate(200, 200})">
-                <rect x={620} y={0} width={15} height={15} fill="#06945D" />
-                <text x={640} y={12} fontSize="12" fill="black">Total Paid</text>
-
-                <rect x={700} y={0} width={15} height={15} fill="#0077A9" />
-                <text x={720} y={12} fontSize="12" fill="black">Remaining Balance</text>
-              </g>
-
-              <g>
+            <svg width={dms.width} height={dms.height} style={styles.visWrapper}>
+              <g transform="translate(0, 0)">
                 {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                  <StackedBars
+                  <PieChart
                     data={[chartData[currentYearIndex]]}
-                    barWidth={dms.width}
-                    barHeight={dms.height}
+                    radius={160}
                     colors={['#06945D', '#0077A9']}
                   />
                 ) : (
@@ -248,6 +262,18 @@ function TotalBalancePaymentsChart({
                 )}
               </g>
             </svg>
+            <div style={styles.alignRight}>
+              <p style={styles.sideBar}>Current Balance</p>
+
+              <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
+
+              <p style={styles.sideBar}> Miniumum Payment per Month</p>
+              <h1>$341.00</h1>
+
+              <p style={styles.sideBar}> Monthly Payment</p>
+              <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
+            </div>
+
             <ExtraPaymentOptions
               extraPayment={extraPayments[currentYearIndex]}
               setExtraPayment={(value) => {
@@ -261,14 +287,16 @@ function TotalBalancePaymentsChart({
               type="button"
               style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
               onClick={handleNextYear}
-              disabled={completedStudy}
+              disabled={isLoanPaidOff}
             >
               Next Year
             </button>
           </>
         ) : (
+
           <div style={styles.paidOffMessage}>
             Congratulations! Your loan has been paid off.
+
           </div>
 
         )}
