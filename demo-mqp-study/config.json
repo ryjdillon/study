@@ -225,7 +225,6 @@
           "id": "misc-loan-info",
           "prompt": "Is there anything else you would like to tell us about your student loans?",
           "required": false,
-          "required": false,
           "location": "aboveStimulus",
           "type": "shortText",
           "placeholder": "Enter comments here"
@@ -237,9 +236,6 @@
       "response": [
         {
           "id": "study-rating",
-          "prompt": "How confident do you feel in your ability to repay your student loans after completing this survey?",
-          "prompt": "Please rate your satisfaction with the study",
-          "required": true,
           "prompt": "Please rate your satifaction with the study",
           "required": false,
           "location": "aboveStimulus",
@@ -389,14 +385,12 @@
     },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
-      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
       "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers.\n\n Salary: $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
     "text-simulation": {
       "baseComponent": "text",
-      "instruction": "Review the student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers. \n Salary: $80,000/year",
       "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers. \n\n Salary: $80,000/year",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
@@ -411,7 +405,6 @@
     },
     "pie-charts": {
       "baseComponent": "pieChart",
-      "instruction": "Review the bar chart of student loan balance and decide to pay the minimum payment or more each year. When the simulation concludes, hit the 'Submit' button to upload your answers.",
       "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers. \n\n Salary $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
