@@ -10,22 +10,39 @@
     .hidden {
       display: none
     }
-
+    h1{
+      display: block;
+    }
     body {
+      display: flex;
+      flex-flow: column;  
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      margin-left: 12%;
+      margin-right: 12%;
+      
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
     }
 
+    p{
+      font-size: x-large;
+    }
+    label{
+      font-size: x-large;
+    }
+    
     /* #06945D #0077A9 */
     .number-green {
       color: #06945D;
       font-weight: bold;
-      font-size: large;
+      font-size: x-large;
     }
 
     .number-blue {
       color: #0077A9;
       font-weight: bold;
-      font-size: large;
+      font-size: x-large;
     }
 
     .buttons {
@@ -104,10 +121,8 @@
       }, */
   </style>
 </head>
-
 <body>
   <h1> Year: <text id="currYear"></text></h1>
-
   <div id="full">
     <p>You have $<text class="number-blue" id="currBalance"></text> remaining in your loan of <text>$30,000</text>. The
       minimum monthly payment is $<text class="number-blue">341.00</text></p>
