@@ -385,13 +385,13 @@
     },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
-      "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers.\n\n Salary: $80,000/year",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum required payment (enter $0) or choose to pay more (up to $200). When the simulation concludes, press ‘Submit’ to upload your answers.\n\n Salary: $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
     "text-simulation": {
       "baseComponent": "text",
-      "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers. \n\n Salary: $80,000/year",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum required payment (enter $0) or choose to pay more (up to $200). When the simulation concludes, press ‘Submit’ to upload your answers. \n\n Salary: $80,000/year",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit",
@@ -405,7 +405,7 @@
     },
     "pie-charts": {
       "baseComponent": "pieChart",
-      "instruction": "For each year, decide what your monthly payment will be during that year. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, hit the ‘Submit’ button to upload your answers. \n\n Salary $80,000/year",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum required payment (enter $0) or choose to pay above the minimum (up to $200). When the simulation concludes, press ‘Submit’ to upload your answers. \n\n Salary $80,000/year",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
