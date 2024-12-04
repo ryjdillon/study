@@ -203,6 +203,14 @@ function TotalBalancePaymentsChart({
     setChartData(generateChartData());
   }, [extraPayments]);
 
+  function submitData() {
+    setAnswer({
+      status: true,
+      answers: { [taskID]: choices },
+    });
+    completedStudy = true;
+  }
+
   function handleNextYear() {
     choices[currentYearIndex] = extraPayments[currentYearIndex];
     const nextIndex = currentYearIndex + 1;
@@ -235,7 +243,7 @@ function TotalBalancePaymentsChart({
 
   useEffect(() => {
     if (isLoanPaidOff && currentYearIndex !== 0 && !completedStudy) {
-      handleNextYear();
+      submitData();
     }
   }, [isLoanPaidOff]);
 
