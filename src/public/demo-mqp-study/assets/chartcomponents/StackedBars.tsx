@@ -37,7 +37,7 @@ function StackedBars({
 
   return (
     <svg width={barWidth + 500} height={barHeight + 600} style={{ border: '1px solid #ddd' }}>
-      <g transform="translate(20, 20})">
+      <g transform="translate(20, 20)})">
         {/* Remaining Balance Bar */}
         <rect
           x={0}

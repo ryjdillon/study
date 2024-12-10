@@ -49,11 +49,6 @@ export default function AppNavBar() {
 
       )}
 
-      <AppShell.Section
-        bg="gray.3"
-        p="md"
-      />
-
       {trialHasSideBarResponses && (
         <AppShell.Section p="md">
           <ResponseBlock
