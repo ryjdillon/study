@@ -10,28 +10,31 @@
     .hidden {
       display: none
     }
-    h1{
+
+    h1 {
       display: block;
     }
+
     body {
       display: flex;
-      flex-flow: column;  
+      flex-flow: column;
       justify-content: center;
       align-content: center;
       align-items: center;
       margin-left: 12%;
       margin-right: 12%;
-      
+
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
     }
 
-    p{
+    p {
       font-size: x-large;
     }
-    label{
+
+    label {
       font-size: x-large;
     }
-    
+
     /* #06945D #0077A9 */
     .number-green {
       color: #06945D;
@@ -107,6 +110,20 @@
       justify-content: center;
     }
 
+    .underBudgetText {
+      color: #06945D;
+      font-weight: bold;
+      font-size: x-large;
+
+    }
+
+
+    .overBudgetText {
+      color: red;
+      font-weight: bold;
+      font-size: x-large;
+    }
+
     /* nextYearButton: {
         marginTop: '15px',
         padding: '8px 20px',
@@ -121,15 +138,18 @@
       }, */
   </style>
 </head>
+
 <body>
   <h1> Year: <text id="currYear"></text></h1>
   <div id="full">
     <p>You have $<text class="number-blue" id="currBalance"></text> remaining in your loan of <text>$30,000</text>. The
       minimum monthly payment is $<text class="number-blue">341.00</text></p>
-    <!-- // make this dynamic based on what radio button is selected -->
+
     <div id="option-1">
       <p> If you pay $<text class="number-green" id="monthlyPayment"></text> each month this year, you will have $<text
-          class="number-green" id="estBalance"></text> remaining at the end of the year</p>
+          class="number-green" id="estBalance"></text> remaining at the end of the year.</p>
+      <p> This loan payment is $<text id="percentOfIncome"></text>% of your total income.
+      </p>
     </div>
 
     <form id="form">
@@ -165,6 +185,7 @@
     const extraPaymentInput = document.getElementById('extraPayment');
     const estBalance = document.getElementById('estBalance');
     const monthlyPayment = document.getElementById('monthlyPayment');
+    const percentOfIncome = document.getElementById('percentOfIncome');
 
     function setUp() {
       console.log("Starting Balance: " + currBalance);
@@ -181,6 +202,7 @@
       const annualInterestRate = 0.065;
       const monthlyInterestRate = annualInterestRate / 12;
       let estimatedBalance = currBalance;
+      const percentIncome = totalMonthlyPayment / 5000 * 100;
 
       //interest and payments for each month
       for (let month = 1; month <= 12; month++) {
@@ -192,6 +214,16 @@
 
       estBalance.innerHTML = estimatedBalance.toFixed(2).toLocaleString('en-US');
       monthlyPayment.innerHTML = totalMonthlyPayment.toLocaleString('en-US');
+      percentOfIncome.innerHTML = percentIncome.toFixed(2).toLocaleString('en-US');
+      if (percentIncome > 10) {
+
+        percentOfIncome.classList.add('overBudgetText');
+        percentOfIncome.classList.remove('underBudgetText');
+      } else {
+        percentOfIncome.classList.add('underBudgetText');
+        percentOfIncome.classList.remove('overBudgetText');
+      }
+
     }
 
     extraPaymentInput.addEventListener('input', recalculateEstBalances);
