@@ -26,7 +26,6 @@ const styles = {
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
-    paddingBottom: '10px',
     marginBottom: '50px',
   },
   extraPaymentOptions: {
@@ -92,6 +91,32 @@ const styles = {
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
+  overBudget: {
+    color: 'red',
+  },
+  underBudget: {
+    color: 'black',
+  },
+  labelContainer: {
+    display: 'flex',
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: '10px',
+  },
+  label: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  input: {
+    width: '100%',
+    padding: '10px',
+    fontSize: '16px',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+  },
+
 };
 
 let completedStudy = false;
@@ -105,21 +130,35 @@ function ExtraPaymentOptions({
   setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
   const maxExtraPayment = 200; // Set the maximum limit
+  const totalMonthlyPayment = 341 + extraPayment;
+  const percentOfIncome = ((totalMonthlyPayment / 5000) * 100).toFixed(2);
 
   return (
-    <div style={styles.extraPaymentOptions}>
-      <h3>How much extra do you want to pay each month?</h3>
-      <input
-        type="number"
-        value={extraPayment}
-        min={0} // Optional: Set a minimum value
-        max={maxExtraPayment}
-        onChange={(e) => {
-          // Clamp the value to be within [0, maxExtraPayment]
-          const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
-          setExtraPayment(value);
-        }}
-      />
+    <div>
+      <div style={styles.labelContainer}>
+        <label>Total Monthly Payment:</label>
+        <span>{totalMonthlyPayment}</span>
+
+        <label>Percent of Income:</label>
+        <span style={Number(percentOfIncome) > 10 ? styles.underBudget : styles.overBudget}>
+          {percentOfIncome}
+          %
+        </span>
+
+      </div>
+      <div style={styles.extraPaymentOptions}>
+        <h3>How much extra do you want to pay each month?</h3>
+        <input
+          type="number"
+          value={extraPayment}
+          min={0}
+          max={maxExtraPayment}
+          onChange={(e) => {
+            const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
+            setExtraPayment(value);
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -207,9 +246,9 @@ function TotalBalancePaymentsChart({
     setCurrentYearIndex(nextIndex);
   }
   const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
-  const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
+  const extraPayment = extraPayments[currentYearIndex] ?? 0;
 
-  const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
+  const remainingBalance = currentYearData.remainingBalance ?? 0;
 
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'

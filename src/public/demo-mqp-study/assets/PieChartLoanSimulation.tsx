@@ -121,6 +121,21 @@ const styles: { [key: string]: CSSProperties } = {
     padding: 0,
     margin: 0,
   },
+  percentOfIncome: {
+    color: 'green',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    padding: 0,
+    margin: 0,
+  },
+
+  percentOfIncomeOver: {
+    color: 'red',
+    fontSize: '20px',
+    fontWeight: 'bold',
+    padding: 0,
+    margin: 0,
+  },
 };
 
 let completedStudy = false;
@@ -236,7 +251,8 @@ function TotalBalancePaymentsChart({
   const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-
+  const percentage = (((341 + extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
+  const isOverTwentyPercent = parseFloat(percentage) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
       && remainingBalance + extraPayment * 12 <= 0);
@@ -275,11 +291,15 @@ function TotalBalancePaymentsChart({
 
               <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
 
-              <p style={styles.sideBar}> Miniumum Payment per Month</p>
-              <h1>$341.00</h1>
-
               <p style={styles.sideBar}> Monthly Payment</p>
               <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
+
+              <p style={styles.sideBar}> Percent of Monthly Income</p>
+
+              <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
+                {percentage}
+                %
+              </h1>
             </div>
 
             <ExtraPaymentOptions
