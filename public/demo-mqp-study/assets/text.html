@@ -212,7 +212,11 @@
         estimatedBalance = Math.max(estimatedBalance, 0);
       }
 
-      estBalance.innerHTML = estimatedBalance.toFixed(2).toLocaleString('en-US');
+      estBalance.innerHTML = Number(estimatedBalance.toFixed(2)).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
       monthlyPayment.innerHTML = totalMonthlyPayment.toLocaleString('en-US');
       percentOfIncome.innerHTML = percentIncome.toFixed(2).toLocaleString('en-US');
       if (percentIncome > 10) {
