@@ -8,16 +8,22 @@ interface Slice {
 
 interface PieChartProps{
     size: number;
+    data: number;
 }
 
-export default function SideBarPie({ size }: PieChartProps) {
+export default function SideBarPie({ size, data }: PieChartProps) {
   const budget = [
-    { label: 'loan', value: 500, color: '#ff6f61' },
-    { label: 'housing', value: 2200, color: '#69b578' },
-    { label: 'Transport', value: 500, color: '#58A0D7' },
-    { label: 'essentials', value: 1050, color: '#ffbf00' },
-    { label: 'other', value: 750, color: '#9c88d2' },
+    // min payment+extra
+    { label: 'loan', value: 341 + data.valueOf(), color: '#ff6f61' },
+    // average for single person
+    { label: 'housing', value: 2000, color: '#69b578' },
+    { label: 'Transport', value: 800, color: '#58A0D7' },
+    // energy,water,internet,gas,phone,cable/streaming
+    { label: 'utilities', value: 400, color: '#ffbf00' },
+    { label: 'essentials', value: 600, color: '#52D3D1' },
+    { label: 'other', value: 859 - data.valueOf(), color: '#9c88d2' },
   ];
+
   const pieGenerator = d3.pie<Slice>().value((d) => d.value);
   const arcGenerator = d3.arc<d3.PieArcDatum<Slice>>()
     .innerRadius(0) // Full pie, no donut hole
@@ -44,27 +50,30 @@ export default function SideBarPie({ size }: PieChartProps) {
             <text
               key={index}
               style={{ fontSize: '.75em' }}
-              transform={`translate(${x - 15},${y - 5})`}
+              textAnchor="middle"
+              dominantBaseline="central"
+              transform={`translate(${x},${y - 8})`}
             >
-              {' '}
               {`$${arc.data.value}`}
             </text>
           );
         })}
 
       </g>
-      <g transform={`translate(${(2.35 * size) / 4}, ${size / 9})`}>
+      <g transform={`translate(${(2.35 * size) / 4}, ${size / 10})`}>
 
-        <circle r={10} fill="#ff6f61" />
-        <text x={13} y={3}>Loan</text>
-        <circle cy={25} r={10} fill="#69b578" />
-        <text x={13} y={28}>Housing</text>
-        <circle cy={50} r={10} fill="#58A0D7" />
-        <text x={13} y={55}>Transport</text>
+        <circle cy={-5} r={10} fill="#52D3D1" />
+        <text x={13} y={0}>Essentials</text>
+        <circle cy={15} r={10} fill="#ff6f61" />
+        <text x={13} y={20}>Loan</text>
+        <circle cy={35} r={10} fill="#69b578" />
+        <text x={13} y={40}>Housing</text>
+        <circle cy={55} r={10} fill="#58A0D7" />
+        <text x={13} y={60}>Transport</text>
         <circle cy={75} r={10} fill="#ffbf00" />
-        <text x={13} y={80}>Essentials</text>
-        <circle cy={100} r={10} fill="#9c88d2" />
-        <text x={13} y={105}>Other</text>
+        <text x={13} y={80}>Utilities</text>
+        <circle cy={95} r={10} fill="#9c88d2" />
+        <text x={13} y={100}>Other</text>
       </g>
     </svg>
   );

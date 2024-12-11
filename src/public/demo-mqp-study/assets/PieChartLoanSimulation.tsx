@@ -2,6 +2,7 @@ import React, { useState, useEffect, CSSProperties } from 'react';
 import { useChartDimensions } from './hooks/useChartDimensions';
 import PieChart from './chartcomponents/PieChart';
 import { StimulusParams } from '../../../store/types';
+import SideBarPie from './chartcomponents/SideBarPie';
 
 const taskID = 'answer-array';
 interface DataRow {
@@ -17,21 +18,18 @@ const styles: { [key: string]: CSSProperties } = {
     width: '1000px',
     display: 'flex',
     flexDirection: 'column' as const,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     position: 'relative' as const,
   },
   chartWrapper: {
     display: 'flex',
     flexDirection: 'column' as const,
-    alignItems: 'center',
     paddingBottom: '20px',
   },
   extraPaymentOptions: {
-    marginTop: '50px',
-    textAlign: 'center' as const,
+    marginTop: '15px',
     display: 'flex',
     flexDirection: 'row' as const,
-    justifyContent: 'center',
     gap: '20px',
   },
   radioLabel: {
@@ -52,7 +50,8 @@ const styles: { [key: string]: CSSProperties } = {
     cursor: 'pointer',
   },
   nextYearButton: {
-    marginTop: '15px',
+    marginTop: '25px',
+    marginLeft: '10px',
     padding: '8px 20px',
     cursor: 'pointer',
     backgroundColor: '#0077A9',
@@ -60,6 +59,7 @@ const styles: { [key: string]: CSSProperties } = {
     border: 'none',
     borderRadius: '8px',
     fontSize: '16px',
+    height: '50%',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
@@ -105,14 +105,14 @@ const styles: { [key: string]: CSSProperties } = {
     flexDirection: 'column',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    position: 'absolute',
-    top: '120px',
-    right: '200px',
   },
   visWrapper: {
     backgroundColor: '#f0f0f0',
     boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    margin: 0,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '2em',
+    marginLeft: '5em',
     padding: 0,
   },
   sideBar: {
@@ -265,43 +265,57 @@ function TotalBalancePaymentsChart({
 
   return (
     <div style={styles.chartContainer}>
-      <h3>
-        Year:
-        {currentYearIndex + 2025}
-      </h3>
+      <div style={{ alignSelf: 'center' }}>
+        <h2>
+          Year:
+          {' '}
+          {currentYearIndex + 2025}
+        </h2>
+      </div>
       {!completedStudy}
-      <div ref={ref} style={styles.chartWrapper}>
-        {!completedStudy ? (
-          <>
-            <svg width={dms.width} height={dms.height} style={styles.visWrapper}>
-              <g transform="translate(0, 0)">
-                {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                  <PieChart
-                    data={[chartData[currentYearIndex]]}
-                    radius={160}
-                    colors={['#06945D', '#0077A9']}
-                  />
-                ) : (
-                  <text>No data available for this year.</text>
-                )}
-              </g>
-            </svg>
-            <div style={styles.alignRight}>
-              <p style={styles.sideBar}>Current Balance</p>
+      {!completedStudy ? (
+        <div ref={ref} style={styles.chartWrapper}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '2em' }}>
+            <div style={styles.visWrapper}>
+              <svg width={dms.width * 0.55} height={dms.height}>
+                <g transform="translate(0, 0)">
+                  {chartData.length > 0 && currentYearIndex < chartData.length ? (
+                    <PieChart
+                      data={[chartData[currentYearIndex]]}
+                      radius={160}
+                      colors={['#06945D', '#0077A9']}
+                    />
+                  ) : (
+                    <text>No data available for this year.</text>
+                  )}
+                </g>
+              </svg>
 
-              <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
+              <div style={styles.alignRight}>
+                <p style={styles.sideBar}>Current Balance</p>
 
-              <p style={styles.sideBar}> Monthly Payment</p>
-              <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
+                <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
 
-              <p style={styles.sideBar}> Percent of Monthly Income</p>
+                <p style={styles.sideBar}> Monthly Payment</p>
+                <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
 
-              <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
-                {percentage}
-                %
-              </h1>
+                <p style={styles.sideBar}> Percent of Monthly Income</p>
+
+                <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
+                  {percentage}
+                  %
+                </h1>
+              </div>
+
             </div>
 
+            <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
+              <h3>Budget Post Taxes: $5,000</h3>
+              <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+            </div>
+
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center' }}>
             <ExtraPaymentOptions
               extraPayment={extraPayments[currentYearIndex]}
               setExtraPayment={(value) => {
@@ -319,16 +333,17 @@ function TotalBalancePaymentsChart({
             >
               Next Year
             </button>
-          </>
-        ) : (
-
-          <div style={styles.paidOffMessage}>
-            Congratulations! Your loan has been paid off.
-
           </div>
+        </div>
 
-        )}
-      </div>
+      ) : (
+
+        <div style={styles.paidOffMessage}>
+          Congratulations! Your loan has been paid off.
+
+        </div>
+
+      )}
     </div>
   );
 }

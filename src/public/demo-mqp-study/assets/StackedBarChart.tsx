@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useChartDimensions } from './hooks/useChartDimensions';
 import StackedBars from './chartcomponents/StackedBars';
 import { StimulusParams } from '../../../store/types';
+import SideBarPie from './chartcomponents/SideBarPie';
 
 const taskID = 'answer-array';
 interface DataRow {
@@ -14,15 +15,12 @@ interface DataRow {
 
 const styles = {
   chartContainer: {
-    height: '50px',
-    width: '1200px',
     display: 'flex',
-    flexDirection: 'column' as const,
+    flexDirection: 'row' as const,
     alignItems: 'center',
     position: 'relative' as const,
   },
   chartWrapper: {
-    marginTop: '50px',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'center',
@@ -273,65 +271,74 @@ function TotalBalancePaymentsChart({
 
   return (
     <div style={styles.chartContainer}>
-      <h2>Loan Balance and Payments Over Time</h2>
-      <h3>
-        Year:
-        {currentYearIndex + 2025}
-      </h3>
-      {!completedStudy}
-      <div ref={ref} style={styles.chartWrapper}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <h2>Loan Balance and Payments Over Time</h2>
+
+        <h3>
+          Year:
+          {currentYearIndex + 2025}
+        </h3>
+        {!completedStudy}
+
         {!completedStudy ? (
-          <>
-            <svg width={dms.width + 100} height={dms.height + 100} style={styles.chartWrapper}>
 
-              {/* Legend */}
-              <g transform="translate(200, 200})">
-                <rect x={620} y={0} width={15} height={15} fill="#06945D" />
-                <text x={640} y={12} fontSize="12" fill="black">Total Paid</text>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+            <div ref={ref} style={styles.chartWrapper}>
+              <svg width={dms.width + 100} height={dms.height + 100} style={styles.chartWrapper}>
+                {/* Legend */}
+                <g transform="translate(200, 200)">
+                  <rect x={620} y={0} width={15} height={15} fill="#06945D" />
+                  <text x={640} y={12} fontSize="12" fill="black">Total Paid</text>
 
-                <rect x={700} y={0} width={15} height={15} fill="#0077A9" />
-                <text x={720} y={12} fontSize="12" fill="black">Remaining Balance</text>
-              </g>
+                  <rect x={700} y={0} width={15} height={15} fill="#0077A9" />
+                  <text x={720} y={12} fontSize="12" fill="black">Remaining Balance</text>
+                </g>
+                <g>
+                  {chartData.length > 0 && currentYearIndex < chartData.length ? (
+                    <StackedBars
+                      data={[chartData[currentYearIndex]]}
+                      barWidth={dms.width}
+                      barHeight={dms.height}
+                      colors={['#06945D', '#0077A9']}
+                    />
+                  ) : (
+                    <text>No data available for this year.</text>
+                  )}
+                </g>
+              </svg>
+              <ExtraPaymentOptions
+                extraPayment={extraPayments[currentYearIndex]}
+                setExtraPayment={(value) => {
+                  const updatedPayments = [...extraPayments];
+                  const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
+                  updatedPayments[currentYearIndex] = updatedValue;
+                  setExtraPayments(updatedPayments);
+                }}
+              />
+              <button
+                type="button"
+                style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+                onClick={handleNextYear}
+                disabled={completedStudy}
+              >
+                Next Year
+              </button>
+            </div>
+            <div style={{ marginLeft: '1em' }}>
+              <h3>Budget Post Taxes: $5,000</h3>
+              <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+            </div>
+          </div>
 
-              <g>
-                {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                  <StackedBars
-                    data={[chartData[currentYearIndex]]}
-                    barWidth={dms.width}
-                    barHeight={dms.height}
-                    colors={['#06945D', '#0077A9']}
-                  />
-                ) : (
-                  <text>No data available for this year.</text>
-                )}
-              </g>
-            </svg>
-            <ExtraPaymentOptions
-              extraPayment={extraPayments[currentYearIndex]}
-              setExtraPayment={(value) => {
-                const updatedPayments = [...extraPayments];
-                const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
-                updatedPayments[currentYearIndex] = updatedValue;
-                setExtraPayments(updatedPayments);
-              }}
-            />
-            <button
-              type="button"
-              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
-              onClick={handleNextYear}
-              disabled={completedStudy}
-            >
-              Next Year
-            </button>
-          </>
         ) : (
           <div style={styles.paidOffMessage}>
             Congratulations! Your loan has been paid off.
           </div>
-
         )}
+
       </div>
     </div>
+
   );
 }
 
