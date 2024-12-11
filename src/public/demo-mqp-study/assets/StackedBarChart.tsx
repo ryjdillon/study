@@ -93,9 +93,12 @@ const styles = {
   },
   overBudget: {
     color: 'red',
+    fontWeight: 'bold',
+
   },
   underBudget: {
     color: 'black',
+    fontWeight: 'bold',
   },
   labelContainer: {
     display: 'flex',
@@ -115,6 +118,11 @@ const styles = {
     fontSize: '16px',
     borderRadius: '5px',
     border: '1px solid #ccc',
+  },
+  span: {
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#333',
   },
 
 };
@@ -136,11 +144,14 @@ function ExtraPaymentOptions({
   return (
     <div>
       <div style={styles.labelContainer}>
-        <label>Total Monthly Payment:</label>
-        <span>{totalMonthlyPayment}</span>
+        <label style={styles.span}>Total Monthly Payment:</label>
+        <span style={styles.span}>
+          $
+          {totalMonthlyPayment}
+        </span>
 
-        <label>Percent of Income:</label>
-        <span style={Number(percentOfIncome) > 10 ? styles.underBudget : styles.overBudget}>
+        <label style={styles.span}>Percent of Income:</label>
+        <span style={Number(percentOfIncome) > 10 ? styles.overBudget : styles.underBudget}>
           {percentOfIncome}
           %
         </span>
