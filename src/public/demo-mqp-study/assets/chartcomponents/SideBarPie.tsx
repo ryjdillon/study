@@ -49,9 +49,9 @@ export default function SideBarPie({ size, data }: PieChartProps) {
           return (
             <text
               key={index}
-              style={{ fontSize: '.75em' }}
-              textAnchor="middle"
               dominantBaseline="central"
+              textAnchor="middle"
+              style={{ fontSize: '.75em' }}
               transform={`translate(${x},${y - 8})`}
             >
               {`$${arc.data.value}`}

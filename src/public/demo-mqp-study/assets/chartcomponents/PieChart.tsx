@@ -49,8 +49,8 @@ function PieChart({ data, radius, colors }: PieChartProps): React.ReactElement |
   };
 
   return (
-    <svg width={radius * 2 + 100} height={radius * 2 + 100} style={{ border: '1px solid #ddd' }}>
-      <g transform={`translate(${radius + 50}, ${radius + 50})`}>
+    <svg width={radius * 2 + 100} height={radius * 2 + 100}>
+      <g transform={`translate(${radius + 25}, ${radius + 50})`}>
         {/* Paid Segment */}
         <path
           d={`M 0 0 

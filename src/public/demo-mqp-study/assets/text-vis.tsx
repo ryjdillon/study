@@ -1,6 +1,5 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
-import { useChartDimensions } from './hooks/useChartDimensions';
-import PieChart from './chartcomponents/PieChart';
+import { Text } from '@mantine/core';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
 
@@ -15,40 +14,18 @@ interface DataRow {
 const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
     height: '400px',
-    width: '1000px',
+    width: '75em',
     display: 'flex',
     flexDirection: 'column' as const,
     alignItems: 'flex-start',
     position: 'relative' as const,
   },
-  chartWrapper: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    paddingBottom: '20px',
-  },
+
   extraPaymentOptions: {
     marginTop: '15px',
     display: 'flex',
     flexDirection: 'row' as const,
     gap: '20px',
-
-  },
-  radioLabel: {
-    fontSize: '16px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    padding: '8px 8px',
-    borderRadius: '8px',
-    border: '1px solid #4e79a7',
-    backgroundColor: '#f9f9f9',
-    transition: 'background-color 0.3s ease',
-  },
-  radioButton: {
-    width: '18px',
-    height: '18px',
-    cursor: 'pointer',
   },
   nextYearButton: {
     marginTop: '25px',
@@ -73,55 +50,12 @@ const styles: { [key: string]: CSSProperties } = {
     border: 'none',
     borderRadius: '8px',
   },
-  legendItem: {
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: '14px',
-  },
-  legendColorBox: {
-    width: '15px',
-    height: '15px',
-    backgroundColor: 'currentColor',
-    marginRight: '5px',
-  },
   paidOffMessage: {
     fontSize: '20px',
     fontWeight: 'bold',
     marginTop: '20px',
   },
-  submitButton: {
-    marginTop: '15px',
-    padding: '8px 20px',
-    cursor: 'pointer',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    transition: 'background-color 0.3s ease, transform 0.2s ease',
-  },
-  alignRight: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  visWrapper: {
-    backgroundColor: '#f0f0f0',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    display: 'flex',
-    flexDirection: 'row',
-    gap: '2em',
-    marginLeft: '5em',
-    padding: 0,
-  },
-  sideBar: {
-    fontSize: '16px',
-    fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
-  },
+
   percentOfIncome: {
     color: 'green',
     fontSize: '20px',
@@ -129,14 +63,46 @@ const styles: { [key: string]: CSSProperties } = {
     padding: 0,
     margin: 0,
   },
-
-  percentOfIncomeOver: {
-    color: 'red',
-    fontSize: '20px',
+  numberGreen: {
+    color: '#06945D',
     fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
+    fontSize: 'x-large',
   },
+
+  numberBlue: {
+    color: '#0077A9',
+    fontWeight: 'bold',
+    fontSize: 'x-large',
+  },
+
+  hidden: {
+    display: 'none',
+  },
+
+  h1: {
+    display: 'block',
+  },
+
+  body: {
+    display: 'flex',
+    flexFlow: 'column',
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    marginLeft: '12%',
+    marginRight: '12%',
+
+    fontFamily: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu',
+  },
+
+  p: {
+    fontSize: 'x-large',
+  },
+
+  label: {
+    fontSize: 'x-large',
+  },
+
 };
 
 let completedStudy = false;
@@ -179,14 +145,6 @@ function TotalBalancePaymentsChart({
   const [chartData, setChartData] = useState<DataRow[]>([]);
   const [currentYearIndex, setCurrentYearIndex] = useState<number>(0);
   const [extraPayments, setExtraPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialExtraPayment));
-  const [ref, dms] = useChartDimensions({
-    marginBottom: 0,
-    marginLeft: 0,
-    marginTop: 0,
-    marginRight: 0,
-    height: 450,
-    width: 800,
-  });
 
   useEffect(() => {
     const generateChartData = () => {
@@ -253,11 +211,14 @@ function TotalBalancePaymentsChart({
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
   const percentage = (((341 + extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
-  const isOverTwentyPercent = parseFloat(percentage) > 10;
+  const isOver = parseFloat(percentage) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
       && remainingBalance + extraPayment * 12 <= 0);
 
+  function toDollars(x: number) {
+    return Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(x);
+  }
   useEffect(() => {
     if (isLoanPaidOff && currentYearIndex !== 0 && !completedStudy) {
       submitData();
@@ -266,87 +227,93 @@ function TotalBalancePaymentsChart({
 
   return (
     <div style={styles.chartContainer}>
-      <div style={{ alignSelf: 'center' }}>
-        <h2>
-          Year:
-          {' '}
-          {currentYearIndex + 2025}
-        </h2>
-      </div>
       {!completedStudy}
       {!completedStudy ? (
-        <div ref={ref} style={styles.chartWrapper}>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '2em' }}>
-            <div style={styles.visWrapper}>
-              <svg width={dms.width * 0.55} height={dms.height}>
-                <g transform="translate(0, 0)">
-                  {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                    <PieChart
-                      data={[chartData[currentYearIndex]]}
-                      radius={160}
-                      colors={['#06945D', '#0077A9']}
-                    />
-                  ) : (
-                    <text>No data available for this year.</text>
-                  )}
-                </g>
-              </svg>
+        <div style={{ display: 'flex', flexDirection: 'row', gap: '1em' }}>
 
-              <div style={styles.alignRight}>
-                <p style={styles.sideBar}>Current Balance</p>
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <h2>
+                Year:
+                {' '}
+                {currentYearIndex + 2025}
+              </h2>
+            </div>
+            <div id="full">
+              <Text size="xl">
+                {' '}
+                You have
+                <Text color="#0077A9" fw={700} component="span">
+                  {` ${toDollars(chartData[currentYearIndex - 1]?.remainingBalance ?? 30000)}`}
+                  {' '}
+                </Text>
+                remaining in your loan of
+                {' '}
+                <Text fw={700} component="span">$30,000</Text>
+                . The
+                minimum monthly payment is
+                <Text color="#0077A9" fw={700} component="span"> 341.00</Text>
+                .
+              </Text>
 
-                <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
-
-                <p style={styles.sideBar}> Monthly Payment</p>
-                <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
-
-                <p style={styles.sideBar}> Percent of Monthly Income</p>
-
-                <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
-                  {percentage}
-                  %
-                </h1>
+              <div id="option-1">
+                <Text size="xl">
+                  {' '}
+                  If you pay
+                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(341 + extraPayments[currentYearIndex])}`}</Text>
+                  {' '}
+                  each month this year, you will have
+                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}</Text>
+                  remaining at the end of the year.
+                </Text>
+                <Text size="xl">
+                  This loan payment is
+                  <Text fw={700} component="span" color={isOver ? 'red' : 'black'}>
+                    {` ${percentage}`}
+                    %
+                  </Text>
+                  {' '}
+                  of your total income.
+                  {' '}
+                </Text>
               </div>
-
+              <div className="buttons">
+                <ExtraPaymentOptions
+                  extraPayment={extraPayments[currentYearIndex]}
+                  setExtraPayment={(value) => {
+                    const updatedPayments = [...extraPayments];
+                    const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
+                    updatedPayments[currentYearIndex] = updatedValue;
+                    setExtraPayments(updatedPayments);
+                  }}
+                />
+                <button
+                  type="button"
+                  style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+                  onClick={handleNextYear}
+                  disabled={isLoanPaidOff}
+                >
+                  Next Year
+                </button>
+              </div>
             </div>
-
-            <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
-              <h3>Budget Post Taxes: $5,000</h3>
-              <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
-            </div>
-
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center' }}>
-            <ExtraPaymentOptions
-              extraPayment={extraPayments[currentYearIndex]}
-              setExtraPayment={(value) => {
-                const updatedPayments = [...extraPayments];
-                const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
-                updatedPayments[currentYearIndex] = updatedValue;
-                setExtraPayments(updatedPayments);
-              }}
-            />
-            <button
-              type="button"
-              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
-              onClick={handleNextYear}
-              disabled={isLoanPaidOff}
-            >
-              Next Year
-            </button>
+          <div style={{ marginLeft: '4em', justifyContent: 'top', alignItems: 'flex-start' }}>
+            <h3>Budget Post Taxes: $5,000</h3>
+            <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
           </div>
         </div>
-
       ) : (
 
         <div style={styles.paidOffMessage}>
-          Congratulations! Your loan has been paid off.
-
+          <text>
+            Congratulations! Your loan has been paid off.
+          </text>
         </div>
-
       )}
+
     </div>
+
   );
 }
-
 export default TotalBalancePaymentsChart;

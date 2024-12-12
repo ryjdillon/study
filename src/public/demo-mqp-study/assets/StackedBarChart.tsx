@@ -272,18 +272,23 @@ function TotalBalancePaymentsChart({
   return (
     <div style={styles.chartContainer}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-        <h2>Loan Balance and Payments Over Time</h2>
 
-        <h3>
-          Year:
-          {currentYearIndex + 2025}
-        </h3>
         {!completedStudy}
 
         {!completedStudy ? (
 
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+
             <div ref={ref} style={styles.chartWrapper}>
+              <div style={{ textAlign: 'center' }}>
+                <h2>Loan Balance and Payments Over Time</h2>
+
+                <h2>
+                  Year:
+                  {' '}
+                  {currentYearIndex + 2025}
+                </h2>
+              </div>
               <svg width={dms.width + 100} height={dms.height + 100} style={styles.chartWrapper}>
                 {/* Legend */}
                 <g transform="translate(200, 200)">
@@ -323,8 +328,9 @@ function TotalBalancePaymentsChart({
               >
                 Next Year
               </button>
+
             </div>
-            <div style={{ marginLeft: '1em' }}>
+            <div style={{ justifyContent: 'top', alignItems: 'flex-start' }}>
               <h3>Budget Post Taxes: $5,000</h3>
               <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
             </div>

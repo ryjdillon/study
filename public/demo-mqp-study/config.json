@@ -66,7 +66,7 @@
       ]
     },
     "text": {
-      "type": "website",
+      "type": "react-component",
       "response": [
         {
           "id": "answer-array",
@@ -77,7 +77,7 @@
           "hidden": true
         }
       ],
-      "path": "demo-mqp-study/assets/text.html",
+      "path": "demo-mqp-study/assets/text-vis.tsx",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "belowStimulus"
         }
@@ -385,13 +385,13 @@
     },
     "barChart_q1": {
       "baseComponent": "stackedBarChart",
-      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum (enter $0) or up to $200 more. When the simulation concludes, press ‘Submit’ to upload your answers.\n\n Budget Post Tax: $5000/month",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum (enter $0) or up to $200 more. When the simulation concludes, press ‘Submit’ to upload your answers.",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
     "text-simulation": {
       "baseComponent": "text",
-      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum (enter $0) or up to $200 more. When the simulation concludes, press ‘Submit’ to upload your answers. \n\n Budget Post Tax: $5000/month",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum (enter $0) or up to $200 more. When the simulation concludes, press ‘Submit’ to upload your answers.",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit",
@@ -405,7 +405,7 @@
     },
     "pie-charts": {
       "baseComponent": "pieChart",
-      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum (enter $0) or up to $200 more. When the simulation concludes, press ‘Submit’ to upload your answers. \n\n Budget Post Tax: $5000/month",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum (enter $0) or up to $200 more. When the simulation concludes, press ‘Submit’ to upload your answers.",
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
