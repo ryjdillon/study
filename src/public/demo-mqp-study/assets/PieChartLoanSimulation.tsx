@@ -3,6 +3,7 @@ import { useChartDimensions } from './hooks/useChartDimensions';
 import PieChart from './chartcomponents/PieChart';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
+import Results from './Results';
 
 const taskID = 'answer-array';
 interface DataRow {
@@ -149,17 +150,19 @@ function ExtraPaymentOptions({
   extraPayment: number;
   setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const maxExtraPayment = 200; // Set the maximum limit
-
+  const maxExtraPayment = 5000; // Set the maximum limit
+  const minPayment = 341;
   return (
     <div style={styles.extraPaymentOptions}>
       <h3>How much extra do you want to pay each month?</h3>
       <input
         type="number"
         value={extraPayment}
+        min={minPayment}
         max={maxExtraPayment}
         onChange={(e) => {
-          const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
+          let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
+          value = Math.min(value, maxExtraPayment); // Enforce maximum
           setExtraPayment(value);
         }}
       />
@@ -252,7 +255,7 @@ function TotalBalancePaymentsChart({
   const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-  const percentage = (((341 + extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
+  const percentage = (((extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
   const isOverTwentyPercent = parseFloat(percentage) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
@@ -266,84 +269,87 @@ function TotalBalancePaymentsChart({
 
   return (
     <div style={styles.chartContainer}>
-      <div style={{ alignSelf: 'center' }}>
-        <h2>
-          Year:
-          {' '}
-          {currentYearIndex + 2025}
-        </h2>
-      </div>
+      <div style={{ alignSelf: 'center' }} />
       {!completedStudy}
       {!completedStudy ? (
-        <div ref={ref} style={styles.chartWrapper}>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '2em' }}>
-            <div style={styles.visWrapper}>
-              <svg width={dms.width * 0.55} height={dms.height}>
-                <g transform="translate(0, 0)">
-                  {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                    <PieChart
-                      data={[chartData[currentYearIndex]]}
-                      radius={160}
-                      colors={['#06945D', '#0077A9']}
-                    />
-                  ) : (
-                    <text>No data available for this year.</text>
-                  )}
-                </g>
-              </svg>
+        <>
+          <div>
+            {' '}
+            <h2>
+              Year:
+              {' '}
+              {currentYearIndex + 2025}
+            </h2>
+          </div>
+          <div ref={ref} style={styles.chartWrapper}>
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '2em' }}>
+              <div style={styles.visWrapper}>
+                <svg width={dms.width * 0.55} height={dms.height}>
+                  <g transform="translate(0, 0)">
+                    {chartData.length > 0 && currentYearIndex < chartData.length ? (
+                      <PieChart
+                        data={[chartData[currentYearIndex]]}
+                        radius={160}
+                        colors={['#06945D', '#0077A9']}
+                      />
+                    ) : (
+                      <text>No data available for this year.</text>
+                    )}
+                  </g>
+                </svg>
 
-              <div style={styles.alignRight}>
-                <p style={styles.sideBar}>Current Balance</p>
+                <div style={styles.alignRight}>
+                  <p style={styles.sideBar}>Current Balance</p>
 
-                <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
+                  <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
 
-                <p style={styles.sideBar}> Monthly Payment</p>
-                <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
+                  <p style={styles.sideBar}> Monthly Payment</p>
+                  <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
 
-                <p style={styles.sideBar}> Percent of Monthly Income</p>
+                  <p style={styles.sideBar}> Percent of Monthly Income</p>
 
-                <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
-                  {percentage}
-                  %
-                </h1>
+                  <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
+                    {percentage}
+                    %
+                  </h1>
+                </div>
+
+              </div>
+
+              <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
+                <h3>Budget Post Taxes: $5,000</h3>
+                <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
               </div>
 
             </div>
-
-            <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
-              <h3>Budget Post Taxes: $5,000</h3>
-              <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+            <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center' }}>
+              <ExtraPaymentOptions
+                extraPayment={extraPayments[currentYearIndex]}
+                setExtraPayment={(value) => {
+                  const updatedPayments = [...extraPayments];
+                  const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
+                  updatedPayments[currentYearIndex] = updatedValue;
+                  setExtraPayments(updatedPayments);
+                }}
+              />
+              <button
+                type="button"
+                style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+                onClick={handleNextYear}
+                disabled={isLoanPaidOff}
+              >
+                Next Year
+              </button>
             </div>
-
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center' }}>
-            <ExtraPaymentOptions
-              extraPayment={extraPayments[currentYearIndex]}
-              setExtraPayment={(value) => {
-                const updatedPayments = [...extraPayments];
-                const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
-                updatedPayments[currentYearIndex] = updatedValue;
-                setExtraPayments(updatedPayments);
-              }}
-            />
-            <button
-              type="button"
-              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
-              onClick={handleNextYear}
-              disabled={isLoanPaidOff}
-            >
-              Next Year
-            </button>
-          </div>
-        </div>
+        </>
 
       ) : (
-
-        <div style={styles.paidOffMessage}>
-          Congratulations! Your loan has been paid off.
-
+        <div>
+          <Results
+            data={choices}
+          />
         </div>
-
       )}
     </div>
   );

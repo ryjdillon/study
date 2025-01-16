@@ -3,6 +3,7 @@ import { useChartDimensions } from './hooks/useChartDimensions';
 import StackedBars from './chartcomponents/StackedBars';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
+import Results from './Results';
 
 const taskID = 'answer-array';
 interface DataRow {
@@ -135,8 +136,9 @@ function ExtraPaymentOptions({
   extraPayment: number;
   setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const maxExtraPayment = 200; // Set the maximum limit
-  const totalMonthlyPayment = 341 + extraPayment;
+  const maxExtraPayment = 5000; // Set the maximum limit
+  const minPayment = 341;
+  const totalMonthlyPayment = extraPayment;
   const percentOfIncome = ((totalMonthlyPayment / 5000) * 100).toFixed(2);
 
   return (
@@ -160,10 +162,11 @@ function ExtraPaymentOptions({
         <input
           type="number"
           value={extraPayment}
-          min={0}
+          min={minPayment}
           max={maxExtraPayment}
           onChange={(e) => {
-            const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
+            let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
+            value = Math.min(value, maxExtraPayment); // Enforce maximum
             setExtraPayment(value);
           }}
         />
@@ -337,8 +340,10 @@ function TotalBalancePaymentsChart({
           </div>
 
         ) : (
-          <div style={styles.paidOffMessage}>
-            Congratulations! Your loan has been paid off.
+          <div>
+            <Results
+              data={choices}
+            />
           </div>
         )}
 

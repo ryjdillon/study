@@ -2,6 +2,7 @@ import React, { useState, useEffect, CSSProperties } from 'react';
 import { Text } from '@mantine/core';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
+import Results from './Results';
 
 const taskID = 'answer-array';
 interface DataRow {
@@ -115,20 +116,23 @@ function ExtraPaymentOptions({
   extraPayment: number;
   setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const maxExtraPayment = 200; // Set the maximum limit
-
+  const maxExtraPayment = 5000; // Set the maximum limit (5000-min payment)
+  const minPayment = 341;
   return (
     <div style={styles.extraPaymentOptions}>
       <h3>How much extra do you want to pay each month?</h3>
       <input
         type="number"
         value={extraPayment}
+        min={minPayment}
         max={maxExtraPayment}
         onChange={(e) => {
-          const value = Math.min(parseFloat(e.target.value), maxExtraPayment);
+          let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
+          value = Math.min(value, maxExtraPayment); // Enforce maximum
           setExtraPayment(value);
         }}
       />
+
     </div>
   );
 }
@@ -210,7 +214,7 @@ function TotalBalancePaymentsChart({
   const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-  const percentage = (((341 + extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
+  const percentage = (((extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
   const isOver = parseFloat(percentage) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
@@ -260,7 +264,7 @@ function TotalBalancePaymentsChart({
                 <Text size="xl">
                   {' '}
                   If you pay
-                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(341 + extraPayments[currentYearIndex])}`}</Text>
+                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(extraPayments[currentYearIndex])}`}</Text>
                   {' '}
                   each month this year, you will have
                   <Text color="#06945D" fw={700} component="span">{` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}</Text>
@@ -305,10 +309,10 @@ function TotalBalancePaymentsChart({
         </div>
       ) : (
 
-        <div style={styles.paidOffMessage}>
-          <text>
-            Congratulations! Your loan has been paid off.
-          </text>
+        <div>
+          <Results
+            data={choices}
+          />
         </div>
       )}
 

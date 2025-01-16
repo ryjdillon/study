@@ -16,11 +16,8 @@ export default function SideBarPie({ size, data }: PieChartProps) {
     // min payment+extra
     { label: 'loan', value: 341 + data.valueOf(), color: '#ff6f61' },
     // average for single person
-    { label: 'housing', value: 2000, color: '#69b578' },
-    { label: 'Transport', value: 800, color: '#58A0D7' },
-    // energy,water,internet,gas,phone,cable/streaming
-    { label: 'utilities', value: 400, color: '#ffbf00' },
-    { label: 'essentials', value: 600, color: '#52D3D1' },
+    { label: 'housing', value: 2400, color: '#69b578' },
+    { label: 'essentials', value: 1400, color: '#ffbf00' },
     { label: 'other', value: 859 - data.valueOf(), color: '#9c88d2' },
   ];
 
@@ -62,18 +59,14 @@ export default function SideBarPie({ size, data }: PieChartProps) {
       </g>
       <g transform={`translate(${(2.35 * size) / 4}, ${size / 10})`}>
 
-        <circle cy={-5} r={10} fill="#52D3D1" />
+        <circle cy={0} r={10} fill="#ffbf00" />
         <text x={13} y={0}>Essentials</text>
-        <circle cy={15} r={10} fill="#ff6f61" />
+        <circle cy={20} r={10} fill="#ff6f61" />
         <text x={13} y={20}>Loan</text>
-        <circle cy={35} r={10} fill="#69b578" />
+        <circle cy={40} r={10} fill="#69b578" />
         <text x={13} y={40}>Housing</text>
-        <circle cy={55} r={10} fill="#58A0D7" />
-        <text x={13} y={60}>Transport</text>
-        <circle cy={75} r={10} fill="#ffbf00" />
-        <text x={13} y={80}>Utilities</text>
-        <circle cy={95} r={10} fill="#9c88d2" />
-        <text x={13} y={100}>Other</text>
+        <circle cy={60} r={10} fill="#9c88d2" />
+        <text x={13} y={60}>Other</text>
       </g>
     </svg>
   );
