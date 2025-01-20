@@ -36,6 +36,9 @@ function Results({ data }:dataProp) {
         years to pay off your loan.
 
         On average, you spent
+        {' '}
+        {' '}
+        {' '}
         {averagePercent(data)}
         % of your income a year to pay off the loan.
       </Text>
@@ -50,6 +53,7 @@ function Results({ data }:dataProp) {
         )}
       <Text fz="xl" lh="lg">
         To learn more about budgeting student loans, you can
+        {' '}
         <Anchor fz="xl" lh="lg" href="https://www.consumerfinance.gov/consumer-tools/student-loans/">search here</Anchor>
         .
       </Text>
