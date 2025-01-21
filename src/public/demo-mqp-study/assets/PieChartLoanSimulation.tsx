@@ -160,13 +160,13 @@ function ExtraPaymentOptions({
       <h3>How much do you want to pay each month?</h3>
       <input
         type="number"
-        value={extraPayment}
+        value={extraPayment + 341} // Add the minimum payment to the value for display
         min={minPayment}
         max={maxExtraPayment}
         onChange={(e) => {
           let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
           value = Math.min(value, maxExtraPayment); // Enforce maximum
-          setExtraPayment(value);
+          setExtraPayment(value - 341); // subtract the minimum payment to get the extra payment
         }}
       />
     </div>
@@ -255,11 +255,11 @@ function TotalBalancePaymentsChart({
     setCurrentYearIndex(nextIndex);
   }
   const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
-  const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
+  const extraPayment = extraPayments[currentYearIndex] ?? 0;
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-  const percentage = (((extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
-  const isOverTwentyPercent = parseFloat(percentage) > 10;
+  const percentOfIncome = (((extraPayments[currentYearIndex] + 341) / 5000) * 100).toFixed(2);
+  const isOverTenPercent = parseFloat(percentOfIncome) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
       && remainingBalance + extraPayment * 12 <= 0);
@@ -311,8 +311,8 @@ function TotalBalancePaymentsChart({
 
                   <p style={styles.sideBar}> Percent of Monthly Income</p>
 
-                  <h1 style={{ color: isOverTwentyPercent ? 'red' : 'black' }}>
-                    {percentage}
+                  <h1 style={{ color: isOverTenPercent ? 'red' : 'black' }}>
+                    {percentOfIncome}
                     %
                   </h1>
                 </div>

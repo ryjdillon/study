@@ -138,7 +138,7 @@ function ExtraPaymentOptions({
 }) {
   const maxExtraPayment = 5000; // Set the maximum limit
   const minPayment = 341;
-  const totalMonthlyPayment = extraPayment;
+  const totalMonthlyPayment = extraPayment + 341;
   const percentOfIncome = ((totalMonthlyPayment / 5000) * 100).toFixed(2);
 
   return (
@@ -161,13 +161,13 @@ function ExtraPaymentOptions({
         <h3>How much do you want to pay each month?</h3>
         <input
           type="number"
-          value={extraPayment}
+          value={341 + extraPayment} // add 341 to the extra payment to get the total payment
           min={minPayment}
           max={maxExtraPayment}
           onChange={(e) => {
             let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
             value = Math.min(value, maxExtraPayment); // Enforce maximum
-            setExtraPayment(value);
+            setExtraPayment(value - 341);
           }}
         />
       </div>
