@@ -158,7 +158,7 @@ function ExtraPaymentOptions({
 
       </div>
       <div style={styles.extraPaymentOptions}>
-        <h3>How much extra do you want to pay each month?</h3>
+        <h3>How much do you want to pay each month?</h3>
         <input
           type="number"
           value={extraPayment}
@@ -284,7 +284,6 @@ function TotalBalancePaymentsChart({
 
             <div ref={ref} style={styles.chartWrapper}>
               <div style={{ textAlign: 'center' }}>
-                <h2>Loan Balance and Payments Over Time</h2>
 
                 <h2>
                   Year:
@@ -307,7 +306,7 @@ function TotalBalancePaymentsChart({
                       data={[chartData[currentYearIndex]]}
                       barWidth={dms.width}
                       barHeight={dms.height}
-                      colors={['#06945D', '#0077A9']}
+                      colors={['#06945D', '#e5e5e5']}
                     />
                   ) : (
                     <text>No data available for this year.</text>

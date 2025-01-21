@@ -77,7 +77,7 @@ function StackedBars({
 
         {/* Text for Remaining Balance */}
         <text>
-          <tspan x={10 + paidWidth} y={barHeight / 2 + 50} fill="white" style={{ fontSize: rem(16), fontWeight: 600 }}>
+          <tspan x={10 + paidWidth} y={barHeight / 2 + 50} fill="black" style={{ fontSize: rem(16), fontWeight: 600 }}>
             {formatCurrency(remainingBalance)}
           </tspan>
         </text>

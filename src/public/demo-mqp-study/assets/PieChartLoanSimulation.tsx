@@ -109,8 +109,6 @@ const styles: { [key: string]: CSSProperties } = {
     alignItems: 'center',
   },
   visWrapper: {
-    backgroundColor: '#f0f0f0',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
     display: 'flex',
     flexDirection: 'row',
     gap: '2em',
@@ -122,6 +120,11 @@ const styles: { [key: string]: CSSProperties } = {
     fontWeight: 'bold',
     padding: 0,
     margin: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    height: '100%',
+    boxSizing: 'border-box',
   },
   percentOfIncome: {
     color: 'green',
@@ -154,7 +157,7 @@ function ExtraPaymentOptions({
   const minPayment = 341;
   return (
     <div style={styles.extraPaymentOptions}>
-      <h3>How much extra do you want to pay each month?</h3>
+      <h3>How much do you want to pay each month?</h3>
       <input
         type="number"
         value={extraPayment}
@@ -273,7 +276,7 @@ function TotalBalancePaymentsChart({
       {!completedStudy}
       {!completedStudy ? (
         <>
-          <div>
+          <div style={{ alignSelf: 'center' }}>
             {' '}
             <h2>
               Year:
@@ -290,7 +293,7 @@ function TotalBalancePaymentsChart({
                       <PieChart
                         data={[chartData[currentYearIndex]]}
                         radius={160}
-                        colors={['#06945D', '#0077A9']}
+                        colors={['#06945D', '#e5e5e5']}
                       />
                     ) : (
                       <text>No data available for this year.</text>
