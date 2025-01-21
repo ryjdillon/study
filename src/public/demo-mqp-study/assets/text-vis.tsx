@@ -264,7 +264,7 @@ function TotalBalancePaymentsChart({
                 <Text size="xl">
                   {' '}
                   If you pay
-                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(extraPayments[currentYearIndex])}`}</Text>
+                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(extraPayments[currentYearIndex] + 341)}`}</Text>
                   {' '}
                   each month this year, you will have
                   <Text color="#06945D" fw={700} component="span">{` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}</Text>
