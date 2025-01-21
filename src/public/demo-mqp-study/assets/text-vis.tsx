@@ -123,13 +123,13 @@ function ExtraPaymentOptions({
       <h3>How much extra do you want to pay each month?</h3>
       <input
         type="number"
-        value={extraPayment}
+        value={extraPayment + 341}
         min={minPayment}
         max={maxExtraPayment}
         onChange={(e) => {
           let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
           value = Math.min(value, maxExtraPayment); // Enforce maximum
-          setExtraPayment(value);
+          setExtraPayment(value - 341);
         }}
       />
 
@@ -214,8 +214,8 @@ function TotalBalancePaymentsChart({
   const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-  const percentage = (((extraPayments[currentYearIndex]) / 5000) * 100).toFixed(2);
-  const isOver = parseFloat(percentage) > 10;
+  const percentOfIncome = (((extraPayments[currentYearIndex] + 341) / 5000) * 100).toFixed(2);
+  const isOver = parseFloat(percentOfIncome) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
       && remainingBalance + extraPayment * 12 <= 0);
@@ -273,7 +273,7 @@ function TotalBalancePaymentsChart({
                 <Text size="xl">
                   This loan payment is
                   <Text fw={700} component="span" color={isOver ? 'red' : 'black'}>
-                    {` ${percentage}`}
+                    {` ${percentOfIncome}`}
                     %
                   </Text>
                   {' '}
