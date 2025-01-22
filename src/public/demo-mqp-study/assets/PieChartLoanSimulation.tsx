@@ -15,41 +15,25 @@ interface DataRow {
 }
 const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
-    height: '400px',
-    width: '1000px',
+    height: '100%',
+    width: '100%',
     display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'flex-start',
-    position: 'relative' as const,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
   },
   chartWrapper: {
     display: 'flex',
-    flexDirection: 'column' as const,
-    paddingBottom: '20px',
+    flexDirection: 'column',
+    paddingBottom: '0px',
   },
   extraPaymentOptions: {
-    marginTop: '15px',
+    marginTop: '5px',
     display: 'flex',
     flexDirection: 'row' as const,
-    gap: '20px',
+    gap: '0px',
 
-  },
-  radioLabel: {
-    fontSize: '16px',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '6px',
-    padding: '8px 8px',
-    borderRadius: '8px',
-    border: '1px solid #4e79a7',
-    backgroundColor: '#f9f9f9',
-    transition: 'background-color 0.3s ease',
-  },
-  radioButton: {
-    width: '18px',
-    height: '18px',
-    cursor: 'pointer',
   },
   nextYearButton: {
     marginTop: '25px',
@@ -111,18 +95,15 @@ const styles: { [key: string]: CSSProperties } = {
   visWrapper: {
     display: 'flex',
     flexDirection: 'row',
-    gap: '2em',
-    marginLeft: '5em',
+    justifyContent: 'center',
     padding: 0,
   },
   sideBar: {
     fontSize: '16px',
     fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     height: '100%',
     boxSizing: 'border-box',
   },
@@ -190,7 +171,7 @@ function TotalBalancePaymentsChart({
     marginLeft: 0,
     marginTop: 0,
     marginRight: 0,
-    height: 450,
+    height: 400,
     width: 800,
   });
 
@@ -258,8 +239,6 @@ function TotalBalancePaymentsChart({
   const extraPayment = extraPayments[currentYearIndex] ?? 0;
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-  const percentOfIncome = (((extraPayments[currentYearIndex] + 341) / 5000) * 100).toFixed(2);
-  const isOverTenPercent = parseFloat(percentOfIncome) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
       && remainingBalance + extraPayment * 12 <= 0);
@@ -294,28 +273,13 @@ function TotalBalancePaymentsChart({
                         data={[chartData[currentYearIndex]]}
                         radius={160}
                         colors={['#06945D', '#e5e5e5']}
+                        year={currentYearIndex + 2025}
                       />
                     ) : (
                       <text>No data available for this year.</text>
                     )}
                   </g>
                 </svg>
-
-                <div style={styles.alignRight}>
-                  <p style={styles.sideBar}>Current Balance</p>
-
-                  <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(chartData[currentYearIndex]?.remainingBalance)}</h1>
-
-                  <p style={styles.sideBar}> Monthly Payment</p>
-                  <h1>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(341 + extraPayments[currentYearIndex])}</h1>
-
-                  <p style={styles.sideBar}> Percent of Monthly Income</p>
-
-                  <h1 style={{ color: isOverTenPercent ? 'red' : 'black' }}>
-                    {percentOfIncome}
-                    %
-                  </h1>
-                </div>
 
               </div>
 
@@ -325,25 +289,39 @@ function TotalBalancePaymentsChart({
               </div>
 
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', alignContent: 'center' }}>
-              <ExtraPaymentOptions
-                extraPayment={extraPayments[currentYearIndex]}
-                setExtraPayment={(value) => {
-                  const updatedPayments = [...extraPayments];
-                  const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
-                  updatedPayments[currentYearIndex] = updatedValue;
-                  setExtraPayments(updatedPayments);
-                }}
-              />
-              <button
-                type="button"
-                style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
-                onClick={handleNextYear}
-                disabled={isLoanPaidOff}
-              >
-                Next Year
-              </button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {/* Current Balance Section */}
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ margin: '0px' }}>Current Balance</p>
+              <h1 style={{ margin: '0px' }}>
+                {new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                }).format(chartData[currentYearIndex]?.remainingBalance)}
+              </h1>
             </div>
+
+            {/* Extra Payment Options */}
+            <ExtraPaymentOptions
+              extraPayment={extraPayments[currentYearIndex]}
+              setExtraPayment={(value) => {
+                const updatedPayments = [...extraPayments];
+                const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
+                updatedPayments[currentYearIndex] = updatedValue;
+                setExtraPayments(updatedPayments);
+              }}
+            />
+
+            {/* Next Year Button */}
+            <button
+              type="button"
+              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+              onClick={handleNextYear}
+              disabled={isLoanPaidOff}
+            >
+              Next Year
+            </button>
           </div>
         </>
 

@@ -23,30 +23,6 @@
     "urlParticipantIdParam": "PROLIFIC_PID"
   },
   "baseComponents": {
-    "stackedBarChart": {
-      "instruction": "Review the bar chart and answer the question.",
-      "instructionLocation": "sidebar",
-      "description": "A bar chart.",
-      "type": "react-component",
-      "path": "demo-mqp-study/assets/StackedBarChart.tsx",
-      "parameters": {
-        "dataset": "min-payment",
-        "x": "year",
-        "y": "min-payment",
-        "ids": "year"
-      },
-      "nextButtonLocation": "belowStimulus",
-      "response": [
-        {
-          "id": "answer-array",
-          "prompt": "Here is the list of the choices you made during this simulation:",
-          "required": true,
-          "location": "belowStimulus",
-          "type": "iframe",
-          "hidden": true
-        }
-      ]
-    },
     "pieChart": {
       "instruction": "Review the bar chart and answer the question.",
       "instructionLocation": "sidebar",
@@ -80,7 +56,7 @@
       "path": "demo-mqp-study/assets/text-vis.tsx",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "belowStimulus"
-        }
+    }
   },
   "components": {
     "introduction": {
@@ -383,12 +359,6 @@
         }
       ]
     },
-    "barChart_q1": {
-      "baseComponent": "stackedBarChart",
-      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum payment ($341) or up to $5000. When the simulation concludes, press ‘Submit’ to upload your answers.",
-      "nextButtonLocation": "sidebar",
-      "nextButtonText": "Submit"
-    },
     "text-simulation": {
       "baseComponent": "text",
       "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum payment ($341) or up to $5000. When the simulation concludes, press ‘Submit’ to upload your answers.",
@@ -409,7 +379,7 @@
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
-  "debrief": {
+    "debrief": {
       "type": "markdown",
       "path": "demo-mqp-study/assets/debrief.md",
       "response": []
@@ -426,7 +396,6 @@
         "order": "latinSquare",
         "components": [
           "pie-charts",
-          "barChart_q1",
           "text-simulation"
         ],
         "numSamples": 1
