@@ -58,15 +58,14 @@ export default function SideBarPie({ size, data }: PieChartProps) {
 
       </g>
       <g transform={`translate(${(2.35 * size) / 4}, ${size / 10})`}>
-
         <circle cy={0} r={10} fill="#ffbf00" />
-        <text x={13} y={0}>Essentials</text>
-        <circle cy={20} r={10} fill="#ff6f61" />
-        <text x={13} y={20}>Loan</text>
-        <circle cy={40} r={10} fill="#69b578" />
-        <text x={13} y={40}>Housing</text>
-        <circle cy={60} r={10} fill="#9c88d2" />
-        <text x={13} y={60}>Other</text>
+        <text x={15} y={4}>Essentials</text>
+        <circle cy={30} r={10} fill="#ff6f61" />
+        <text x={15} y={34}>Loan</text>
+        <circle cy={60} r={10} fill="#69b578" />
+        <text x={15} y={64}>Housing</text>
+        <circle cy={90} r={10} fill="#9c88d2" />
+        <text x={15} y={94}>Other</text>
       </g>
     </svg>
   );

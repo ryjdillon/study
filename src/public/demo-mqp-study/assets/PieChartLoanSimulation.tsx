@@ -73,6 +73,25 @@ const styles: { [key: string]: CSSProperties } = {
     height: '100%',
     boxSizing: 'border-box',
   },
+  inputWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100px',
+  },
+  dollarSign: {
+    position: 'absolute',
+    left: '10px',
+    color: '#555',
+    fontSize: '17px',
+    pointerEvents: 'none',
+  },
+  dollarInput: {
+    width: '100%',
+    padding: '5px',
+    boxSizing: 'border-box',
+    paddingLeft: '25px',
+  },
 };
 
 let completedStudy = false;
@@ -88,19 +107,30 @@ function ExtraPaymentOptions({
   const maxExtraPayment = 5000; // Set the maximum limit
   const minPayment = 341;
   return (
-    <div style={styles.extraPaymentOptions}>
-      <h3>How much do you want to pay each month?</h3>
-      <input
-        type="number"
-        value={extraPayment + 341} // Add the minimum payment to the value for display
-        min={minPayment}
-        max={maxExtraPayment}
-        onChange={(e) => {
-          let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
-          value = Math.min(value, maxExtraPayment); // Enforce maximum
-          setExtraPayment(value - 341); // subtract the minimum payment to get the extra payment
-        }}
-      />
+    <div style={
+      {
+        ...styles.extraPaymentOptions, display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'center',
+      }
+}
+    >
+      <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
+        How much do you want to pay each month?
+      </h2>
+      <div style={styles.inputWrapper}>
+        <span style={styles.dollarSign}>$</span>
+        <input
+          type="number"
+          style={styles.dollarInput}
+          value={extraPayment + 341} // Add the minimum payment to the value for display
+          min={minPayment}
+          max={maxExtraPayment}
+          onChange={(e) => {
+            let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
+            value = Math.min(value, maxExtraPayment); // Enforce maximum
+            setExtraPayment(value - 341); // Subtract the minimum payment to get the extra payment
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -213,7 +243,7 @@ function TotalBalancePaymentsChart({
             >
               <div style={styles.visWrapper}>
                 <div style={{ marginTop: '0px', alignItems: 'flex-start' }}>
-                  <h3 style={{ justifySelf: 'center' }}>Loan Repayment Progress</h3>
+                  <h2 style={{ textAlign: 'center' }}>Loan Payoff</h2>
                   <svg width={dms.width * 0.5} height={dms.height}>
                     <g transform="translate(0, 0)">
                       {chartData.length > 0 && currentYearIndex < chartData.length ? (
@@ -232,24 +262,21 @@ function TotalBalancePaymentsChart({
               </div>
 
               <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
-                <h3 style={{ justifySelf: 'center' }}>Budget: $5,000</h3>
+                <h2 style={{ textAlign: 'center' }}>Budget: $5,000</h2>
                 <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
-
-                <div style={{ textAlign: 'center', marginTop: '3em' }}>
-                  <h3 style={{ margin: '0px' }}>Current Balance</h3>
-                  <p style={{ marginTop: '12px', fontSize: '36px' }}>
+                <div style={{ textAlign: 'center', marginTop: '2em' }}>
+                  <h2 style={{ margin: '0px' }}>Current Balance</h2>
+                  <h2 style={{ marginTop: '3px', fontSize: '36px', fontWeight: '300' }}>
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD',
                     }).format(chartData[currentYearIndex]?.remainingBalance)}
-                  </p>
+                  </h2>
                 </div>
               </div>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {/* Current Balance Section */}
-
             {/* Extra Payment Options */}
             <ExtraPaymentOptions
               extraPayment={extraPayments[currentYearIndex]}
