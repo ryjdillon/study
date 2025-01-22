@@ -58,7 +58,7 @@ function PieChart({
 
     chartGroup.append('text')
       .attr('x', 0)
-      .attr('y', 0)
+      .attr('y', 7)
       .attr('text-anchor', 'middle')
       .attr('font-size', '26px')
       .text(`${year}`);

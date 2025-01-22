@@ -122,8 +122,8 @@ function TotalBalancePaymentsChart({
     marginLeft: 0,
     marginTop: 0,
     marginRight: 0,
-    height: 400,
-    width: 800,
+    height: 360,
+    width: 700,
   });
 
   useEffect(() => {
@@ -206,18 +206,20 @@ function TotalBalancePaymentsChart({
       {!completedStudy}
       {!completedStudy ? (
         <>
-
           <div ref={ref} style={styles.chartWrapper}>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '2em' }}>
+            <div style={{
+              display: 'flex', flexDirection: 'row', gap: '4em', justifyContent: 'center',
+            }}
+            >
               <div style={styles.visWrapper}>
-                <div style={{ marginLeft: '2em', marginTop: '0px', alignItems: 'flex-start' }}>
-                  <h3>Loan Paid Off</h3>
-                  <svg width={dms.width * 0.55} height={dms.height}>
+                <div style={{ marginTop: '0px', alignItems: 'flex-start' }}>
+                  <h3 style={{ justifySelf: 'center' }}>Loan Repayment Progress</h3>
+                  <svg width={dms.width * 0.5} height={dms.height}>
                     <g transform="translate(0, 0)">
                       {chartData.length > 0 && currentYearIndex < chartData.length ? (
                         <PieChart
                           data={[chartData[currentYearIndex]]}
-                          radius={180}
+                          radius={175}
                           colors={['#06945D', '#e5e5e5']}
                           year={currentYearIndex + 2025}
                         />
@@ -230,23 +232,23 @@ function TotalBalancePaymentsChart({
               </div>
 
               <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
-                <h3>Budget Post Taxes: $5,000</h3>
+                <h3 style={{ justifySelf: 'center' }}>Budget: $5,000</h3>
                 <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
-              </div>
 
+                <div style={{ textAlign: 'center', marginTop: '3em' }}>
+                  <h3 style={{ margin: '0px' }}>Current Balance</h3>
+                  <p style={{ marginTop: '12px', fontSize: '36px' }}>
+                    {new Intl.NumberFormat('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                    }).format(chartData[currentYearIndex]?.remainingBalance)}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {/* Current Balance Section */}
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ margin: '0px' }}>Current Balance</p>
-              <h1 style={{ margin: '0px' }}>
-                {new Intl.NumberFormat('en-US', {
-                  style: 'currency',
-                  currency: 'USD',
-                }).format(chartData[currentYearIndex]?.remainingBalance)}
-              </h1>
-            </div>
 
             {/* Extra Payment Options */}
             <ExtraPaymentOptions
