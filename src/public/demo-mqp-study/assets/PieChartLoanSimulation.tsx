@@ -26,7 +26,7 @@ const styles: { [key: string]: CSSProperties } = {
   chartWrapper: {
     display: 'flex',
     flexDirection: 'column',
-    paddingBottom: '0px',
+    padding: '0px',
   },
   extraPaymentOptions: {
     marginTop: '5px',
@@ -58,40 +58,6 @@ const styles: { [key: string]: CSSProperties } = {
     border: 'none',
     borderRadius: '8px',
   },
-  legendItem: {
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: '14px',
-  },
-  legendColorBox: {
-    width: '15px',
-    height: '15px',
-    backgroundColor: 'currentColor',
-    marginRight: '5px',
-  },
-  paidOffMessage: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    marginTop: '20px',
-  },
-  submitButton: {
-    marginTop: '15px',
-    padding: '8px 20px',
-    cursor: 'pointer',
-    backgroundColor: '#28a745',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    transition: 'background-color 0.3s ease, transform 0.2s ease',
-  },
-  alignRight: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
   visWrapper: {
     display: 'flex',
     flexDirection: 'row',
@@ -106,21 +72,6 @@ const styles: { [key: string]: CSSProperties } = {
     justifyContent: 'center',
     height: '100%',
     boxSizing: 'border-box',
-  },
-  percentOfIncome: {
-    color: 'green',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
-  },
-
-  percentOfIncomeOver: {
-    color: 'red',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
   },
 };
 
@@ -255,32 +206,27 @@ function TotalBalancePaymentsChart({
       {!completedStudy}
       {!completedStudy ? (
         <>
-          <div style={{ alignSelf: 'center' }}>
-            {' '}
-            <h2>
-              Year:
-              {' '}
-              {currentYearIndex + 2025}
-            </h2>
-          </div>
+
           <div ref={ref} style={styles.chartWrapper}>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '2em' }}>
               <div style={styles.visWrapper}>
-                <svg width={dms.width * 0.55} height={dms.height}>
-                  <g transform="translate(0, 0)">
-                    {chartData.length > 0 && currentYearIndex < chartData.length ? (
-                      <PieChart
-                        data={[chartData[currentYearIndex]]}
-                        radius={160}
-                        colors={['#06945D', '#e5e5e5']}
-                        year={currentYearIndex + 2025}
-                      />
-                    ) : (
-                      <text>No data available for this year.</text>
-                    )}
-                  </g>
-                </svg>
-
+                <div style={{ marginLeft: '2em', marginTop: '0px', alignItems: 'flex-start' }}>
+                  <h3>Loan Paid Off</h3>
+                  <svg width={dms.width * 0.55} height={dms.height}>
+                    <g transform="translate(0, 0)">
+                      {chartData.length > 0 && currentYearIndex < chartData.length ? (
+                        <PieChart
+                          data={[chartData[currentYearIndex]]}
+                          radius={180}
+                          colors={['#06945D', '#e5e5e5']}
+                          year={currentYearIndex + 2025}
+                        />
+                      ) : (
+                        <text>No data available for this year.</text>
+                      )}
+                    </g>
+                  </svg>
+                </div>
               </div>
 
               <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
