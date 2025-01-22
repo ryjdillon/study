@@ -36,7 +36,7 @@ function PieChart({
     svg.selectAll('*').remove();
 
     const chartGroup = svg.append('g')
-      .attr('transform', `translate(${radius + 50}, ${radius + 50})`);
+      .attr('transform', `translate(${radius}, ${radius})`);
 
     const arcs = chartGroup.selectAll('arc')
       .data(pie(pieData))
@@ -53,14 +53,14 @@ function PieChart({
       .attr('text-anchor', 'middle')
       .attr('alignment-baseline', 'middle')
       .attr('fill', 'white')
-      .style('font-size', '12px')
+      .style('font-size', '16px')
       .text((d) => (d.data.label === 'Paid' ? `${((d.data.value / totalAmount) * 100).toFixed(1)}%` : ''));
 
     chartGroup.append('text')
       .attr('x', 0)
       .attr('y', 0)
       .attr('text-anchor', 'middle')
-      .attr('font-size', '20px')
+      .attr('font-size', '26px')
       .text(`${year}`);
   }, [data, radius, colors, year]);
 
