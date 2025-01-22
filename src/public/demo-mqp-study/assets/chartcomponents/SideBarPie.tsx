@@ -14,14 +14,13 @@ interface PieChartProps{
 export default function SideBarPie({ size, data }: PieChartProps) {
   const budget = [
     // min payment+extra
-    { label: 'loan', value: 341 + data.valueOf(), color: '#ff6f61' },
+    { label: 'loan', value: 341 + data.valueOf(), color: '#06945D' },
     // average for single person
-    { label: 'housing', value: 2400, color: '#69b578' },
-    { label: 'essentials', value: 1400, color: '#ffbf00' },
-    { label: 'other', value: 859 - data.valueOf(), color: '#9c88d2' },
+
+    { label: 'other', value: 5000 - 341 - data.valueOf(), color: '#0077a9' },
   ];
 
-  const pieGenerator = d3.pie<Slice>().value((d) => d.value);
+  const pieGenerator = d3.pie<Slice>().value((d) => d.value).sort(null);
   const arcGenerator = d3.arc<d3.PieArcDatum<Slice>>()
     .innerRadius(0) // Full pie, no donut hole
     .outerRadius(size / 4); // Set radius based on size prop
@@ -46,26 +45,27 @@ export default function SideBarPie({ size, data }: PieChartProps) {
           return (
             <text
               key={index}
-              dominantBaseline="central"
+              alignmentBaseline="middle"
               textAnchor="middle"
               style={{ fontSize: '.75em' }}
-              transform={`translate(${x},${y - 8})`}
+              fill="white"
+              transform={`translate(${x + 3},${y - 10})`}
             >
-              {`$${arc.data.value}`}
+              {arc.data.label === 'loan'
+                ? `${((arc.data.value / 5000) * 100).toFixed(1)}%`
+                : ''}
+
             </text>
           );
         })}
 
       </g>
       <g transform={`translate(${(2.35 * size) / 4}, ${size / 10})`}>
-        <circle cy={0} r={10} fill="#ffbf00" />
-        <text x={15} y={4}>Essentials</text>
-        <circle cy={30} r={10} fill="#ff6f61" />
-        <text x={15} y={34}>Loan</text>
-        <circle cy={60} r={10} fill="#69b578" />
-        <text x={15} y={64}>Housing</text>
-        <circle cy={90} r={10} fill="#9c88d2" />
-        <text x={15} y={94}>Other</text>
+        <circle cy={0} r={10} fill="#06945D" />
+        <text x={15} y={4}>Loan</text>
+        <circle cy={30} r={10} fill="#0077a9" />
+        <text x={15} y={34}>Other</text>
+
       </g>
     </svg>
   );
