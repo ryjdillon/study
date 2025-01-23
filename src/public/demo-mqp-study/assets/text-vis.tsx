@@ -241,9 +241,12 @@ function TotalBalancePaymentsChart({
           <div style={styles.contentContainer}>
             <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
               <h2 style={styles.header}>Loan Payoff</h2>
-              <h3 style={styles.year}>{currentYearIndex + 2025}</h3>
+              <h3 style={styles.year}>
+                Year:
+                {currentYearIndex + 2025}
+              </h3>
               <div id="option-1">
-                <Text size="xl">
+                <Text size="xl" style={{ marginBottom: '12px' }}>
                   Percent Paid:
                   <Text fw={700} component="span">
                     {chartData[currentYearIndex]?.totalPaid <= 0
@@ -251,8 +254,14 @@ function TotalBalancePaymentsChart({
                       : ` ${Math.round(((chartData[currentYearIndex]?.totalPaid ?? 0) / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100)}%`}
                   </Text>
                 </Text>
-                <Text size="xl">
+                <Text size="xl" style={{ marginBottom: '12px' }}>
                   Current Loan Balance:
+                  <Text fw={700} component="span">
+                    {` ${toDollars(chartData[currentYearIndex - 1]?.remainingBalance ?? 30000)}`}
+                  </Text>
+                </Text>
+                <Text size="xl" style={{ marginBottom: '12px' }}>
+                  EOY Loan Balance:
                   <Text fw={700} component="span">
                     {` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}
                   </Text>
@@ -262,7 +271,7 @@ function TotalBalancePaymentsChart({
             <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
               <h2 style={styles.header}>Budget: $5,000</h2>
 
-              <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+              <SideBarPie size={340} data={extraPayments[currentYearIndex]} />
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
