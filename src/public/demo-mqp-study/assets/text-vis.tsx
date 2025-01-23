@@ -14,19 +14,28 @@ interface DataRow {
 }
 const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
-    height: '400px',
-    width: '75em',
+    height: '80%',
+    width: '100%',
+    alignItems: 'center',
+  },
+  contentContainer: {
+    display: 'flex',
+    flexDirection: 'row' as const,
+    width: '100%',
+  },
+  column: {
+    flex: 1,
     display: 'flex',
     flexDirection: 'column' as const,
-    alignItems: 'flex-start',
-    position: 'relative' as const,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-
   extraPaymentOptions: {
     marginTop: '15px',
     display: 'flex',
-    flexDirection: 'row' as const,
-    gap: '20px',
+    flexDirection: 'column' as const, // Change to column to place input box below the line
+    gap: '10px',
+    alignItems: 'center',
   },
   nextYearButton: {
     marginTop: '25px',
@@ -51,39 +60,6 @@ const styles: { [key: string]: CSSProperties } = {
     border: 'none',
     borderRadius: '8px',
   },
-  paidOffMessage: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    marginTop: '20px',
-  },
-
-  percentOfIncome: {
-    color: 'green',
-    fontSize: '20px',
-    fontWeight: 'bold',
-    padding: 0,
-    margin: 0,
-  },
-  numberGreen: {
-    color: '#06945D',
-    fontWeight: 'bold',
-    fontSize: 'x-large',
-  },
-
-  numberBlue: {
-    color: '#0077A9',
-    fontWeight: 'bold',
-    fontSize: 'x-large',
-  },
-
-  hidden: {
-    display: 'none',
-  },
-
-  h1: {
-    display: 'block',
-  },
-
   body: {
     display: 'flex',
     flexFlow: 'column',
@@ -92,18 +68,33 @@ const styles: { [key: string]: CSSProperties } = {
     alignItems: 'center',
     marginLeft: '12%',
     marginRight: '12%',
-
     fontFamily: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu',
   },
-
   p: {
     fontSize: 'x-large',
   },
-
   label: {
     fontSize: 'x-large',
   },
-
+  inputWrapper: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative',
+    width: '100px',
+  },
+  dollarSign: {
+    position: 'absolute',
+    left: '10px',
+    color: '#555',
+    fontSize: '17px',
+    pointerEvents: 'none',
+  },
+  dollarInput: {
+    width: '100%',
+    padding: '5px',
+    boxSizing: 'border-box',
+    paddingLeft: '25px',
+  },
 };
 
 let completedStudy = false;
@@ -120,19 +111,22 @@ function ExtraPaymentOptions({
   const minPayment = 341;
   return (
     <div style={styles.extraPaymentOptions}>
-      <h3>How much extra do you want to pay each month?</h3>
-      <input
-        type="number"
-        value={extraPayment + 341}
-        min={minPayment}
-        max={maxExtraPayment}
-        onChange={(e) => {
-          let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
-          value = Math.min(value, maxExtraPayment); // Enforce maximum
-          setExtraPayment(value - 341);
-        }}
-      />
-
+      <h3>How much do you want to pay each month?</h3>
+      <div style={styles.inputWrapper}>
+        <span style={styles.dollarSign}>$</span>
+        <input
+          type="number"
+          style={styles.dollarInput}
+          value={extraPayment + 341} // Add the minimum payment to the value for display
+          min={minPayment}
+          max={maxExtraPayment}
+          onChange={(e) => {
+            let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
+            value = Math.min(value, maxExtraPayment); // Enforce maximum
+            setExtraPayment(value - 341); // Subtract the minimum payment to get the extra payment
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -212,10 +206,7 @@ function TotalBalancePaymentsChart({
   }
   const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
   const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
-
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
-  const percentOfIncome = (((extraPayments[currentYearIndex] + 341) / 5000) * 100).toFixed(2);
-  const isOver = parseFloat(percentOfIncome) > 10;
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
     || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
       && remainingBalance + extraPayment * 12 <= 0);
@@ -233,91 +224,66 @@ function TotalBalancePaymentsChart({
     <div style={styles.chartContainer}>
       {!completedStudy}
       {!completedStudy ? (
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '1em' }}>
-
-          <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <h2>
-                Year:
-                {' '}
-                {currentYearIndex + 2025}
-              </h2>
-            </div>
-            <div id="full">
-              <Text size="xl">
-                {' '}
-                You have
-                <Text color="#0077A9" fw={700} component="span">
-                  {` ${toDollars(chartData[currentYearIndex - 1]?.remainingBalance ?? 30000)}`}
-                  {' '}
-                </Text>
-                remaining in your loan of
-                {' '}
-                <Text fw={700} component="span">$30,000</Text>
-                . The
-                minimum monthly payment is
-                <Text color="#0077A9" fw={700} component="span"> 341.00</Text>
-                .
-              </Text>
-
-              <div id="option-1">
-                <Text size="xl">
-                  {' '}
-                  If you pay
-                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(extraPayments[currentYearIndex] + 341)}`}</Text>
-                  {' '}
-                  each month this year, you will have
-                  <Text color="#06945D" fw={700} component="span">{` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}</Text>
-                  remaining at the end of the year.
-                </Text>
-                <Text size="xl">
-                  This loan payment is
-                  <Text fw={700} component="span" color={isOver ? 'red' : 'black'}>
-                    {` ${percentOfIncome}`}
-                    %
+        <>
+          <div style={styles.contentContainer}>
+            <div style={styles.column}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <h2 style={{ textAlign: 'center' }}>Loan Payoff</h2>
+              </div>
+              <div id="full">
+                <h3 style={{ margin: '0px' }}>{currentYearIndex + 2025}</h3>
+                <div id="option-1">
+                  <Text size="xl">
+                    Percent Paid:
+                    <Text fw={700} component="span">
+                      {chartData[currentYearIndex]?.totalPaid <= 0
+                        ? '0%'
+                        : ` ${Math.round(((chartData[currentYearIndex]?.totalPaid ?? 0) / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100)}%`}
+                    </Text>
                   </Text>
-                  {' '}
-                  of your total income.
-                  {' '}
-                </Text>
-              </div>
-              <div className="buttons">
-                <ExtraPaymentOptions
-                  extraPayment={extraPayments[currentYearIndex]}
-                  setExtraPayment={(value) => {
-                    const updatedPayments = [...extraPayments];
-                    const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
-                    updatedPayments[currentYearIndex] = updatedValue;
-                    setExtraPayments(updatedPayments);
-                  }}
-                />
-                <button
-                  type="button"
-                  style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
-                  onClick={handleNextYear}
-                  disabled={isLoanPaidOff}
-                >
-                  Next Year
-                </button>
+                  <Text size="xl">
+                    Current Loan Balance:
+                    <Text fw={700} component="span">
+                      {` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}
+                    </Text>
+                  </Text>
+                </div>
               </div>
             </div>
+            <div style={styles.column}>
+              <h2 style={{ textAlign: 'center' }}>Budget: $5,000</h2>
+              <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+            </div>
           </div>
-          <div style={{ marginLeft: '4em', justifyContent: 'top', alignItems: 'flex-start' }}>
-            <h3>Budget Post Taxes: $5,000</h3>
-            <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {/* Extra Payment Options */}
+            <ExtraPaymentOptions
+              extraPayment={extraPayments[currentYearIndex]}
+              setExtraPayment={(value) => {
+                const updatedPayments = [...extraPayments];
+                const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
+                updatedPayments[currentYearIndex] = updatedValue;
+                setExtraPayments(updatedPayments);
+              }}
+            />
+            {/* Next Year Button */}
+            <button
+              type="button"
+              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+              onClick={handleNextYear}
+              disabled={isLoanPaidOff}
+            >
+              Next Year
+            </button>
           </div>
-        </div>
+        </>
       ) : (
-
         <div>
-          <Results
-            data={choices}
-          />
+          <Results data={choices} />
         </div>
       )}
-
     </div>
-
   );
 }
+
 export default TotalBalancePaymentsChart;
