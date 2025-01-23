@@ -16,7 +16,10 @@ const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
     height: '80%',
     width: '100%',
+    display: 'flex',
+    flexDirection: 'column' as const,
     alignItems: 'center',
+    marginTop: '20px',
   },
   contentContainer: {
     display: 'flex',
@@ -94,6 +97,16 @@ const styles: { [key: string]: CSSProperties } = {
     padding: '5px',
     boxSizing: 'border-box',
     paddingLeft: '25px',
+  },
+  header: {
+    textAlign: 'center',
+    margin: '20x',
+
+  },
+  year: {
+    textAlign: 'center',
+    margin: '0px',
+    marginBottom: '20px',
   },
 };
 
@@ -226,32 +239,29 @@ function TotalBalancePaymentsChart({
       {!completedStudy ? (
         <>
           <div style={styles.contentContainer}>
-            <div style={styles.column}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <h2 style={{ textAlign: 'center' }}>Loan Payoff</h2>
-              </div>
-              <div id="full">
-                <h3 style={{ margin: '0px' }}>{currentYearIndex + 2025}</h3>
-                <div id="option-1">
-                  <Text size="xl">
-                    Percent Paid:
-                    <Text fw={700} component="span">
-                      {chartData[currentYearIndex]?.totalPaid <= 0
-                        ? '0%'
-                        : ` ${Math.round(((chartData[currentYearIndex]?.totalPaid ?? 0) / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100)}%`}
-                    </Text>
+            <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
+              <h2 style={styles.header}>Loan Payoff</h2>
+              <h3 style={styles.year}>{currentYearIndex + 2025}</h3>
+              <div id="option-1">
+                <Text size="xl">
+                  Percent Paid:
+                  <Text fw={700} component="span">
+                    {chartData[currentYearIndex]?.totalPaid <= 0
+                      ? '0%'
+                      : ` ${Math.round(((chartData[currentYearIndex]?.totalPaid ?? 0) / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100)}%`}
                   </Text>
-                  <Text size="xl">
-                    Current Loan Balance:
-                    <Text fw={700} component="span">
-                      {` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}
-                    </Text>
+                </Text>
+                <Text size="xl">
+                  Current Loan Balance:
+                  <Text fw={700} component="span">
+                    {` ${toDollars(chartData[currentYearIndex]?.remainingBalance)} `}
                   </Text>
-                </div>
+                </Text>
               </div>
             </div>
-            <div style={styles.column}>
-              <h2 style={{ textAlign: 'center' }}>Budget: $5,000</h2>
+            <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
+              <h2 style={styles.header}>Budget: $5,000</h2>
+
               <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
             </div>
           </div>
