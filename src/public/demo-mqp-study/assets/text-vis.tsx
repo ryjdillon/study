@@ -1,5 +1,5 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
-import { Text } from '@mantine/core';
+import { NumberInput, Text } from '@mantine/core';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
 import Results from './Results';
@@ -113,33 +113,49 @@ const styles: { [key: string]: CSSProperties } = {
 let completedStudy = false;
 const choices: number[] = [];
 
-function ExtraPaymentOptions({
-  extraPayment,
-  setExtraPayment,
+function PaymentOptions({
+  payment,
+  setPayment,
 }: {
-  extraPayment: number;
-  setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
+  payment: number;
+  setPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const maxExtraPayment = 5000; // Set the maximum limit (5000-min payment)
+  const maxPayment = 5000; // Set the maximum limit
   const minPayment = 341;
   return (
-    <div style={styles.extraPaymentOptions}>
-      <h3>How much do you want to pay each month?</h3>
+    <div style={
+      {
+        ...styles.PaymentOptions, display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'center',
+      }
+}
+    >
+      <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
+        How much do you want to pay each month?
+      </h2>
       <div style={styles.inputWrapper}>
-        <span style={styles.dollarSign}>$</span>
-        <input
-          type="number"
-          style={styles.dollarInput}
-          value={extraPayment + 341} // Add the minimum payment to the value for display
-          min={minPayment}
-          max={maxExtraPayment}
-          onChange={(e) => {
-            let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
-            value = Math.min(value, maxExtraPayment); // Enforce maximum
-            setExtraPayment(value - 341); // Subtract the minimum payment to get the extra payment
-          }}
-        />
+        {(payment < 341 || payment > 5000)
+          ? (
+            <NumberInput
+              error="Invalid input."
+              min={minPayment}
+              max={maxPayment}
+              prefix="$"
+              clampBehavior="blur"
+              onChange={(e) => setPayment(e)}
+            />
+          )
+          : (
+            <NumberInput
+              min={minPayment}
+              max={maxPayment}
+              prefix="$"
+              clampBehavior="blur"
+              onChange={(e) => setPayment(e)}
+            />
+          )}
+
       </div>
+
     </div>
   );
 }
@@ -148,14 +164,13 @@ function TotalBalancePaymentsChart({
   setAnswer,
 }: StimulusParams<Record<string, unknown>>) {
   const totalLoanAmount = 30000;
-  const yearlyPayment = 4173.14;
-  const initialExtraPayment = 0;
   const annualInterestRate = 0.065;
   const maxYearsToSimulate = 10;
+  const initialPayment = 0;
 
   const [chartData, setChartData] = useState<DataRow[]>([]);
   const [currentYearIndex, setCurrentYearIndex] = useState<number>(0);
-  const [extraPayments, setExtraPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialExtraPayment));
+  const [payments, setPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialPayment));
 
   useEffect(() => {
     const generateChartData = () => {
@@ -167,8 +182,7 @@ function TotalBalancePaymentsChart({
         if (remainingBalance <= 0) break;
 
         const yearlyInterest = remainingBalance * annualInterestRate;
-        const extraPayment = extraPayments[year - 2025];
-        const payment = yearlyPayment + (extraPayment * 12);
+        const payment = payments[year - 2025] * 12;
         const totalPayment = Math.min(remainingBalance + yearlyInterest, payment);
         remainingBalance = Math.max(0, remainingBalance + yearlyInterest - totalPayment);
         totalPaid += totalPayment;
@@ -186,7 +200,7 @@ function TotalBalancePaymentsChart({
     };
 
     setChartData(generateChartData());
-  }, [extraPayments]);
+  }, [payments]);
 
   function submitData() {
     setAnswer({
@@ -197,11 +211,11 @@ function TotalBalancePaymentsChart({
   }
 
   function handleNextYear() {
-    choices[currentYearIndex] = extraPayments[currentYearIndex];
+    choices[currentYearIndex] = payments[currentYearIndex];
     const nextIndex = currentYearIndex + 1;
     const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
     const remainingBalance = currentYearData.remainingBalance ?? 0;
-    const extraPayment = (extraPayments[currentYearIndex] ?? 0) * 12;
+    const extraPayment = (payments[currentYearIndex] ?? 0) * 12;
 
     const isEndOfStudy = nextIndex >= maxYearsToSimulate
       || (typeof remainingBalance === 'number'
@@ -218,11 +232,12 @@ function TotalBalancePaymentsChart({
     setCurrentYearIndex(nextIndex);
   }
   const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
-  const extraPayment = extraPayments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
+  const payment = payments[currentYearIndex] ?? 0; // Use nullish coalescing for safety
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
-    || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
-      && remainingBalance + extraPayment * 12 <= 0);
+    || (typeof remainingBalance === 'number' && typeof payment === 'number'
+      && remainingBalance + payment * 12 <= 0);
+  const isInputValid = (payment < 341 || payment > 5000);
 
   function toDollars(x: number) {
     return Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(x);
@@ -271,26 +286,26 @@ function TotalBalancePaymentsChart({
             <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
               <h2 style={styles.header}>Budget: $5,000</h2>
 
-              <SideBarPie size={340} data={extraPayments[currentYearIndex]} />
+              <SideBarPie size={340} data={payments[currentYearIndex]} />
             </div>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {/* Extra Payment Options */}
-            <ExtraPaymentOptions
-              extraPayment={extraPayments[currentYearIndex]}
-              setExtraPayment={(value) => {
-                const updatedPayments = [...extraPayments];
+            <PaymentOptions
+              payment={payments[currentYearIndex]}
+              setPayment={(value) => {
+                const updatedPayments = [...payments];
                 const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
                 updatedPayments[currentYearIndex] = updatedValue;
-                setExtraPayments(updatedPayments);
+                setPayments(updatedPayments);
               }}
             />
             {/* Next Year Button */}
             <button
               type="button"
-              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+              style={(isLoanPaidOff || isInputValid) ? styles.disabledButton : styles.nextYearButton}
               onClick={handleNextYear}
-              disabled={isLoanPaidOff}
+              disabled={isLoanPaidOff || isInputValid}
             >
               Next Year
             </button>
