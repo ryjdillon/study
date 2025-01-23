@@ -1,4 +1,5 @@
 import React, { useState, useEffect, CSSProperties } from 'react';
+import { NumberInput } from '@mantine/core';
 import { useChartDimensions } from './hooks/useChartDimensions';
 import PieChart from './chartcomponents/PieChart';
 import { StimulusParams } from '../../../store/types';
@@ -28,7 +29,7 @@ const styles: { [key: string]: CSSProperties } = {
     flexDirection: 'column',
     padding: '0px',
   },
-  extraPaymentOptions: {
+  PaymentOptions: {
     marginTop: '5px',
     display: 'flex',
     flexDirection: 'row' as const,
@@ -37,7 +38,6 @@ const styles: { [key: string]: CSSProperties } = {
   },
   nextYearButton: {
     marginTop: '25px',
-    marginLeft: '10px',
     padding: '8px 20px',
     cursor: 'pointer',
     backgroundColor: '#0077A9',
@@ -97,19 +97,19 @@ const styles: { [key: string]: CSSProperties } = {
 let completedStudy = false;
 const choices: number[] = [];
 
-function ExtraPaymentOptions({
-  extraPayment,
-  setExtraPayment,
+function PaymentOptions({
+  payment,
+  setPayment,
 }: {
-  extraPayment: number;
-  setExtraPayment: React.Dispatch<React.SetStateAction<number>>;
+  payment: number;
+  setPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const maxExtraPayment = 5000; // Set the maximum limit
+  const maxPayment = 5000; // Set the maximum limit
   const minPayment = 341;
   return (
     <div style={
       {
-        ...styles.extraPaymentOptions, display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'center',
+        ...styles.PaymentOptions, display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'center',
       }
 }
     >
@@ -117,20 +117,29 @@ function ExtraPaymentOptions({
         How much do you want to pay each month?
       </h2>
       <div style={styles.inputWrapper}>
-        <span style={styles.dollarSign}>$</span>
-        <input
-          type="number"
-          style={styles.dollarInput}
-          value={extraPayment + 341} // Add the minimum payment to the value for display
-          min={minPayment}
-          max={maxExtraPayment}
-          onChange={(e) => {
-            let value = Math.max(parseFloat(e.target.value), minPayment); // Enforce minimum
-            value = Math.min(value, maxExtraPayment); // Enforce maximum
-            setExtraPayment(value - 341); // Subtract the minimum payment to get the extra payment
-          }}
-        />
+        {(payment < 341 || payment > 5000)
+          ? (
+            <NumberInput
+              error="Invalid input."
+              min={minPayment}
+              max={maxPayment}
+              prefix="$"
+              clampBehavior="blur"
+              onChange={(e) => setPayment(e)}
+            />
+          )
+          : (
+            <NumberInput
+              min={minPayment}
+              max={maxPayment}
+              prefix="$"
+              clampBehavior="blur"
+              onChange={(e) => setPayment(e)}
+            />
+          )}
+
       </div>
+
     </div>
   );
 }
@@ -139,14 +148,13 @@ function TotalBalancePaymentsChart({
   setAnswer,
 }: StimulusParams<Record<string, unknown>>) {
   const totalLoanAmount = 30000;
-  const yearlyPayment = 4173.14;
-  const initialExtraPayment = 0;
   const annualInterestRate = 0.065;
   const maxYearsToSimulate = 10;
+  const initialPayment = 0;
 
   const [chartData, setChartData] = useState<DataRow[]>([]);
   const [currentYearIndex, setCurrentYearIndex] = useState<number>(0);
-  const [extraPayments, setExtraPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialExtraPayment));
+  const [payments, setPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialPayment));
   const [ref, dms] = useChartDimensions({
     marginBottom: 0,
     marginLeft: 0,
@@ -166,9 +174,8 @@ function TotalBalancePaymentsChart({
         if (remainingBalance <= 0) break;
 
         const yearlyInterest = remainingBalance * annualInterestRate;
-        const extraPayment = extraPayments[year - 2025];
-        const payment = yearlyPayment + (extraPayment * 12);
-        const totalPayment = Math.min(remainingBalance + yearlyInterest, payment);
+        const currentPayment = payments[year - 2025] * 12;
+        const totalPayment = Math.min(remainingBalance + yearlyInterest, currentPayment);
         remainingBalance = Math.max(0, remainingBalance + yearlyInterest - totalPayment);
         totalPaid += totalPayment;
 
@@ -185,7 +192,7 @@ function TotalBalancePaymentsChart({
     };
 
     setChartData(generateChartData());
-  }, [extraPayments]);
+  }, [payments]);
 
   function submitData() {
     setAnswer({
@@ -196,16 +203,16 @@ function TotalBalancePaymentsChart({
   }
 
   function handleNextYear() {
-    choices[currentYearIndex] = extraPayments[currentYearIndex];
+    choices[currentYearIndex] = payments[currentYearIndex];
     const nextIndex = currentYearIndex + 1;
     const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
     const remainingBalance = currentYearData.remainingBalance ?? 0;
-    const extraPayment = (extraPayments[currentYearIndex] ?? 0) * 12;
+    const payment = (payments[currentYearIndex] ?? 0) * 12;
 
     const isEndOfStudy = nextIndex >= maxYearsToSimulate
       || (typeof remainingBalance === 'number'
-        && typeof extraPayment === 'number'
-        && remainingBalance + extraPayment <= 4100);
+        && typeof payment === 'number'
+        && remainingBalance + payment <= 0);
 
     if (isEndOfStudy) {
       setAnswer({
@@ -217,13 +224,13 @@ function TotalBalancePaymentsChart({
     setCurrentYearIndex(nextIndex);
   }
   const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
-  const extraPayment = extraPayments[currentYearIndex] ?? 0;
+  const payment = payments[currentYearIndex] ?? 0;
 
   const remainingBalance = currentYearData.remainingBalance ?? 0; // Ensure a fallback value
   const isLoanPaidOff = (typeof currentYearIndex === 'number' && currentYearIndex >= chartData.length)
-    || (typeof remainingBalance === 'number' && typeof extraPayment === 'number'
-      && remainingBalance + extraPayment * 12 <= 0);
-
+    || (typeof remainingBalance === 'number' && typeof payment === 'number'
+      && remainingBalance + payment * 12 <= 0);
+  const isInputValid = (payment < 341 || payment > 5000);
   useEffect(() => {
     if (isLoanPaidOff && currentYearIndex !== 0 && !completedStudy) {
       submitData();
@@ -263,7 +270,7 @@ function TotalBalancePaymentsChart({
 
               <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
                 <h2 style={{ textAlign: 'center' }}>Budget: $5,000</h2>
-                <SideBarPie size={350} data={extraPayments[currentYearIndex]} />
+                <SideBarPie size={350} data={payments[currentYearIndex]} />
                 <div style={{ textAlign: 'center', marginTop: '2em' }}>
                   <h2 style={{ margin: '0px' }}>Current Balance</h2>
                   <h2 style={{ marginTop: '3px', fontSize: '36px', fontWeight: '300' }}>
@@ -278,22 +285,22 @@ function TotalBalancePaymentsChart({
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             {/* Extra Payment Options */}
-            <ExtraPaymentOptions
-              extraPayment={extraPayments[currentYearIndex]}
-              setExtraPayment={(value) => {
-                const updatedPayments = [...extraPayments];
+            <PaymentOptions
+              payment={payments[currentYearIndex]}
+              setPayment={(value) => {
+                const updatedPayments = [...payments];
                 const updatedValue = typeof value === 'function' ? value(updatedPayments[currentYearIndex]) : value;
                 updatedPayments[currentYearIndex] = updatedValue;
-                setExtraPayments(updatedPayments);
+                setPayments(updatedPayments);
               }}
             />
 
             {/* Next Year Button */}
             <button
               type="button"
-              style={isLoanPaidOff ? styles.disabledButton : styles.nextYearButton}
+              style={(isLoanPaidOff || isInputValid) ? styles.disabledButton : styles.nextYearButton}
               onClick={handleNextYear}
-              disabled={isLoanPaidOff}
+              disabled={isLoanPaidOff || isInputValid}
             >
               Next Year
             </button>

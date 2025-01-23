@@ -14,10 +14,10 @@ interface PieChartProps{
 export default function SideBarPie({ size, data }: PieChartProps) {
   const budget = [
     // min payment+extra
-    { label: 'loan', value: 341 + data.valueOf(), color: '#06945D' },
+    { label: 'loan', value: data.valueOf(), color: '#06945D' },
     // average for single person
 
-    { label: 'other', value: 5000 - 341 - data.valueOf(), color: '#0077a9' },
+    { label: 'other', value: 5000 - data.valueOf(), color: '#0077a9' },
   ];
 
   const pieGenerator = d3.pie<Slice>().value((d) => d.value).sort(null);
