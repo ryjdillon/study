@@ -212,7 +212,7 @@
       "response": [
         {
           "id": "study-rating",
-          "prompt": "Please rate your satifaction with the study",
+          "prompt": "Please rate your satisfaction with the study",
           "required": false,
           "location": "aboveStimulus",
           "type": "radio",
@@ -345,7 +345,7 @@
         },
         {
           "id": "loan-length",
-          "prompt": "I do not have any idea how long it will take to pay off my student loans.",
+          "prompt": "I know how long it will take to pay off my student loans.",
           "required": true,
           "location": "aboveStimulus",
           "type": "radio",
