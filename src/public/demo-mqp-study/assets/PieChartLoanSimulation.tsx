@@ -125,7 +125,7 @@ function PaymentOptions({
               max={maxPayment}
               prefix="$"
               clampBehavior="blur"
-              onChange={(e) => setPayment(e)}
+              onChange={(e) => setPayment(e as number)}
             />
           )
           : (
@@ -134,7 +134,7 @@ function PaymentOptions({
               max={maxPayment}
               prefix="$"
               clampBehavior="blur"
-              onChange={(e) => setPayment(e)}
+              onChange={(e) => setPayment(e as number)}
             />
           )}
 
