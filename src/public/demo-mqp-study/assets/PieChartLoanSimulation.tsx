@@ -50,7 +50,7 @@ const styles: { [key: string]: CSSProperties } = {
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
   disabledButton: {
-    marginTop: '15px',
+    marginTop: '25px',
     padding: '8px 20px',
     cursor: 'not-allowed',
     backgroundColor: '#cccccc',
@@ -271,9 +271,9 @@ function TotalBalancePaymentsChart({
               <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
                 <h2 style={{ textAlign: 'center' }}>Budget: $5,000</h2>
                 <SideBarPie size={350} data={payments[currentYearIndex]} />
-                <div style={{ textAlign: 'center', marginTop: '2em' }}>
-                  <h2 style={{ margin: '0px' }}>Current Balance</h2>
-                  <h2 style={{ marginTop: '3px', fontSize: '36px', fontWeight: '300' }}>
+                <div style={{ textAlign: 'center', marginTop: '3em' }}>
+                  <h2>EOY Loan Balance</h2>
+                  <h2 style={{ marginTop: '1px', fontSize: '36px', fontWeight: '300' }}>
                     {new Intl.NumberFormat('en-US', {
                       style: 'currency',
                       currency: 'USD',

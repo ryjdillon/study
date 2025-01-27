@@ -53,7 +53,7 @@ export default function SideBarPie({ size, data }: PieChartProps) {
                 transform={`translate(${x + 3},${y - 10})`}
               >
                 {arc.data.label === 'loan'
-                  ? `${((arc.data.value / 5000) * 100).toFixed(1)}%`
+                  ? `${Math.round((arc.data.value / 5000) * 100)}%`
                   : ''}
 
               </text>

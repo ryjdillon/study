@@ -45,7 +45,6 @@ const styles: { [key: string]: CSSProperties } = {
   },
   nextYearButton: {
     marginTop: '25px',
-    marginLeft: '10px',
     padding: '8px 20px',
     cursor: 'pointer',
     backgroundColor: '#0077A9',
@@ -58,7 +57,7 @@ const styles: { [key: string]: CSSProperties } = {
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
   disabledButton: {
-    marginTop: '15px',
+    marginTop: '25px',
     padding: '8px 20px',
     cursor: 'not-allowed',
     backgroundColor: '#cccccc',
@@ -108,6 +107,7 @@ const styles: { [key: string]: CSSProperties } = {
     textAlign: 'center',
     marginTop: '0',
     marginBottom: '20px',
+    whiteSpace: 'pre,',
   },
 };
 
@@ -267,7 +267,8 @@ function TotalBalancePaymentsChart({
                   <Text fw={700} component="span">
                     {chartData[currentYearIndex]?.totalPaid <= 0
                       ? ' 0%'
-                      : ` ${Math.round(((chartData[currentYearIndex]?.totalPaid ?? 0) / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100)}%`}
+                      : ` ${(((chartData[currentYearIndex]?.totalPaid ?? 0)
+                      / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(0)}%`}
                   </Text>
                 </Text>
                 <Text size="xl" style={{ marginBottom: '12px' }}>
