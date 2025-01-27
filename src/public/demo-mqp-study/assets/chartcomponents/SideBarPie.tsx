@@ -30,42 +30,44 @@ export default function SideBarPie({ size, data }: PieChartProps) {
 
   return (
     <svg width={size} height={size / 2} viewBox={`0 0 ${size} ${size / 2}`}>
-      <g id="sidebarpie" transform={`translate(${size / 4}, ${size / 4})`}>
-        {arcs.map((arc, index) => (
-          <path
-            key={index}
-            d={arcGenerator(arc) || undefined}
-            fill={budget[index].color}
-          >
-            <title>{`${arc.data.label}: ${((arc.data.value / d3.sum(budget, (d) => d.value)) * 100).toFixed(1)}%`}</title>
-          </path>
-        ))}
-        {arcs.map((arc, index) => {
-          const [x, y] = arcGenerator.centroid(arc);
-          return (
-            <text
+      <g transform={`translate(${size / 8}, 0)`}>
+        <g id="sidebarpie" transform={`translate(${size / 4}, ${size / 4})`}>
+          {arcs.map((arc, index) => (
+            <path
               key={index}
-              alignmentBaseline="middle"
-              textAnchor="middle"
-              style={{ fontSize: '.75em' }}
-              fill="white"
-              transform={`translate(${x + 3},${y - 10})`}
+              d={arcGenerator(arc) || undefined}
+              fill={budget[index].color}
             >
-              {arc.data.label === 'loan'
-                ? `${((arc.data.value / 5000) * 100).toFixed(1)}%`
-                : ''}
+              <title>{`${arc.data.label}: ${((arc.data.value / d3.sum(budget, (d) => d.value)) * 100).toFixed(1)}%`}</title>
+            </path>
+          ))}
+          {arcs.map((arc, index) => {
+            const [x, y] = arcGenerator.centroid(arc);
+            return (
+              <text
+                key={index}
+                alignmentBaseline="middle"
+                textAnchor="middle"
+                style={{ fontSize: '.75em' }}
+                fill="white"
+                transform={`translate(${x + 3},${y - 10})`}
+              >
+                {arc.data.label === 'loan'
+                  ? `${((arc.data.value / 5000) * 100).toFixed(1)}%`
+                  : ''}
 
-            </text>
-          );
-        })}
+              </text>
+            );
+          })}
 
-      </g>
-      <g transform={`translate(${(2.35 * size) / 4}, ${size / 10})`}>
-        <circle cy={0} r={10} fill="#06945D" />
-        <text x={15} y={4}>Loan</text>
-        <circle cy={30} r={10} fill="#0077a9" />
-        <text x={15} y={34}>Other</text>
+        </g>
+        <g id="legend" transform={`translate(${(2.5 * size) / 4}, ${size / 8})`}>
+          <circle cy={0} r={10} fill="#06945D" />
+          <text x={15} y={4}>Loan</text>
+          <circle cy={30} r={10} fill="#0077a9" />
+          <text x={15} y={34}>Other</text>
 
+        </g>
       </g>
     </svg>
   );

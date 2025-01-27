@@ -25,10 +25,13 @@ const styles: { [key: string]: CSSProperties } = {
     display: 'flex',
     flexDirection: 'row' as const,
     width: '100%',
+    justifyContent: 'center',
+
   },
   column: {
-    flex: 1,
     display: 'flex',
+    flex: 1,
+    height: '100%',
     flexDirection: 'column' as const,
     alignItems: 'center',
     justifyContent: 'center',
@@ -100,12 +103,10 @@ const styles: { [key: string]: CSSProperties } = {
   },
   header: {
     textAlign: 'center',
-    margin: '20x',
-
   },
   year: {
     textAlign: 'center',
-    margin: '0px',
+    marginTop: '0',
     marginBottom: '20px',
   },
 };
@@ -254,7 +255,7 @@ function TotalBalancePaymentsChart({
       {!completedStudy ? (
         <>
           <div style={styles.contentContainer}>
-            <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
+            <div style={{ ...styles.column }}>
               <h2 style={styles.header}>Loan Payoff</h2>
               <h3 style={styles.year}>
                 Year:
@@ -265,7 +266,7 @@ function TotalBalancePaymentsChart({
                   Percent Paid:
                   <Text fw={700} component="span">
                     {chartData[currentYearIndex]?.totalPaid <= 0
-                      ? '0%'
+                      ? ' 0%'
                       : ` ${Math.round(((chartData[currentYearIndex]?.totalPaid ?? 0) / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100)}%`}
                   </Text>
                 </Text>
@@ -283,9 +284,8 @@ function TotalBalancePaymentsChart({
                 </Text>
               </div>
             </div>
-            <div style={{ ...styles.column, justifyContent: 'flex-start' }}>
+            <div style={{ ...styles.column }}>
               <h2 style={styles.header}>Budget: $5,000</h2>
-
               <SideBarPie size={340} data={payments[currentYearIndex]} />
             </div>
           </div>
