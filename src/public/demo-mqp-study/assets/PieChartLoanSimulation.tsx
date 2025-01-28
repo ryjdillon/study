@@ -37,7 +37,8 @@ const styles: { [key: string]: CSSProperties } = {
 
   },
   nextYearButton: {
-    marginTop: '25px',
+    marginTop: '0.5em',
+    marginLeft: '0.5em',
     padding: '8px 20px',
     cursor: 'pointer',
     backgroundColor: '#0077A9',
@@ -50,13 +51,16 @@ const styles: { [key: string]: CSSProperties } = {
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
   disabledButton: {
-    marginTop: '25px',
+    marginTop: '0.5em',
+    marginLeft: '0.5em',
     padding: '8px 20px',
     cursor: 'not-allowed',
     backgroundColor: '#cccccc',
     color: 'white',
     border: 'none',
     borderRadius: '8px',
+    fontSize: '16px',
+    height: '50%',
   },
   visWrapper: {
     display: 'flex',
@@ -75,9 +79,7 @@ const styles: { [key: string]: CSSProperties } = {
   },
   inputWrapper: {
     display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-    width: '100px',
+    width: '150px',
   },
   dollarSign: {
     position: 'absolute',
@@ -113,9 +115,6 @@ function PaymentOptions({
       }
 }
     >
-      <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
-        How much do you want to pay each month?
-      </h2>
       <div style={styles.inputWrapper}>
         {(payment < 341 || payment > 5000)
           ? (
@@ -124,17 +123,21 @@ function PaymentOptions({
               min={minPayment}
               max={maxPayment}
               prefix="$"
+              size="lg"
               clampBehavior="blur"
               onChange={(e) => setPayment(e as number)}
+              hideControls
             />
           )
           : (
             <NumberInput
               min={minPayment}
               max={maxPayment}
+              size="lg"
               prefix="$"
               clampBehavior="blur"
               onChange={(e) => setPayment(e as number)}
+              hideControls
             />
           )}
 
@@ -245,7 +248,7 @@ function TotalBalancePaymentsChart({
         <>
           <div ref={ref} style={styles.chartWrapper}>
             <div style={{
-              display: 'flex', flexDirection: 'row', gap: '4em', justifyContent: 'center',
+              display: 'flex', flexDirection: 'row', gap: '4em', justifyContent: 'top',
             }}
             >
               <div style={styles.visWrapper}>
@@ -283,7 +286,10 @@ function TotalBalancePaymentsChart({
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
+            How much do you want to pay each month?
+          </h2>
+          <div style={{ display: 'flex' }}>
             {/* Extra Payment Options */}
             <PaymentOptions
               payment={payments[currentYearIndex]}

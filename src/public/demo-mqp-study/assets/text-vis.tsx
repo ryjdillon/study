@@ -44,7 +44,8 @@ const styles: { [key: string]: CSSProperties } = {
     alignItems: 'center',
   },
   nextYearButton: {
-    marginTop: '25px',
+    marginTop: '0.25em',
+    marginLeft: '0.5em',
     padding: '8px 20px',
     cursor: 'pointer',
     backgroundColor: '#0077A9',
@@ -57,13 +58,16 @@ const styles: { [key: string]: CSSProperties } = {
     transition: 'background-color 0.3s ease, transform 0.2s ease',
   },
   disabledButton: {
-    marginTop: '25px',
+    marginTop: '0.25em',
+    marginLeft: '0.5em',
     padding: '8px 20px',
     cursor: 'not-allowed',
     backgroundColor: '#cccccc',
     color: 'white',
     border: 'none',
     borderRadius: '8px',
+    fontSize: '16px',
+    height: '50%',
   },
   body: {
     display: 'flex',
@@ -83,9 +87,7 @@ const styles: { [key: string]: CSSProperties } = {
   },
   inputWrapper: {
     display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-    width: '100px',
+    width: '150px',
   },
   dollarSign: {
     position: 'absolute',
@@ -130,9 +132,7 @@ function PaymentOptions({
       }
     }
     >
-      <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
-        How much do you want to pay each month?
-      </h2>
+
       <div style={styles.inputWrapper}>
         {(payment < 341 || payment > 5000)
           ? (
@@ -140,18 +140,22 @@ function PaymentOptions({
               error="Invalid input."
               min={minPayment}
               max={maxPayment}
+              size="lg"
               prefix="$"
               clampBehavior="blur"
               onChange={(e) => setPayment(e as number)}
+              hideControls
             />
           )
           : (
             <NumberInput
               min={minPayment}
               max={maxPayment}
+              size="lg"
               prefix="$"
               clampBehavior="blur"
               onChange={(e) => setPayment(e as number)}
+              hideControls
             />
           )}
 
@@ -290,7 +294,10 @@ function TotalBalancePaymentsChart({
               <SideBarPie size={340} data={payments[currentYearIndex]} />
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
+            How much do you want to pay each month?
+          </h2>
+          <div style={{ display: 'flex' }}>
             {/* Extra Payment Options */}
             <PaymentOptions
               payment={payments[currentYearIndex]}
