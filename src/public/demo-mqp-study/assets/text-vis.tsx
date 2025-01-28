@@ -128,7 +128,7 @@ function PaymentOptions({
       {
         ...styles.PaymentOptions, display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'center',
       }
-}
+    }
     >
       <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>
         How much do you want to pay each month?
@@ -268,7 +268,7 @@ function TotalBalancePaymentsChart({
                     {chartData[currentYearIndex]?.totalPaid <= 0
                       ? ' 0%'
                       : ` ${(((chartData[currentYearIndex]?.totalPaid ?? 0)
-                      / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(0)}%`}
+                        / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(1)}%`}
                   </Text>
                 </Text>
                 <Text size="xl" style={{ marginBottom: '12px' }}>
