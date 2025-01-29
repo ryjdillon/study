@@ -5,7 +5,7 @@
  **Contact Information: bedvis@wpi.edu **
  <br> <br>
 
-## Title of Research Study: Student Loan Repayment Simulation
+## Title of Research Study: Student Loan Repayment Study
 ### Introduction
 You are being asked to participate in a research study. Before you agree, however, you must be
 fully informed about the purpose of the study, the procedures to be followed, and any benefits,
@@ -25,7 +25,7 @@ You will engage with an online survey that contains a loan repayment simulation.
 anticipated time required is about 10-15 minutes. You will be presented with a theoretical
 scenario in which you have recently graduated and have a student loan to pay back. You must
 decide how much to pay back of this loan each year, while considering other budgetary needs
-(such as housing, food, and transportation). As the simulation progresses, you may have the option
+(such as housing, food, and transportation). As the study progresses, you may have the option
 to interact with a visualization and see how paying more or less money each month will affect
 the loan balance at the end of the year. <br> <br>
 
@@ -42,7 +42,7 @@ strategies and the general process of student loan repayment. <br> <br>
 The data collected during this study will be stored on the ReVISit platform on the cloud. Only
 team members have access to this data and must log in to the platform using previously
 established credentials. We expect to report data on demographics of the participant population,
-the decisions that participants made during the simulation, and the answers to the general
+the decisions that participants made during the study, and the answers to the general
 financial literacy questions. <br>
 Records of your participation in this study will be held confidential so far as permitted by law.
 However, the study investigators, the sponsor or it’s designee and, under certain circumstances,
