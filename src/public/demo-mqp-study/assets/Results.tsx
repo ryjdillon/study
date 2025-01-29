@@ -18,13 +18,13 @@ interface dataProp {
   data: number[];
 }
 function averagePercent(payments: number[]) {
-  const min = 341 * 12;
-  const salary = 80000;
-  const totalPayment = payments.flatMap((d) => (((d * 12) + min) / salary));
+  const salary = 60000;
+
+  const totalPayment = payments.flatMap((d) => (((d * 12)) / salary));
   const avg = totalPayment.reduce((prev, cur) => prev + cur) / payments.length;
   return (avg * 100).toPrecision(3);
 }
-function Results({ data }:dataProp) {
+function Results({ data }: dataProp) {
   return (
     <div style={styles.chartContainer}>
       <h1> Congratulations! Your loan is paid off.</h1>
@@ -42,7 +42,7 @@ function Results({ data }:dataProp) {
         {averagePercent(data)}
         % of your income a year to pay off the loan.
       </Text>
-      { parseInt(averagePercent(data), 10) > 10
+      {parseFloat(averagePercent(data)) > 10
         ? (<Text fz="xl" lh="lg">This percentage is greater than the recommended 10% allocation of gross income. It may be difficult to afford this repayment plan</Text>)
         : (
           <>
