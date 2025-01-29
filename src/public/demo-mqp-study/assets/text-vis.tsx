@@ -273,7 +273,7 @@ function TotalBalancePaymentsChart({
                     {chartData[currentYearIndex]?.totalPaid <= 0
                       ? ' 0%'
                       : ` ${(((chartData[currentYearIndex]?.totalPaid ?? 0)
-                        / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(1)}%`}
+                        / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(0)}%`}
                   </Text>
                 </Text>
                 <Text size="xl" style={{ marginBottom: '12px' }}>
