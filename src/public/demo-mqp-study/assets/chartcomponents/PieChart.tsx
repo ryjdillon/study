@@ -54,7 +54,7 @@ function PieChart({
       .attr('alignment-baseline', 'middle')
       .attr('fill', 'white')
       .style('font-size', '16px')
-      .text((d) => (d.data.label === 'Paid' ? `${((d.data.value / totalAmount) * 100).toFixed(1)}%` : ''));
+      .text((d) => (d.data.label === 'Paid' ? `${((d.data.value / totalAmount) * 100).toFixed(0)}%` : ''));
 
     chartGroup.append('text')
       .attr('x', 0)
