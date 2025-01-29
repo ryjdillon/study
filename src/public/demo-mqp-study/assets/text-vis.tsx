@@ -143,6 +143,7 @@ function PaymentOptions({
               size="lg"
               prefix="$"
               clampBehavior="blur"
+              value={payment}
               onChange={(e) => setPayment(e as number)}
               hideControls
             />
@@ -154,6 +155,7 @@ function PaymentOptions({
               size="lg"
               prefix="$"
               clampBehavior="blur"
+              value={payment}
               onChange={(e) => setPayment(e as number)}
               hideControls
             />
@@ -171,11 +173,10 @@ function TotalBalancePaymentsChart({
   const totalLoanAmount = 30000;
   const annualInterestRate = 0.065;
   const maxYearsToSimulate = 10;
-  const initialPayment = 0;
 
   const [chartData, setChartData] = useState<DataRow[]>([]);
   const [currentYearIndex, setCurrentYearIndex] = useState<number>(0);
-  const [payments, setPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialPayment));
+  const [payments, setPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(''));
 
   useEffect(() => {
     const generateChartData = () => {
@@ -291,7 +292,7 @@ function TotalBalancePaymentsChart({
             </div>
             <div style={{ ...styles.column }}>
               <h2 style={styles.header}>Budget: $5,000</h2>
-              <SideBarPie size={340} data={payments[currentYearIndex]} />
+              <SideBarPie size={370} data={payments[currentYearIndex]} />
             </div>
           </div>
           <h2 style={{ paddingTop: '10px', fontWeight: 'normal' }}>

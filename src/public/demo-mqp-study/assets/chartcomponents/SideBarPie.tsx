@@ -48,7 +48,7 @@ export default function SideBarPie({ size, data }: PieChartProps) {
                 key={index}
                 alignmentBaseline="middle"
                 textAnchor="middle"
-                style={{ fontSize: '.75em' }}
+                style={{ fontSize: '1em' }}
                 fill="white"
                 transform={`translate(${x + 3},${y - 10})`}
               >

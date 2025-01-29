@@ -125,6 +125,7 @@ function PaymentOptions({
               prefix="$"
               size="lg"
               clampBehavior="blur"
+              value={payment}
               onChange={(e) => setPayment(e as number)}
               hideControls
             />
@@ -136,6 +137,7 @@ function PaymentOptions({
               size="lg"
               prefix="$"
               clampBehavior="blur"
+              value={payment}
               onChange={(e) => setPayment(e as number)}
               hideControls
             />
@@ -153,11 +155,10 @@ function TotalBalancePaymentsChart({
   const totalLoanAmount = 30000;
   const annualInterestRate = 0.065;
   const maxYearsToSimulate = 10;
-  const initialPayment = 0;
 
   const [chartData, setChartData] = useState<DataRow[]>([]);
   const [currentYearIndex, setCurrentYearIndex] = useState<number>(0);
-  const [payments, setPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(initialPayment));
+  const [payments, setPayments] = useState<number[]>(Array(maxYearsToSimulate).fill(''));
   const [ref, dms] = useChartDimensions({
     marginBottom: 0,
     marginLeft: 0,
@@ -273,7 +274,7 @@ function TotalBalancePaymentsChart({
 
               <div style={{ marginLeft: '1em', justifyContent: 'top', alignItems: 'flex-start' }}>
                 <h2 style={{ textAlign: 'center' }}>Budget: $5,000</h2>
-                <SideBarPie size={350} data={payments[currentYearIndex]} />
+                <SideBarPie size={370} data={payments[currentYearIndex]} />
                 <div style={{ textAlign: 'center', marginTop: '3em' }}>
                   <h2>EOY Loan Balance</h2>
                   <h2 style={{ marginTop: '1px', fontSize: '36px', fontWeight: '300' }}>
