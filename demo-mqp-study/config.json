@@ -23,8 +23,24 @@
     "urlParticipantIdParam": "PROLIFIC_PID"
   },
   "baseComponents": {
+    "attentionPie": {
+      "instructionLocation": "sidebar",
+      "description": "Attention check for pie chart experiment.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/attCheckPie.tsx",
+      "nextButtonLocation": "belowStimulus"
+    },
+    "attentionText": {
+      "instructionLocation": "sidebar",
+      "description": "Attention check for text experiment.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/attCheckText.tsx",
+      "nextButtonLocation": "belowStimulus"
+      
+      
+    },
     "pieChart": {
-      "instruction": "Review the bar chart and answer the question.",
+      "instruction": "Review the pie chart and answer the question.",
       "instructionLocation": "sidebar",
       "description": "A pie chart.",
       "type": "react-component",
@@ -379,6 +395,18 @@
       "nextButtonLocation": "sidebar",
       "nextButtonText": "Submit"
     },
+    "attention-pie": {
+      "baseComponent": "attentionPie",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum payment ($341) or up to $5000. When the experiment concludes, press ‘Submit’ to upload your answers.",
+      "nextButtonLocation": "belowStimulus",
+      "nextButtonText": "Next"
+    },
+    "attention-text": {
+      "baseComponent": "attentionText",
+      "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum payment ($341) or up to $5000. When the experiment concludes, press ‘Submit’ to upload your answers.",
+      "nextButtonLocation": "belowStimulus",
+      "nextButtonText": "Next"
+    },
     "debrief": {
       "type": "markdown",
       "path": "demo-mqp-study/assets/debrief.md",
@@ -395,8 +423,20 @@
       {
         "order": "latinSquare",
         "components": [
-          "pie-charts",
+        {
+          "components": [
+            "attention-pie",
+            "pie-charts"
+          ],
+          "order":"fixed"
+        },
+        {
+          "components":[
+          "attention-text",
           "text-simulation"
+          ],
+          "order":"fixed"
+        }
         ],
         "numSamples": 1
       },
