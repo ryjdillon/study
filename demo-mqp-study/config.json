@@ -36,8 +36,20 @@
       "type": "react-component",
       "path": "demo-mqp-study/assets/attCheckText.tsx",
       "nextButtonLocation": "belowStimulus"
-      
-      
+    },
+    "instructionPie": {
+      "instructionLocation": "sidebar",
+      "description": "Instructions for pie chart experiment.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/pieInstructionVideo.tsx",
+      "nextButtonLocation": "belowStimulus"
+    },
+    "instructionText": {
+      "instructionLocation": "sidebar",
+      "description": "Instructions for text experiment.",
+      "type": "react-component",
+      "path": "demo-mqp-study/assets/textInstructionVideo.tsx",
+      "nextButtonLocation": "belowStimulus"
     },
     "pieChart": {
       "instruction": "Review the pie chart and answer the question.",
@@ -407,6 +419,18 @@
       "nextButtonLocation": "belowStimulus",
       "nextButtonText": "Next"
     },
+    "instruction-pie": {
+      "baseComponent": "instructionPie",
+      "instruction": "Watch the video to understand how the experiment will work. Click 'Next' when you are ready to begin.",
+      "nextButtonLocation": "belowStimulus",
+      "nextButtonText": "Next"
+    },
+    "instruction-text": {
+      "baseComponent": "instructionText",
+      "instruction": "Watch the video to understand how the experiment will work. Click 'Next' when you are ready to begin",
+      "nextButtonLocation": "belowStimulus",
+      "nextButtonText": "Next"
+    },
     "debrief": {
       "type": "markdown",
       "path": "demo-mqp-study/assets/debrief.md",
@@ -425,6 +449,7 @@
         "components": [
         {
           "components": [
+            "instruction-pie",
             "attention-pie",
             "pie-charts"
           ],
@@ -432,6 +457,7 @@
         },
         {
           "components":[
+          "instruction-text",
           "attention-text",
           "text-simulation"
           ],
