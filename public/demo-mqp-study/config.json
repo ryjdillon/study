@@ -56,7 +56,7 @@
       "instructionLocation": "sidebar",
       "description": "A pie chart.",
       "type": "react-component",
-      "path": "demo-mqp-study/assets/PieChartLoanSimulation.tsx",
+      "path": "demo-mqp-study/assets/pieChartStudy.tsx",
       "nextButtonLocation": "belowStimulus",
       "response": [
         {
@@ -81,7 +81,7 @@
           "hidden": true
         }
       ],
-      "path": "demo-mqp-study/assets/text-vis.tsx",
+      "path": "demo-mqp-study/assets/textStudy.tsx",
       "instructionLocation": "sidebar",
       "nextButtonLocation": "belowStimulus"
     }
@@ -447,22 +447,22 @@
       {
         "order": "latinSquare",
         "components": [
-        {
-          "components": [
-            "instruction-pie",
-            "attention-pie",
-            "pie-charts"
-          ],
-          "order":"fixed"
-        },
-        {
-          "components":[
-          "instruction-text",
-          "attention-text",
-          "text-simulation"
-          ],
-          "order":"fixed"
-        }
+          {
+            "components": [
+              "instruction-pie",
+              "attention-pie",
+              "pie-charts"
+            ],
+            "order": "fixed"
+          },
+          {
+            "components": [
+              "instruction-text",
+              "attention-text",
+              "text-simulation"
+            ],
+            "order": "fixed"
+          }
         ],
         "numSamples": 1
       },

@@ -4,13 +4,11 @@ import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
 import Results from './Results';
 
-const taskID = 'answer-array';
 interface DataRow {
   year: number;
   totalPaid: number;
   remainingBalance: number;
   interest: number;
-  total_payment: number;
 }
 const styles: { [key: string]: CSSProperties } = {
   chartContainer: {
@@ -115,6 +113,7 @@ const styles: { [key: string]: CSSProperties } = {
 
 let completedStudy = false;
 const choices: number[] = [];
+const TASK_ID = 'answer-array';
 
 function PaymentOptions({
   payment,
@@ -123,8 +122,8 @@ function PaymentOptions({
   payment: number;
   setPayment: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const maxPayment = 5000; // Set the maximum limit
-  const minPayment = 341;
+  const MAX_PAYMENT = 5000;
+  const MIN_PAYMENT = 341;
   return (
     <div style={
       {
@@ -138,8 +137,8 @@ function PaymentOptions({
           ? (
             <NumberInput
               error="Invalid input."
-              min={minPayment}
-              max={maxPayment}
+              min={MIN_PAYMENT}
+              max={MAX_PAYMENT}
               size="lg"
               prefix="$"
               clampBehavior="blur"
@@ -150,8 +149,8 @@ function PaymentOptions({
           )
           : (
             <NumberInput
-              min={minPayment}
-              max={maxPayment}
+              min={MIN_PAYMENT}
+              max={MAX_PAYMENT}
               size="lg"
               prefix="$"
               clampBehavior="blur"
@@ -186,8 +185,8 @@ function TotalBalancePaymentsChart({
 
       for (let year = 2025; year < maxYearsToSimulate + 2025; year += 1) {
         if (remainingBalance <= 0) break;
-
         const yearlyInterest = remainingBalance * annualInterestRate;
+
         const payment = payments[year - 2025] * 12;
         const totalPayment = Math.min(remainingBalance + yearlyInterest, payment);
         remainingBalance = Math.max(0, remainingBalance + yearlyInterest - totalPayment);
@@ -198,7 +197,6 @@ function TotalBalancePaymentsChart({
           totalPaid,
           remainingBalance,
           interest: yearlyInterest,
-          total_payment: totalPaid,
         });
       }
 
@@ -211,7 +209,7 @@ function TotalBalancePaymentsChart({
   function submitData() {
     setAnswer({
       status: true,
-      answers: { [taskID]: choices },
+      answers: { [TASK_ID]: choices },
     });
     completedStudy = true;
   }
@@ -221,17 +219,15 @@ function TotalBalancePaymentsChart({
     const nextIndex = currentYearIndex + 1;
     const currentYearData = chartData[currentYearIndex] || { remainingBalance: 0 };
     const remainingBalance = currentYearData.remainingBalance ?? 0;
-    const extraPayment = (payments[currentYearIndex] ?? 0) * 12;
 
     const isEndOfStudy = nextIndex >= maxYearsToSimulate
       || (typeof remainingBalance === 'number'
-        && typeof extraPayment === 'number'
-        && remainingBalance + extraPayment <= 4100);
+        && remainingBalance <= 4100);
 
     if (isEndOfStudy) {
       setAnswer({
         status: true,
-        answers: { [taskID]: choices },
+        answers: { [TASK_ID]: choices },
       });
       completedStudy = true;
     }
