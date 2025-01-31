@@ -1,9 +1,10 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NumberInput } from '@mantine/core';
 import { useChartDimensions } from './hooks/useChartDimensions';
 import PieChart from './chartcomponents/PieChart';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
+import styles from './styles';
 
 const taskID = 'attn-check';
 interface DataRow {
@@ -13,75 +14,6 @@ interface DataRow {
   interest: number;
   total_payment: number;
 }
-const styles: { [key: string]: CSSProperties } = {
-  chartContainer: {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-  },
-  chartWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    padding: '0px',
-  },
-  PaymentOptions: {
-    marginTop: '5px',
-    display: 'flex',
-    flexDirection: 'row' as const,
-    gap: '0px',
-
-  },
-  nextYearButton: {
-    marginTop: '0.5em',
-    marginLeft: '0.5em',
-    padding: '8px 20px',
-    cursor: 'pointer',
-    backgroundColor: '#0077A9',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    height: '50%',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    transition: 'background-color 0.3s ease, transform 0.2s ease',
-  },
-  visWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    padding: 0,
-  },
-  sideBar: {
-    fontSize: '16px',
-    fontWeight: 'bold',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    height: '100%',
-    boxSizing: 'border-box',
-  },
-  inputWrapper: {
-    display: 'flex',
-    width: '150px',
-  },
-  dollarSign: {
-    position: 'absolute',
-    left: '10px',
-    color: '#555',
-    fontSize: '17px',
-    pointerEvents: 'none',
-  },
-  dollarInput: {
-    width: '100%',
-    padding: '5px',
-    boxSizing: 'border-box',
-    paddingLeft: '25px',
-  },
-};
 
 let choice = -1;
 
@@ -99,7 +31,7 @@ function PaymentOptions({
       {
         ...styles.PaymentOptions, display: 'flex', flexDirection: 'column', gap: '0px', alignItems: 'center',
       }
-}
+    }
     >
       <div style={styles.inputWrapper}>
         <NumberInput

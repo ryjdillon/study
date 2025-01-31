@@ -1,7 +1,8 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NumberInput, Text } from '@mantine/core';
 import { StimulusParams } from '../../../store/types';
 import SideBarPie from './chartcomponents/SideBarPie';
+import styles from './styles';
 
 const taskID = 'attn-check';
 interface DataRow {
@@ -11,94 +12,6 @@ interface DataRow {
   interest: number;
   total_payment: number;
 }
-const styles: { [key: string]: CSSProperties } = {
-  chartContainer: {
-    height: '80%',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    marginTop: '20px',
-  },
-  contentContainer: {
-    display: 'flex',
-    flexDirection: 'row' as const,
-    width: '100%',
-    justifyContent: 'center',
-
-  },
-  column: {
-    display: 'flex',
-    flex: 1,
-    height: '100%',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  extraPaymentOptions: {
-    marginTop: '15px',
-    display: 'flex',
-    flexDirection: 'column' as const, // Change to column to place input box below the line
-    gap: '10px',
-    alignItems: 'center',
-  },
-  nextYearButton: {
-    marginTop: '0.25em',
-    marginLeft: '0.5em',
-    padding: '8px 20px',
-    cursor: 'pointer',
-    backgroundColor: '#0077A9',
-    color: 'white',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '16px',
-    height: '50%',
-    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-    transition: 'background-color 0.3s ease, transform 0.2s ease',
-  },
-  body: {
-    display: 'flex',
-    flexFlow: 'column',
-    justifyContent: 'center',
-    alignContent: 'center',
-    alignItems: 'center',
-    marginLeft: '12%',
-    marginRight: '12%',
-    fontFamily: '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu',
-  },
-  p: {
-    fontSize: 'x-large',
-  },
-  label: {
-    fontSize: 'x-large',
-  },
-  inputWrapper: {
-    display: 'flex',
-    width: '150px',
-  },
-  dollarSign: {
-    position: 'absolute',
-    left: '10px',
-    color: '#555',
-    fontSize: '17px',
-    pointerEvents: 'none',
-  },
-  dollarInput: {
-    width: '100%',
-    padding: '5px',
-    boxSizing: 'border-box',
-    paddingLeft: '25px',
-  },
-  header: {
-    textAlign: 'center',
-  },
-  year: {
-    textAlign: 'center',
-    marginTop: '0',
-    marginBottom: '20px',
-    whiteSpace: 'pre,',
-  },
-};
 
 let choice = -1;
 
@@ -201,7 +114,7 @@ function TotalBalancePaymentsChart({
                 {chartData[currentYearIndex]?.totalPaid <= 0
                   ? ' 0%'
                   : ` ${(((chartData[currentYearIndex]?.totalPaid ?? 0)
-                        / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(0)}%`}
+                    / ((chartData[currentYearIndex]?.totalPaid ?? 0) + (chartData[currentYearIndex]?.remainingBalance ?? 0))) * 100).toFixed(0)}%`}
               </Text>
             </Text>
             <Text size="xl" style={{ marginBottom: '12px' }}>
@@ -227,7 +140,6 @@ function TotalBalancePaymentsChart({
         Please enter 1000 to show you understand the directions.
       </h2>
       <div style={{ display: 'flex' }}>
-        {/* Extra Payment Options */}
         <PaymentOptions
           payment={payments[currentYearIndex]}
           setPayment={(value) => {
