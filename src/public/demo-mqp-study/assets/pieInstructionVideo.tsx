@@ -9,7 +9,7 @@ const InstructionVideo: React.FC = function InstructionVideo() {
       }}
     >
       <video width="1000" controls>
-        <source src="/demo-mqp-study/assets/pie_instruction.mp4" type="video/mp4" />
+        <source src="/public/demo-mqp-study/assets/pie_instruction.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
