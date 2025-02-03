@@ -410,25 +410,25 @@
     "attention-pie": {
       "baseComponent": "attentionPie",
       "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum payment ($341) or up to $5000. When the experiment concludes, press ‘Submit’ to upload your answers.",
-      "nextButtonLocation": "belowStimulus",
+      "nextButtonLocation": "sidebar",
       "nextButtonText": "Next"
     },
     "attention-text": {
       "baseComponent": "attentionText",
       "instruction": "For each year, decide what your monthly payment will be. Choose to pay the minimum payment ($341) or up to $5000. When the experiment concludes, press ‘Submit’ to upload your answers.",
-      "nextButtonLocation": "belowStimulus",
+      "nextButtonLocation": "sidebar",
       "nextButtonText": "Next"
     },
     "instruction-pie": {
       "baseComponent": "instructionPie",
       "instruction": "Watch the video to understand how the experiment will work. Click 'Next' when you are ready to begin.",
-      "nextButtonLocation": "belowStimulus",
+      "nextButtonLocation": "sidebar",
       "nextButtonText": "Next"
     },
     "instruction-text": {
       "baseComponent": "instructionText",
       "instruction": "Watch the video to understand how the experiment will work. Click 'Next' when you are ready to begin",
-      "nextButtonLocation": "belowStimulus",
+      "nextButtonLocation": "sidebar",
       "nextButtonText": "Next"
     },
     "debrief": {
