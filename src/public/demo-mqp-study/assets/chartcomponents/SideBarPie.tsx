@@ -37,12 +37,12 @@ export default function SideBarPie({ size, data }: PieChartProps) {
               key={index}
               d={arcGenerator(arc) || undefined}
               fill={budget[index].color}
-            >
-              <title>{`${arc.data.label}: ${((arc.data.value / d3.sum(budget, (d) => d.value)) * 100).toFixed(1)}%`}</title>
-            </path>
+            />
           ))}
+
           {arcs.map((arc, index) => {
             const [x, y] = arcGenerator.centroid(arc);
+
             return (
               <text
                 key={index}
@@ -57,6 +57,7 @@ export default function SideBarPie({ size, data }: PieChartProps) {
                   : ''}
 
               </text>
+
             );
           })}
 

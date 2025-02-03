@@ -57,6 +57,11 @@ function Results({ data }: dataProp) {
         <Anchor fz="xl" lh="lg" href="https://www.consumerfinance.gov/consumer-tools/student-loans/">search here</Anchor>
         .
       </Text>
+      <br />
+      <Text fz="xl" lh="lg" td="underline" fw="500">
+        Please press submit in the sidebar to complete the experiment
+
+      </Text>
     </div>
 
   );
