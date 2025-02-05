@@ -59,7 +59,7 @@ function Results({ data }: dataProp) {
       </Text>
       <br />
       <Text fz="xl" lh="lg" td="underline" fw="500">
-        Please press submit in the sidebar to complete the experiment
+        Please press submit in the sidebar to complete the experiment.
 
       </Text>
     </div>
