@@ -13,10 +13,7 @@ interface PieChartProps{
 
 export default function SideBarPie({ size, data }: PieChartProps) {
   const budget = [
-    // min payment+extra
     { label: 'loan', value: data.valueOf(), color: '#06945D' },
-    // average for single person
-
     { label: 'other', value: 5000 - data.valueOf(), color: '#0077a9' },
   ];
 
